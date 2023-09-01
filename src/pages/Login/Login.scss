@@ -1,0 +1,100 @@
+.lgBody {
+  max-width: 90vw;
+  margin: 0 auto;
+  min-height: 100vh;
+  .lgContent {
+    display: flex;
+    justify-content: center;
+
+    .lgRightContainer {
+      background-color: #fff;
+      margin-top: 20vh;
+      padding-top: 5vh;
+      padding-bottom: 10vh;
+      width: 50%;
+      min-width: fit-content;
+      height: 35vh;
+      min-height: 255px;
+      border-radius: 15px;
+      display: flex;
+      flex-direction: column;
+      h2 {
+        text-align: center;
+        font-size: 2.4rem;
+        color: #3498db;
+      }
+      .lgBox {
+        height: 60%;
+        width: 100%;
+        // border-bottom: 1px solid black;
+        input {
+          width: 90%;
+          height: 45px;
+          border: 1px #bdc3c7 solid;
+          padding-left: 25px;
+          border-radius: 10px;
+          background-color: #fff;
+        }
+        .lgAccountBox {
+          width: 80%;
+          margin: 2vh auto;
+          margin-top: 5vh;
+          padding-left: 25px;
+        }
+        .lgPasswordBox {
+          width: 80%;
+          margin: 2vh auto;
+          padding-left: 25px;
+        }
+        .lgLoginButtonBox {
+          width: 80%;
+          margin: 2vh auto;
+          input {
+            width: 90%;
+            margin-top: 4vh;
+            background-color: #3498db;
+            color: #fff;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 10px;
+            padding: 0;
+          }
+          display: flex;
+          justify-content: center;
+          button {
+            width: 80%;
+            // margin-top: 4vh;
+            margin: 4vh 0 0 0;
+            background-color: #3498db;
+            color: #fff;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 10px;
+            padding: 0;
+            height: 45px;
+            cursor: pointer;
+
+            &:hover {
+              background-color: #006bb3;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .lgBody {
+    .lgContent {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      .lgRightContainer {
+        width: 90%;
+        margin-top: 5vh;
+        margin: 5vh auto 0 auto;
+      }
+    }
+  }
+}

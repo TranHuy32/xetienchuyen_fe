@@ -1,6 +1,6 @@
 import { AuthProvider } from "react-auth-kit";
 import MainRoutes from "~/routes";
-// import refreshApi from "./components/RefreshToken/RefreshToken";
+import refreshApi from "./components/RefreshToken/RefreshToken.js";
 import { createContext } from "react";
 
 export const FireBaseContext = createContext();
@@ -10,7 +10,7 @@ function App() {
     <AuthProvider
       authType={"localstorage"}
       authName={"token"}
-      // refresh={refreshApi}
+      refresh={refreshApi}
     >
       <MainRoutes />
     </AuthProvider>
