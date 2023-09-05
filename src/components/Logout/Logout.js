@@ -7,7 +7,7 @@ export default function Logout() {
 
   const logout = () => {
     singOut();
-    navigate("/login");
+    navigate("/");
   };
   return <button onClick={logout}>Logout</button>;
 }

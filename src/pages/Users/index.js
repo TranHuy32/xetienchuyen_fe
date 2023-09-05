@@ -29,42 +29,86 @@ export default function Users() {
         console.log(error);
       });
     axios
-      .get(`${beURL}/group/detail/${group_id}`, config)
+      .get(`${beURL}/users/allGroupMembers/${group_id}`, config)
       .then((response) => {
         const data = response.data;
         if (!data || data.length === 0) {
           setUsers([]);
         } else {
-          setUsers([]);
+          setUsers(data);
         }
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [token]);
-
+  }, [token, group_id]);
   const handleClickDetail = () => {
     alert("ok");
   };
+  const owner = JSON.parse(localStorage.getItem("token_state")) || [];
 
-  return (
-    <div className={cx("wrapper")}>
-      <h2>List Users</h2>
-      <div>
+  if (users.length !== 0) {
+    return (
+      <div className={cx("uWrapper")}>
+        <ul className={cx("uMenu")}>
+          <li
+            onClick={() => {
+              navigate(`/users/${owner.groupId}`);
+            }}
+          >
+            Thành viên
+          </li>
+          <li
+            onClick={() => {
+              navigate("/createUser");
+            }}
+          >
+            Tạo tài khoản
+          </li>
+          <li
+            onClick={() => {
+              navigate("/followProvince");
+            }}
+          >
+            Các tỉnh hay chạy
+          </li>
+        </ul>
         <div>
-          <h2>Các người dùng trong group {group.name}</h2>
-        </div>
-        <div>
-          <ul>
-            {users.map((user, index) => (
-              <li key={index} className={cx("")}>
-                <p>{user.name}</p>
-                <p onClick={handleClickDetail}>-{">"}</p>
+          <h2 className={cx("uGroupName")}>Nhóm {group.name}</h2>
+          <div className={cx("uContentBox")}>
+            <div className={cx("uTitle")}>
+              <p>Danh sách thành viên trong nhóm:</p>
+              {/* <button>Tạo tài khoản</button> */}
+            </div>
+            <ul className={cx("")}>
+              <li className={cx("total-info")}>
+                <div className={cx("uInfo")}>
+                  <p>Tên</p>
+                  <p>Số dư</p>
+                  <p>Tên đăng nhập</p>
+                </div>
+                <p className={cx("uEdit")}>Chỉnh sửa</p>
               </li>
-            ))}
-          </ul>
+              {users.map((user, index) => (
+                <li key={index} className={cx("")}>
+                  <div className={cx("uInfo")}>
+                    <p>{user.name}</p>
+                    <p className={cx("uAmount")}>{user.amount} k</p>
+                    <p>{user.userName}</p>
+                  </div>
+                  <p
+                    className={cx("uEdit", "uArrow")}
+                    onClick={handleClickDetail}
+                  >
+                    {">"}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
+  return "loading ...";
 }

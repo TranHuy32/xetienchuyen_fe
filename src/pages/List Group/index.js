@@ -15,6 +15,7 @@ export default function Home() {
     headers: { Authorization: `Bearer ${token}` },
   };
   const navigate = useNavigate();
+  const owner = JSON.parse(localStorage.getItem("token_state")) || [];
 
   useEffect(() => {
     axios
@@ -31,6 +32,7 @@ export default function Home() {
         console.log(error);
       });
   }, [token]);
+
   const handleClickDetail = (group) => {
     navigate(`/users/${group._id}`);
   };

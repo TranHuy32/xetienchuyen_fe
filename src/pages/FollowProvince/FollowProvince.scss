@@ -1,0 +1,25 @@
+.fWrapper {
+  min-width: 960px;
+  background-color: #fff;
+  .fMenu {
+    display: flex;
+    border-bottom: 1px solid;
+    margin-top: 0.5rem;
+    > li {
+      border: 1px solid;
+      padding: 4px 4px 0px 4px;
+      border-top-right-radius: 5px;
+      border-top-left-radius: 5px;
+      cursor: pointer;
+    }
+    .fActived {
+      background-color: aqua;
+    }
+  }
+  .fContent {
+    > h2 {
+      text-align: center;
+      margin-top: 6vh;
+    }
+  }
+}

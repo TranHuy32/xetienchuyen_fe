@@ -12,24 +12,30 @@ function DefaultLayout({ children }) {
 
   const logout = () => {
     singOut();
-    navigate("/login");
+    navigate("/");
   };
-
+  const owner = JSON.parse(localStorage.getItem("token_state")) || [];
   return (
     <div className={cx("dWrapper")}>
-      <div>
-        <div>
-          <h2>DefaultLayout</h2>
-          <div className="">
-            <a href="/login" onClick={logout}>
+      <div className={cx("hWrapper")}>
+        <div className={cx("hContent")}>
+          <h2
+            className={cx("hTextLogo")}
+            onClick={() => navigate(`/users/${owner.groupId}`)}
+          >
+            Xe tiện chuyến
+          </h2>
+          <div className="hUserBox">
+            <p>{owner.ownerName}</p>
+            <a className={cx("hLogout")} onClick={logout}>
               Đăng xuất
             </a>
           </div>
         </div>
-        {/* End header */}
-        <div className={cx("")}>
-          <div className={cx("")}>{children}</div>
-        </div>
+      </div>
+      {/* End header */}
+      <div className={cx("bWrapper")}>
+        <div className={cx("")}>{children}</div>
       </div>
     </div>
   );

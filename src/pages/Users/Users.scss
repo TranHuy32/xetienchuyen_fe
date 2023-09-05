@@ -1,4 +1,94 @@
-.wrapper {
+.uWrapper {
   min-width: 960px;
-  background-color: bisque;
+  background-color: #fff;
+  .uMenu {
+    display: flex;
+    border-bottom: 1px solid;
+    margin-top: 0.5rem;
+    > li {
+      border: 1px solid;
+      padding: 4px 4px 0px 4px;
+      border-top-right-radius: 5px;
+      border-top-left-radius: 5px;
+      cursor: pointer;
+      &:first-child {
+        background-color: aqua;
+      }
+    }
+  }
+  .uGroupName {
+    font-size: 1.5rem;
+    margin-top: 2%;
+    margin-bottom: 2%;
+  }
+  .uContentBox {
+    .uTitle {
+      font-size: 1.2rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      > button {
+        margin-left: auto;
+        margin-right: 1rem;
+        background-color: #fff;
+        padding: 0.2rem;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.3s;
+        &:hover {
+          background-color: aqua;
+        }
+        &:active {
+          background-color: rgb(30, 148, 227);
+        }
+      }
+    }
+    ul {
+      margin-top: 0.8rem;
+      .total-info {
+        font-weight: bold;
+      }
+
+      li {
+        display: flex;
+        border-bottom: 1px dashed #ddd;
+        padding: 0.6rem 0 0.3rem 0;
+        &:last-child {
+          border-bottom: 1px solid #ddd;
+          margin-bottom: 20px;
+        }
+        .uInfo {
+          margin: auto 0;
+          display: flex;
+          width: 50%;
+          justify-content: space-around;
+          text-align: left;
+          .uAmount {
+            color: #ce0026;
+          }
+          p {
+            width: 33%;
+          }
+        }
+
+        .uEdit {
+          margin-left: auto;
+          margin-right: 2%;
+        }
+        .uArrow {
+          border-radius: 50%;
+          width: 1.5rem;
+          height: 1.5rem;
+          text-align: center;
+          margin-right: 4.5%;
+          padding: 0.3rem 0.2rem 0 0.2rem;
+          transition: 0.3s;
+          cursor: pointer;
+          &:hover {
+            background-color: #b5707c;
+          }
+        }
+      }
+    }
+  }
 }

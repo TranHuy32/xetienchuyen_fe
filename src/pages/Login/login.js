@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSignIn, useSignOut } from "react-auth-kit";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Users from "../Users";
 
 const cx = classNames.bind(styles);
 const beURL = process.env.REACT_APP_BE_URL;
@@ -15,12 +16,11 @@ function Login() {
     ownerName: "",
     password: "",
   });
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(`${beURL}/owner-auth/login`, formData);
-      const { accessToken, refreshToken } = response.data;
+      const { accessToken, refreshToken, owner } = response.data;
       if (!response.data) {
         return alert("Sai Tên Tài Khoản Hoặc Mật Khẩu");
       }
@@ -28,12 +28,12 @@ function Login() {
         token: accessToken,
         tokenType: "Bearer",
         expiresIn: 60,
-        authState: formData.ownerName,
+        authState: owner,
         refreshToken: refreshToken,
         refreshTokenExpireIn: 43200,
       });
-      navigate("/");
-      // window.location.reload();
+      navigate(`/users/${owner.groupId}`);
+      window.location.reload();
     } catch (error) {
       if (error.response && error.response.status === 401) {
         console.log(error.response);
@@ -55,7 +55,7 @@ function Login() {
         <div className={cx("bMarginTop")}></div>
         <div className={cx("lgContent")}>
           <div className={cx("lgRightContainer")}>
-            <h2>Đăng nhập</h2>
+            <h2>Đăng nhậpp</h2>
             <form className={cx("lgBox")} onSubmit={handleSubmit}>
               <div className={cx("lgAccountBox")}>
                 <input
