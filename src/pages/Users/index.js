@@ -86,6 +86,9 @@ export default function Users() {
                   <p>Tên</p>
                   <p>Số dư</p>
                   <p>Tên đăng nhập</p>
+                  <p>Loại xe</p>
+                  <p>Số lượng ghế</p>
+                  <p>Biển số xe</p>
                 </div>
                 <p className={cx("uEdit")}>Chỉnh sửa</p>
               </li>
@@ -95,6 +98,9 @@ export default function Users() {
                     <p>{user.name}</p>
                     <p className={cx("uAmount")}>{user.amount} k</p>
                     <p>{user.userName}</p>
+                    <p>{user.manufacturer}</p>
+                    <p>{user.carType}</p>
+                    <p>{user.licensePlate}</p>
                   </div>
                   <p
                     className={cx("uEdit", "uArrow")}

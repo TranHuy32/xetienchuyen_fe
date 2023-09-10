@@ -14,6 +14,9 @@ export default function CreateUser() {
     userName: "",
     password: "",
     rePassword: "",
+    manufacturer: "",
+    carType: "",
+    licensePlate: "",
     groupId: owner.groupId,
   });
   const token = localStorage.getItem("token") || [];
@@ -53,7 +56,15 @@ export default function CreateUser() {
       event.preventDefault();
     }
   };
-  const { name, userName, password, rePassword } = state;
+  const {
+    name,
+    userName,
+    password,
+    rePassword,
+    manufacturer,
+    carType,
+    licensePlate,
+  } = state;
 
   return (
     <div className={cx("cuWrapper")}>
@@ -136,6 +147,47 @@ export default function CreateUser() {
               name="rePassword"
               id="rePassword"
               value={rePassword}
+              onChange={changeHandler}
+            ></input>
+          </div>
+          <div>
+            <label htmlFor="manufacturer">Loại xe:</label>
+            <input
+              required
+              className={cx("")}
+              placeholder="Loại xe"
+              type="text"
+              name="manufacturer"
+              id="manufacturer"
+              value={manufacturer}
+              onChange={changeHandler}
+            ></input>
+          </div>
+          <div>
+            <label htmlFor="carType">Số lượng ghế:</label>
+            <input
+              required
+              className={cx("")}
+              placeholder="Số lượng ghế"
+              type="tel"
+              pattern="[0-9]*"
+              name="carType"
+              id="carType"
+              value={carType}
+              onKeyPress={handleKeyPress}
+              onChange={changeHandler}
+            ></input>
+          </div>
+          <div>
+            <label htmlFor="licensePlate">Biển số xe:</label>
+            <input
+              required
+              className={cx("")}
+              placeholder="Biển số xe"
+              type="text"
+              name="licensePlate"
+              id="licensePlate"
+              value={licensePlate}
               onChange={changeHandler}
             ></input>
           </div>

@@ -55,7 +55,7 @@ function Login() {
         <div className={cx("bMarginTop")}></div>
         <div className={cx("lgContent")}>
           <div className={cx("lgRightContainer")}>
-            <h2>Đăng nhậpp</h2>
+            <h2>Đăng nhập</h2>
             <form className={cx("lgBox")} onSubmit={handleSubmit}>
               <div className={cx("lgAccountBox")}>
                 <input
