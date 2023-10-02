@@ -7,6 +7,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { DefaultLayout } from "~/components/Layout";
 import { RequireAuth } from "react-auth-kit";
 import CreateUser from "~/pages/CreateUser";
+import Transaction from "~/pages/Transaction";
 
 const MainRoutes = () => {
   return (
@@ -65,6 +66,17 @@ const MainRoutes = () => {
             <RequireAuth loginPath={"/"}>
               <DefaultLayout>
                 <FollowProvince />
+              </DefaultLayout>
+            </RequireAuth>
+          }
+          exact
+        />
+         <Route
+          path={"/transaction/:group_id"}
+          element={
+            <RequireAuth loginPath={"/"}>
+              <DefaultLayout>
+                <Transaction />
               </DefaultLayout>
             </RequireAuth>
           }

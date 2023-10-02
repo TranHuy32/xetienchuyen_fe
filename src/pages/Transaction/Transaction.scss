@@ -60,7 +60,7 @@
         .uInfo {
           margin: auto 0;
           display: flex;
-          width: 75%;
+          width: 100%;
           justify-content: space-around;
           text-align: center;
           .uAmount {
@@ -89,6 +89,22 @@
           }
         }
       }
+    }
+  }
+  .uPagination {
+    margin-top: 6vh;
+    display: flex;
+    justify-content: center;
+    >button{
+      margin: 0 3px;
+      padding: 3.5px 4px 2px 4px;
+      text-align: center;
+      cursor: pointer;
+      font-weight: bold;
+      background-color: #fff;
+    }
+    .active{
+      background-color: aqua;
     }
   }
 }

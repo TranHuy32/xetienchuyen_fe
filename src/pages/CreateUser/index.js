@@ -91,6 +91,13 @@ export default function CreateUser() {
         >
           Các tỉnh hay chạy
         </li>
+        <li
+            onClick={() => {
+              navigate(`/transaction/${owner.groupId}`);
+            }}
+          >
+            Giao dịch
+          </li>
       </ul>
       <div className={cx("cuContent")}>
         <h2 className={cx("cuTitle")}>Tạo tài khoản</h2>

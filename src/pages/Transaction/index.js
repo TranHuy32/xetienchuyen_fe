@@ -1,15 +1,19 @@
 import classNames from "classnames";
-import styles from "./Users.scss";
+import styles from "./Transaction.scss";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import * as moment from "moment";
 
 const cx = classNames.bind(styles);
 const beURL = process.env.REACT_APP_BE_URL;
 
-export default function Users() {
-  const [users, setUsers] = useState([]);
+export default function Transaction() {
+  const [transactions, setTransactions] = useState([]);
   const [group, setGroup] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(3);
+  const [totalPages, setTotalPages] = useState(0);
 
   const token = localStorage.getItem("token") || [];
   const config = {
@@ -29,30 +33,35 @@ export default function Users() {
         console.log(error);
       });
     axios
-      .get(`${beURL}/users/allGroupMembers/${group_id}`, config)
+      .get(
+        `${beURL}/transaction/all/${group_id}?page=${currentPage}&pageSize=${pageSize}`,
+        config
+      )
       .then((response) => {
         const data = response.data;
         if (!data || data.length === 0) {
-          setUsers([]);
+          setTransactions([]);
         } else {
-          setUsers(data);
+          setTransactions(data.transactions);
+          setTotalPages(Math.ceil(data.totalCount / pageSize));
         }
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [token, group_id]);
-  const handleClickDetail = () => {
-    alert("ok");
+  }, [token, group_id, currentPage, currentPage]);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
   };
+
   const owner = JSON.parse(localStorage.getItem("token_state")) || [];
 
-  if (users.length !== 0) {
+  if (transactions.length !== 0) {
     return (
       <div className={cx("uWrapper")}>
         <ul className={cx("uMenu")}>
           <li
-            className={cx("fActived")}
             onClick={() => {
               navigate(`/users/${owner.groupId}`);
             }}
@@ -74,6 +83,7 @@ export default function Users() {
             Các tỉnh hay chạy
           </li>
           <li
+            className={cx("fActived")}
             onClick={() => {
               navigate(`/transaction/${owner.groupId}`);
             }}
@@ -85,41 +95,62 @@ export default function Users() {
           <h2 className={cx("uGroupName")}>Nhóm {group.name}</h2>
           <div className={cx("uContentBox")}>
             <div className={cx("uTitle")}>
-              <p>Danh sách thành viên trong nhóm:</p>
+              <p>Danh sách giao dịch :</p>
               {/* <button>Tạo tài khoản</button> */}
             </div>
             <ul className={cx("")}>
               <li className={cx("total-info")}>
                 <div className={cx("uInfo")}>
-                  <p>Tên</p>
-                  <p>Số dư</p>
-                  <p>Tên đăng nhập</p>
-                  <p>Loại xe</p>
-                  <p>Số lượng ghế</p>
-                  <p>Biển số xe</p>
+                  {/* <p>id</p> */}
+                  <p>Seller</p>
+                  <p>Tài xế</p>
+                  <p>Số tiền</p>
+                  <p>Trạng thái</p>
+                  <p>Giữ tiền</p>
+                  <p>Đã chuyển</p>
                 </div>
-                <p className={cx("uEdit")}>Chỉnh sửa</p>
+                {/* <p className={cx("uEdit")}>Chỉnh sửa</p> */}
               </li>
-              {users.map((user, index) => (
+              {transactions.map((trans, index) => (
                 <li key={index} className={cx("")}>
                   <div className={cx("uInfo")}>
-                    <p>{user.name}</p>
-                    <p className={cx("uAmount")}>{user.amount} k</p>
-                    <p>{user.userName}</p>
-                    <p>{user.manufacturer}</p>
-                    <p>{user.carType}</p>
-                    <p>{user.licensePlate}</p>
+                    {/* <p>{trans._id}</p> */}
+                    <p>{trans.seller.userName}</p>
+                    <p>{trans.driver.userName}</p>
+                    <p className={cx("uAmount")}>{trans.amount} k</p>
+                    <p>{trans.status}</p>
+                    <p>
+                      {trans.holdingAt !== null
+                        ? moment(trans.holdingAt).format("HH:mm")
+                        : ""}
+                    </p>
+                    <p>
+                      {trans.transferredAt !== null
+                        ? moment(trans.transferredAt).format("HH:mm")
+                        : ""}
+                    </p>
                   </div>
-                  <p
+                  {/* <p
                     className={cx("uEdit", "uArrow")}
                     onClick={handleClickDetail}
                   >
                     {">"}
-                  </p>
+                  </p> */}
                 </li>
               ))}
             </ul>
           </div>
+        </div>
+        <div className={cx("uPagination")}>
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index}
+              onClick={() => handlePageChange(index + 1)}
+              className={cx({ active: index + 1 === currentPage })}
+            >
+              {index + 1}
+            </button>
+          ))}
         </div>
       </div>
     );
