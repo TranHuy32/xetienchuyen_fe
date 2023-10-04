@@ -59,8 +59,8 @@ export default function Transaction() {
 
   if (transactions.length !== 0) {
     return (
-      <div className={cx("uWrapper")}>
-        <ul className={cx("uMenu")}>
+      <div className={cx("tWrapper")}>
+        <ul className={cx("tMenu")}>
           <li
             onClick={() => {
               navigate(`/users/${owner.groupId}`);
@@ -92,15 +92,15 @@ export default function Transaction() {
           </li>
         </ul>
         <div>
-          <h2 className={cx("uGroupName")}>Nhóm {group.name}</h2>
-          <div className={cx("uContentBox")}>
-            <div className={cx("uTitle")}>
+          <h2 className={cx("tGroupName")}>Nhóm {group.name}</h2>
+          <div className={cx("tContentBox")}>
+            <div className={cx("tTitle")}>
               <p>Danh sách giao dịch :</p>
               {/* <button>Tạo tài khoản</button> */}
             </div>
             <ul className={cx("")}>
               <li className={cx("total-info")}>
-                <div className={cx("uInfo")}>
+                <div className={cx("tInfo")}>
                   {/* <p>id</p> */}
                   <p>Seller</p>
                   <p>Tài xế</p>
@@ -113,11 +113,11 @@ export default function Transaction() {
               </li>
               {transactions.map((trans, index) => (
                 <li key={index} className={cx("")}>
-                  <div className={cx("uInfo")}>
+                  <div className={cx("tInfo")}>
                     {/* <p>{trans._id}</p> */}
                     <p>{trans.seller.userName}</p>
                     <p>{trans.driver.userName}</p>
-                    <p className={cx("uAmount")}>{trans.amount} k</p>
+                    <p className={cx("tAmount")}>{trans.amount} k</p>
                     <p>{trans.status}</p>
                     <p>
                       {trans.holdingAt !== null
@@ -141,7 +141,7 @@ export default function Transaction() {
             </ul>
           </div>
         </div>
-        <div className={cx("uPagination")}>
+        <div className={cx("tPagination")}>
           {Array.from({ length: totalPages }, (_, index) => (
             <button
               key={index}

@@ -8,6 +8,7 @@ import { DefaultLayout } from "~/components/Layout";
 import { RequireAuth } from "react-auth-kit";
 import CreateUser from "~/pages/CreateUser";
 import Transaction from "~/pages/Transaction";
+import DetailUser from "~/pages/DetailUser";
 
 const MainRoutes = () => {
   return (
@@ -71,12 +72,23 @@ const MainRoutes = () => {
           }
           exact
         />
-         <Route
+        <Route
           path={"/transaction/:group_id"}
           element={
             <RequireAuth loginPath={"/"}>
               <DefaultLayout>
                 <Transaction />
+              </DefaultLayout>
+            </RequireAuth>
+          }
+          exact
+        />
+        <Route
+          path={"/userDetail/:user_id"}
+          element={
+            <RequireAuth loginPath={"/"}>
+              <DefaultLayout>
+                <DetailUser />
               </DefaultLayout>
             </RequireAuth>
           }

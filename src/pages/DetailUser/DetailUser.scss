@@ -1,10 +1,11 @@
-.tWrapper {
+.dWrapper {
   min-width: 960px;
   background-color: #fff;
-  .tMenu {
+  .dMenu {
     display: flex;
     border-bottom: 1px solid;
     margin-top: 0.5rem;
+    min-width: 100%;
     > li {
       border: 1px solid;
       padding: 4px 4px 0px 4px;
@@ -16,13 +17,17 @@
       background-color: aqua;
     }
   }
-  .tGroupName {
+  .dContentWrapper {
+    min-width: 100%;
+  }
+  .dUserName {
     font-size: 1.5rem;
     margin-top: 2%;
     margin-bottom: 2%;
+    text-align: center;
   }
-  .tContentBox {
-    .tTitle {
+  .dContentBox {
+    .dTitle {
       font-size: 1.2rem;
       padding-bottom: 0.3rem;
       border-bottom: 1px solid #ddd;
@@ -44,67 +49,42 @@
       }
     }
     ul {
-      margin-top: 0.8rem;
+      margin: 0.8rem 0;
+      // border-bottom: 1px solid #ddd;
+
       .total-info {
         font-weight: bold;
       }
+      min-width: 100%;
 
       li {
+        margin-left: 10vw;
         display: flex;
-        border-bottom: 1px dashed #ddd;
         padding: 0.6rem 0 0.3rem 0;
+
+        p {
+          width: 25%;
+          &:first-child {
+            font-weight: bold;
+          }
+        }
         &:last-child {
-          border-bottom: 1px solid #ddd;
           margin-bottom: 20px;
         }
-        .tInfo {
-          margin: auto 0;
-          display: flex;
-          width: 100%;
-          justify-content: space-around;
-          text-align: center;
-          .uAmount {
-            color: #ce0026;
-          }
-          p {
-            width: 16.6%;
-          }
+        .dAmount {
+          color: #ce0026;
         }
-
-        .tEdit {
+        .dEdit {
           margin-left: auto;
           margin-right: 2%;
-        }
-        .tArrow {
-          border-radius: 50%;
-          width: 1.5rem;
-          height: 1.5rem;
-          text-align: center;
-          margin-right: 4.5%;
-          padding: 0.3rem 0.2rem 0 0.2rem;
-          transition: 0.3s;
-          cursor: pointer;
-          &:hover {
-            background-color: #b5707c;
-          }
         }
       }
     }
   }
-  .tPagination {
-    margin-top: 6vh;
-    display: flex;
-    justify-content: center;
-    >button{
-      margin: 0 3px;
-      padding: 3.5px 4px 2px 4px;
-      text-align: center;
-      cursor: pointer;
-      font-weight: bold;
-      background-color: #fff;
-    }
-    .active{
-      background-color: aqua;
+  .dAllRidesWrapper {
+    margin-top: 3vh;
+    .dAllRidesTittle {
+      border-bottom: 1px solid #000;
     }
   }
 }
