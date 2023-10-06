@@ -12,7 +12,7 @@ export default function Transaction() {
   const [transactions, setTransactions] = useState([]);
   const [group, setGroup] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(3);
+  const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
 
   const token = localStorage.getItem("token") || [];
@@ -57,7 +57,7 @@ export default function Transaction() {
 
   const owner = JSON.parse(localStorage.getItem("token_state")) || [];
 
-  if (transactions.length !== 0) {
+  if (transactions) {
     return (
       <div className={cx("tWrapper")}>
         <ul className={cx("tMenu")}>
@@ -102,7 +102,7 @@ export default function Transaction() {
               <li className={cx("total-info")}>
                 <div className={cx("tInfo")}>
                   {/* <p>id</p> */}
-                  <p>Seller</p>
+                  <p>Người đăng</p>
                   <p>Tài xế</p>
                   <p>Số tiền</p>
                   <p>Trạng thái</p>
@@ -118,7 +118,17 @@ export default function Transaction() {
                     <p>{trans.seller.userName}</p>
                     <p>{trans.driver.userName}</p>
                     <p className={cx("tAmount")}>{trans.amount} k</p>
-                    <p>{trans.status}</p>
+                    <p>
+                      {trans.status === "TRANSFERRED"
+                        ? "Chuyển thành công"
+                        : trans.status === "HOLDING"
+                        ? "Đang giữ tiền"
+                        : trans.status === "TAKED"
+                        ? "Đang chạy"
+                        : trans.status === "CANCELED"
+                        ? "Đã hủy"
+                        : "Trạng thái khác"}
+                    </p>
                     <p>
                       {trans.holdingAt !== null
                         ? moment(trans.holdingAt).format("HH:mm")

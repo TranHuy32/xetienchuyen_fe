@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createRefresh } from 'react-auth-kit';
 const beURL = process.env.REACT_APP_BE_URL;
 const refreshApi = createRefresh({
-    interval: 50,
+    interval: 30,
     refreshApiCallback: async ({
         authToken,
         authTokenExpireAt,
@@ -22,7 +22,7 @@ const refreshApi = createRefresh({
                 isSuccess: true,
                 newAuthToken: response.data.accessToken,
                 newRefreshToken: response.data.refreshToken,
-                newAuthTokenExpireIn: 60,
+                newAuthTokenExpireIn: 30,
                 newRefreshTokenExpiresIn: 43200,
             };
         } catch (error) {

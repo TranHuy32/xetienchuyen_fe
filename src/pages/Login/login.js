@@ -27,7 +27,7 @@ function Login() {
       signIn({
         token: accessToken,
         tokenType: "Bearer",
-        expiresIn: 60,
+        expiresIn: 30,
         authState: owner,
         refreshToken: refreshToken,
         refreshTokenExpireIn: 43200,

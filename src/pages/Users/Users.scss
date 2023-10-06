@@ -1,6 +1,7 @@
 .uWrapper {
   min-width: 960px;
   background-color: #fff;
+  margin-bottom: 6vh;
   .uMenu {
     display: flex;
     border-bottom: 1px solid;
@@ -27,19 +28,36 @@
       padding-bottom: 0.3rem;
       border-bottom: 1px solid #ddd;
       display: flex;
-      > button {
+      form {
         margin-left: auto;
-        margin-right: 1rem;
-        background-color: #fff;
-        padding: 0.2rem;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: 0.3s;
-        &:hover {
-          background-color: aqua;
+        margin-right: 0.5vw;
+        display: flex;
+        align-items: center;
+        max-height: 29px;
+        .dSearchBar {
+          display: flex;
+          border-radius: 5px;
+          border: 2px solid #ccc;
+          p {
+            padding: 2px 5px;
+            border-right: none;
+            font-size: 0.9rem;
+          }
+          input {
+            padding: 2px 5px;
+            border: none;
+            font-size: 0.9rem;
+            &:focus {
+              outline: none;
+              border-color: transparent;
+            }
+          }
         }
-        &:active {
-          background-color: rgb(30, 148, 227);
+        img {
+          cursor: pointer;
+          overflow: auto;
+          max-width: 29px;
+          max-height: 29px;
         }
       }
     }
@@ -89,6 +107,22 @@
           }
         }
       }
+    }
+  }
+  .uPagination {
+    margin-top: 6vh;
+    display: flex;
+    justify-content: center;
+    > button {
+      margin: 0 3px;
+      padding: 3.5px 4px 2px 4px;
+      text-align: center;
+      cursor: pointer;
+      font-weight: bold;
+      background-color: #fff;
+    }
+    .active {
+      background-color: aqua;
     }
   }
 }

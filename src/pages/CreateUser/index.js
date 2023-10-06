@@ -6,29 +6,31 @@ import { useNavigate } from "react-router-dom";
 
 const cx = classNames.bind(styles);
 const beURL = process.env.REACT_APP_BE_URL;
+const defaultPassword = "12345678";
 
 export default function CreateUser() {
   const owner = JSON.parse(localStorage.getItem("token_state")) || [];
   const [state, setState] = useState({
     name: "",
     userName: "",
-    password: "",
-    rePassword: "",
-    manufacturer: "",
-    carType: "",
-    licensePlate: "",
+    password: defaultPassword,
+    // rePassword: "",
+    // manufacturer: "",
+    // carType: "",
+    // licensePlate: "",
     groupId: owner.groupId,
   });
   const token = localStorage.getItem("token") || [];
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
+  console.log(state);
   const navigate = useNavigate();
   const handleCreateUser = (e) => {
-    if (state.password !== state.rePassword) {
-      alert("Mật khẩu nhập lại không đúng!");
-      return;
-    }
+    // if (state.password !== state.rePassword) {
+    //   alert("Mật khẩu nhập lại không đúng!");
+    //   return;
+    // }
     e.preventDefault();
     axios
       .post(`${beURL}/users-auth/register`, state, config)
@@ -92,12 +94,12 @@ export default function CreateUser() {
           Các tỉnh hay chạy
         </li>
         <li
-            onClick={() => {
-              navigate(`/transaction/${owner.groupId}`);
-            }}
-          >
-            Giao dịch
-          </li>
+          onClick={() => {
+            navigate(`/transaction/${owner.groupId}`);
+          }}
+        >
+          Giao dịch
+        </li>
       </ul>
       <div className={cx("cuContent")}>
         <h2 className={cx("cuTitle")}>Tạo tài khoản</h2>
@@ -131,7 +133,7 @@ export default function CreateUser() {
               onKeyPress={handleKeyPress}
             ></input>
           </div>
-          <div>
+          {/* <div>
             <label htmlFor="password">Mật khẩu:</label>
             <input
               required
@@ -197,7 +199,7 @@ export default function CreateUser() {
               value={licensePlate}
               onChange={changeHandler}
             ></input>
-          </div>
+          </div> */}
           <button className={cx("")} type="submit">
             Tạo tài khoản
           </button>

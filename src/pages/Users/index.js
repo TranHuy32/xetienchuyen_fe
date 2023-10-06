@@ -3,6 +3,7 @@ import styles from "./Users.scss";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import searchIcon from "~/components/Image/search-icon.png";
 
 const cx = classNames.bind(styles);
 const beURL = process.env.REACT_APP_BE_URL;
@@ -10,6 +11,10 @@ const beURL = process.env.REACT_APP_BE_URL;
 export default function Users() {
   const [users, setUsers] = useState([]);
   const [group, setGroup] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalPages, setTotalPages] = useState(0);
+  const [searchInput, setSearchInput] = useState("");
 
   const token = localStorage.getItem("token") || [];
   const config = {
@@ -29,25 +34,50 @@ export default function Users() {
         console.log(error);
       });
     axios
-      .get(`${beURL}/users/allGroupMembers/${group_id}`, config)
+      .get(
+        `${beURL}/users/allGroupMembers/${group_id}?page=${currentPage}&pageSize=${pageSize}`,
+        config
+      )
       .then((response) => {
         const data = response.data;
-        if (!data || data.length === 0) {
-          setUsers([]);
-        } else {
-          setUsers(data);
-        }
+        setUsers(data.users);
+        setTotalPages(Math.ceil(data.totalCount / pageSize));
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [token, group_id]);
+  }, [token, group_id, currentPage, pageSize]);
   const handleClickDetail = (user_id) => {
     navigate(`/userDetail/${user_id}`);
   };
   const owner = JSON.parse(localStorage.getItem("token_state")) || [];
 
-  if (users.length !== 0) {
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const handleSearchInputChange = (event) => {
+    setSearchInput(event.target.value);
+  };
+
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    axios
+      .get(
+        `${beURL}/users/allGroupMembers/${group_id}?page=${currentPage}&pageSize=${pageSize}&search=${searchInput}`,
+        config
+      )
+      .then((response) => {
+        const data = response.data;
+        setUsers(data.users);
+        setTotalPages(Math.ceil(data.totalCount / pageSize));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  if (users) {
     return (
       <div className={cx("uWrapper")}>
         <ul className={cx("uMenu")}>
@@ -86,6 +116,22 @@ export default function Users() {
           <div className={cx("uContentBox")}>
             <div className={cx("uTitle")}>
               <p>Danh sách thành viên trong nhóm:</p>
+              <form onSubmit={handleSearchSubmit}>
+                <div className={cx("dSearchBar")}>
+                  <p>+84</p>
+                  <input
+                    placeholder="Tìm kiếm..."
+                    value={searchInput}
+                    onChange={handleSearchInputChange}
+                  ></input>
+                </div>
+                <img
+                  src={searchIcon}
+                  alt="Search"
+                  className={cx("searchIcon")}
+                  onClick={handleSearchSubmit}
+                />
+              </form>
               {/* <button>Tạo tài khoản</button> */}
             </div>
             <ul className={cx("")}>
@@ -122,6 +168,17 @@ export default function Users() {
               ))}
             </ul>
           </div>
+        </div>
+        <div className={cx("uPagination")}>
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index}
+              onClick={() => handlePageChange(index + 1)}
+              className={cx({ active: index + 1 === currentPage })}
+            >
+              {index + 1}
+            </button>
+          ))}
         </div>
       </div>
     );
