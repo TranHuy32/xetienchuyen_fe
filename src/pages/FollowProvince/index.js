@@ -88,6 +88,34 @@ export default function CreateUser() {
         console.log(error);
       });
   };
+
+  const handleUnfollowProvince = (province) => {
+    const isConfirmed = window.confirm(`Bạn muốn hủy tỉnh ${province.name} ?`);
+    if (isConfirmed) {
+      console.log(province);
+      alert(`Đã hủy tỉnh ${province.name}`);
+
+      // Gửi yêu cầu unfollow đến API
+      //   axios
+      //     .post(
+      //       `${beURL}/users/unFollowTopic`,
+      //       { districtId: provinceId },
+      //       config
+      //     )
+      //     .then((response) => {
+      //       console.log(response.data);
+      //       setFollowrdProvinces((prevProvinces) =>
+      //         prevProvinces.filter((province) => province._id !== provinceId)
+      //       );
+      //       alert(`Đã hủy tỉnh ${provinceId}`);
+      //     })
+      //     .catch((error) => {
+      //       console.log(error);
+      //       alert("Lỗi khi hủy tỉnh");
+      //     });
+    }
+  };
+
   return (
     <div className={cx("fWrapper")}>
       <ul className={cx("fMenu")}>
@@ -114,16 +142,16 @@ export default function CreateUser() {
           Các tỉnh hay chạy
         </li>
         <li
-            onClick={() => {
-              navigate(`/transaction/${owner.groupId}`);
-            }}
-          >
-            Giao dịch
-          </li>
+          onClick={() => {
+            navigate(`/transaction/${owner.groupId}`);
+          }}
+        >
+          Giao dịch
+        </li>
       </ul>
       <div className={cx("fContent")}>
         <h2 className={cx("fTitle")}>Các tỉnh hay chạy</h2>
-        <div>
+        <div className={cx("fFormSelect")}>
           <select className={cx("fSelect")} onChange={handleSelectChange}>
             <option value="">Chọn tỉnh thành</option>
             {provinces.map((province, index) => (
@@ -134,11 +162,15 @@ export default function CreateUser() {
           </select>
           <button onClick={submitFollowProvince}>Đăng ký</button>
         </div>
-        <div>
+        <div className={cx("fProvinceFollowed")}>
           <p>Các tỉnh đã đăng ký:</p>
           <ul>
             {followrdProvinces.map((province, index) => (
-              <li key={index} className={cx("")}>
+              <li
+                key={index}
+                className={cx("")}
+                onClick={() => handleUnfollowProvince(province)}
+              >
                 {province.name}
               </li>
             ))}

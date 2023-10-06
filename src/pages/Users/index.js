@@ -69,6 +69,8 @@ export default function Users() {
       )
       .then((response) => {
         const data = response.data;
+        console.log(response);
+
         setUsers(data.users);
         setTotalPages(Math.ceil(data.totalCount / pageSize));
       })
@@ -76,7 +78,7 @@ export default function Users() {
         console.log(error);
       });
   };
-
+  console.log(users);
   if (users) {
     return (
       <div className={cx("uWrapper")}>
