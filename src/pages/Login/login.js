@@ -19,7 +19,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${beURL}/owner-auth/login`, formData);
+      const response = await axios.post(`${beURL}/users-auth/loginOwner`, formData);
       const { accessToken, refreshToken, owner } = response.data;
       if (!response.data) {
         return alert("Sai Tên Tài Khoản Hoặc Mật Khẩu");
