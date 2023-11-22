@@ -1,63 +1,114 @@
 .fWrapper {
   min-width: 960px;
   background-color: #fff;
+
   .fMenu {
     display: flex;
     border-bottom: 1px solid;
     margin-top: 0.5rem;
-    > li {
+
+    >li {
       border: 1px solid;
       padding: 4px 4px 0px 4px;
       border-top-right-radius: 5px;
       border-top-left-radius: 5px;
       cursor: pointer;
     }
+
     .fActived {
       background-color: aqua;
     }
   }
+
   .fContent {
     display: flex;
     flex-direction: column;
     align-items: center;
-    > h2 {
+
+    >h2 {
       text-align: center;
       margin-top: 14vh;
     }
+
     .fFormSelect {
       margin: 7vh 0 4vh 0;
+
       .fSelect {
         margin-right: 5px;
         padding-left: 5px;
         width: 200px;
-        height: 30px;
+        height: 35px;
+        border: #ddd 1px solid;
+        border-radius: 5px;
       }
+
       button {
         background-color: #fff;
-        height: 30px;
+        height: 35px;
         text-align: center;
-        padding: 0 4px;
+        padding: 0 10px;
+        border: 1px solid #FF6464;
+        border-radius: 5px;
         cursor: pointer;
+
         &:hover {
-          background-color: aqua;
+          background-color: #FF6464;
+          color: #fff;
         }
+
         &:active {
           background-color: rgb(0, 221, 255);
         }
       }
     }
+
     .fProvinceFollowed {
-      display: flex;
+      min-width: 960px;
+      width: 90%;
+
       p {
-        margin-right: 2vw;
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin: 20px 0;
+        text-transform: capitalize;
       }
+
       ul {
+        display: flex;
+        // flex-direction: column;
+        flex-wrap: wrap;
+        align-content: flex-start;
+
         li {
-          margin-bottom: 1vh;
-          cursor: pointer;
-          &:hover {
-            color: #ff0909;
-            text-decoration: underline #ff0909;
+          div {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            margin-right: 15px;
+            cursor: pointer;
+            background-color: #F3F3F3;
+            min-width: 160px;
+            width: max-content;
+            padding: 0 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            align-items: center;
+            height: 50px;
+            .deleteButton {
+              font-weight: normal;
+              margin-left: 10px;
+              background-color: #fff;
+              padding: 4px 8px 3px 8px;
+              border-radius: 30px;
+              color: #FF6464;
+              border: 1px solid #FF6464;
+
+              &:hover {
+                background-color: #FF6464;
+                color: #fff;
+              }
+            }
           }
         }
       }

@@ -49,7 +49,7 @@ export default function CreateUser() {
     setProvinceId({ provinceFollowId: selectedOption });
   };
   const submitFollowProvince = (e) => {
-    if (!provinceId) {
+    if (provinceId.provinceFollowId === "") {
       alert("Vui lòng chọn tỉnh thành muốn đăng ký");
       return;
     }
@@ -119,30 +119,36 @@ export default function CreateUser() {
   return (
     <div className={cx("fWrapper")}>
       <div className={cx("fContent")}>
-        <h2 className={cx("fTitle")}>Các tỉnh hay chạy</h2>
         <div className={cx("fFormSelect")}>
           <select className={cx("fSelect")} onChange={handleSelectChange}>
-            <option value="">Chọn tỉnh thành</option>
+            <option value="">Chọn Tỉnh Thành</option>
             {provinces.map((province, index) => (
               <option key={index} value={province._id} className={cx("")}>
                 {province.name}
               </option>
             ))}
           </select>
-          <button onClick={submitFollowProvince}>Đăng ký</button>
+          <button onClick={submitFollowProvince}>Đăng Ký</button>
         </div>
         <div className={cx("fProvinceFollowed")}>
-          <p>Các tỉnh đã đăng ký:</p>
+          <p>đã đăng ký :</p>
           <ul>
-            {followrdProvinces.map((province, index) => (
-              <li
-                key={index}
-                className={cx("")}
-                onClick={() => handleUnfollowProvince(province)}
-              >
-                {province.name}
+            {provinces.map((province, index) => (
+              <li key={index} className={cx("")}>
+                {followrdProvinces.map((provinceFollowed, followedIndex) => {
+                  if (province.name === provinceFollowed.name) {
+                    return (
+                      <div key={followedIndex}>
+                        {province.name}
+                        <p className={cx("deleteButton")} onClick={() => handleUnfollowProvince(province)}>X</p>
+                      </div>
+                    );
+                  }
+                  return null;
+                })}
               </li>
             ))}
+
           </ul>
         </div>
       </div>
