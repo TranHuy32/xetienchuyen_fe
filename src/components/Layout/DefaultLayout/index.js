@@ -56,13 +56,13 @@ function DefaultLayout({ children }) {
             >
               Đăng Kí Tỉnh Thành
             </li>
-            <li
+            {/* <li
               onClick={() => {
                 navigate(`/transaction/${owner.groupId}`);
               }}
             >
               Giao dịch
-            </li>
+            </li> */}
             <li
               onClick={() => {
                 // navigate(``);
