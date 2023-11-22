@@ -10,6 +10,7 @@ const beURL = process.env.REACT_APP_BE_URL;
 export default function CreateUser() {
   const owner = JSON.parse(localStorage.getItem("token_state")) || [];
   const [provinces, setProvinces] = useState([]);
+  const [reload, setReload] = useState(true);
   const [followrdProvinces, setFollowrdProvinces] = useState([]);
   const [provinceId, setProvinceId] = useState({
     provinceFollowId: "",
@@ -43,7 +44,7 @@ export default function CreateUser() {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [reload]);
   const handleSelectChange = (event) => {
     const selectedOption = event.target.value;
     setProvinceId({ provinceFollowId: selectedOption });
@@ -89,30 +90,29 @@ export default function CreateUser() {
       });
   };
 
+  console.log(followrdProvinces);
+
   const handleUnfollowProvince = (province) => {
     const isConfirmed = window.confirm(`Bạn muốn hủy tỉnh ${province.name} ?`);
     if (isConfirmed) {
       console.log(province);
-      alert(`Đã hủy tỉnh ${province.name}`);
 
       // Gửi yêu cầu unfollow đến API
-      //   axios
-      //     .post(
-      //       `${beURL}/users/unFollowTopic`,
-      //       { districtId: provinceId },
-      //       config
-      //     )
-      //     .then((response) => {
-      //       console.log(response.data);
-      //       setFollowrdProvinces((prevProvinces) =>
-      //         prevProvinces.filter((province) => province._id !== provinceId)
-      //       );
-      //       alert(`Đã hủy tỉnh ${provinceId}`);
-      //     })
-      //     .catch((error) => {
-      //       console.log(error);
-      //       alert("Lỗi khi hủy tỉnh");
-      //     });
+        axios
+          .put(
+            `${beURL}/group/unFollow/${owner.groupId}`,
+            { provinceUnFollowId: province },
+            config
+          )
+          .then((response) => {
+            console.log(response.data);
+            setReload(!reload);
+            alert(`Đã Huỷ Đăng Kí`);
+          })
+          .catch((error) => {
+            console.log(error);
+            alert("Lỗi khi hủy tỉnh");
+          });
     }
   };
 
@@ -140,7 +140,7 @@ export default function CreateUser() {
                     return (
                       <div key={followedIndex}>
                         {province.name}
-                        <p className={cx("deleteButton")} onClick={() => handleUnfollowProvince(province)}>X</p>
+                        <p className={cx("deleteButton")} onClick={() => handleUnfollowProvince(province._id)}>X</p>
                       </div>
                     );
                   }
