@@ -59,6 +59,12 @@
       text-align: center;
       padding: 12px 0;
       border-bottom: 1px dashed #ddd;
+      p{
+        cursor: pointer;
+      }
+      a{
+        cursor: pointer;
+      }
     }
     .uUsersList{
       display: flex;

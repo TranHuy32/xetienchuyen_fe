@@ -127,14 +127,13 @@ export default function Users() {
                 <div className={cx("tableTitle")}>Chi Tiết</div>
                 {users.map((user, index) => (
                   <div className={cx("tableContent")}>
-                    <p
-                      className={cx("uEdit", "uArrow")}
+                    <a
                       onClick={() => {
                         handleClickDetail(user._id);
                       }}
                     >
-                      {">"}
-                    </p>
+                      {"Xem Chi Tiết"}
+                    </a>
                   </div>
                 ))}
               </div>
