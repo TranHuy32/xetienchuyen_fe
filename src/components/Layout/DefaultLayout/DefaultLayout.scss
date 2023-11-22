@@ -1,7 +1,7 @@
 .dWrapper {
   display: flex;
   flex-direction: column;
-  min-height: 120vh;
+  min-height: 100vh;
   background-color: #fff;
 }
 
@@ -25,6 +25,7 @@
       font-weight: bold;
       font-size: 1.7rem;
       cursor: pointer;
+      text-transform: capitalize;
     }
 
     .hUserBox {
@@ -46,8 +47,8 @@
         border-radius: 10px;
         color: #fff;
         cursor: pointer;
-        transition: color 0.3s;
-
+        transition: color 0.3s; 
+        text-transform: capitalize;
         &:hover {
           color: rgb(101, 136, 250);
         }
@@ -77,6 +78,7 @@
         font-size: 0.95rem;
         background-color: #eeeeee;
         cursor: pointer;
+        text-transform: capitalize;
       }
     }
   }

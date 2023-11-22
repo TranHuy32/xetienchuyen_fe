@@ -15,7 +15,6 @@ function DefaultLayout({ children }) {
     navigate("/");
   };
   const owner = JSON.parse(localStorage.getItem("token_state")) || [];
-  console.log(owner);
   return (
     <div className={cx("dWrapper")}>
       <div className={cx("hWrapper")}>
@@ -55,7 +54,7 @@ function DefaultLayout({ children }) {
                 navigate("/followProvince");
               }}
             >
-              Các tỉnh hay chạy
+              Đăng Kí Tỉnh Thành
             </li>
             <li
               onClick={() => {
@@ -63,6 +62,13 @@ function DefaultLayout({ children }) {
               }}
             >
               Giao dịch
+            </li>
+            <li
+              onClick={() => {
+                // navigate(``);
+              }}
+            >
+              Nạp Tiền
             </li>
           </ul>
         </div>

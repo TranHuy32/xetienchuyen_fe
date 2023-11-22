@@ -3,6 +3,7 @@ import styles from "./CreateUser.scss";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Users from "../Users";
 
 const cx = classNames.bind(styles);
 const beURL = process.env.REACT_APP_BE_URL;
@@ -24,7 +25,6 @@ export default function CreateUser() {
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
-  console.log(state);
   const navigate = useNavigate();
   const handleCreateUser = (e) => {
     // if (state.password !== state.rePassword) {
@@ -71,14 +71,13 @@ export default function CreateUser() {
   return (
     <div className={cx("cuWrapper")}>
       <div className={cx("cuContent")}>
-        <h2 className={cx("cuTitle")}>Tạo tài khoản</h2>
         <form className={cx("cuForm")} onSubmit={handleCreateUser}>
           <div>
-            <label htmlFor="name">Họ tên thành viên: </label>
+            <label htmlFor="name">Họ Và Tên: </label>
             <input
               required
               className={cx("")}
-              placeholder="Họ tên"
+              placeholder="Tên Tài Xế"
               type="text"
               name="name"
               id="name"
@@ -88,11 +87,11 @@ export default function CreateUser() {
             ></input>
           </div>
           <div>
-            <label htmlFor="userName">Tên đăng nhập:</label>
+            <label htmlFor="userName">Số Điện Thoại:</label>
             <input
               required
               className={cx("")}
-              placeholder="Số điện thoại"
+              placeholder="Nhập Số Điện Thoại"
               type="tel"
               pattern="[0-9]*"
               name="userName"
@@ -103,73 +102,9 @@ export default function CreateUser() {
               onKeyPress={handleKeyPress}
             ></input>
           </div>
-          {/* <div>
-            <label htmlFor="password">Mật khẩu:</label>
-            <input
-              required
-              className={cx("")}
-              placeholder="Mật khẩu"
-              type="password"
-              name="password"
-              id="password"
-              value={password}
-              onChange={changeHandler}
-            ></input>
+          <div className={cx("cuPassWord")}>
+              <div>Mật khẩu mặc định:<p>{state.password}</p></div>
           </div>
-          <div>
-            <label htmlFor="rePassword">Nhập lại mật khẩu:</label>
-            <input
-              required
-              className={cx("")}
-              placeholder="Nhập lại mật khẩu"
-              type="password"
-              name="rePassword"
-              id="rePassword"
-              value={rePassword}
-              onChange={changeHandler}
-            ></input>
-          </div>
-          <div>
-            <label htmlFor="manufacturer">Loại xe:</label>
-            <input
-              required
-              className={cx("")}
-              placeholder="Loại xe"
-              type="text"
-              name="manufacturer"
-              id="manufacturer"
-              value={manufacturer}
-              onChange={changeHandler}
-            ></input>
-          </div>
-          <div>
-            <label htmlFor="carType">Số lượng ghế:</label>
-            <input
-              required
-              className={cx("")}
-              placeholder="Số lượng ghế"
-              type="tel"
-              pattern="[0-9]*"
-              name="carType"
-              id="carType"
-              value={carType}
-              onKeyPress={handleKeyPress}
-              onChange={changeHandler}
-            ></input>
-          </div>
-          <div>
-            <label htmlFor="licensePlate">Biển số xe:</label>
-            <input
-              required
-              className={cx("")}
-              placeholder="Biển số xe"
-              type="text"
-              name="licensePlate"
-              id="licensePlate"
-              value={licensePlate}
-              onChange={changeHandler}
-            ></input>
-          </div> */}
           <button className={cx("")} type="submit">
             Tạo tài khoản
           </button>
