@@ -95,13 +95,11 @@ export default function CreateUser() {
   const handleUnfollowProvince = (province) => {
     const isConfirmed = window.confirm(`Bạn muốn hủy tỉnh ${province.name} ?`);
     if (isConfirmed) {
-      console.log(province);
-
       // Gửi yêu cầu unfollow đến API
         axios
           .put(
             `${beURL}/group/unFollow/${owner.groupId}`,
-            { provinceUnFollowId: province },
+            { provinceUnFollowId: province._id },
             config
           )
           .then((response) => {
@@ -140,7 +138,7 @@ export default function CreateUser() {
                     return (
                       <div key={followedIndex}>
                         {province.name}
-                        <p className={cx("deleteButton")} onClick={() => handleUnfollowProvince(province._id)}>X</p>
+                        <p className={cx("deleteButton")} onClick={() => handleUnfollowProvince(province)}>X</p>
                       </div>
                     );
                   }
