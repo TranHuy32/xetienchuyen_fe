@@ -90,27 +90,25 @@ export default function CreateUser() {
       });
   };
 
-  console.log(followrdProvinces);
-
   const handleUnfollowProvince = (province) => {
     const isConfirmed = window.confirm(`Bạn muốn hủy tỉnh ${province.name} ?`);
     if (isConfirmed) {
       // Gửi yêu cầu unfollow đến API
-        axios
-          .put(
-            `${beURL}/group/unFollow/${owner.groupId}`,
-            { provinceUnFollowId: province._id },
-            config
-          )
-          .then((response) => {
-            console.log(response.data);
-            setReload(!reload);
-            alert(`Đã Huỷ Đăng Kí`);
-          })
-          .catch((error) => {
-            console.log(error);
-            alert("Lỗi khi hủy tỉnh");
-          });
+      axios
+        .put(
+          `${beURL}/group/unFollow/${owner.groupId}`,
+          { provinceUnFollowId: province._id },
+          config
+        )
+        .then((response) => {
+          console.log(response.data);
+          setReload(!reload);
+          alert(`Đã Huỷ Đăng Kí`);
+        })
+        .catch((error) => {
+          console.log(error);
+          alert("Lỗi khi hủy tỉnh");
+        });
     }
   };
 
