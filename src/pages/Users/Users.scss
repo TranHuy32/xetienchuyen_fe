@@ -1,22 +1,8 @@
 .uWrapper {
   min-width: 960px;
+  width: 90%;
+  margin: auto;
   background-color: #fff;
-  margin-bottom: 6vh;
-  .uMenu {
-    display: flex;
-    border-bottom: 1px solid;
-    margin-top: 0.5rem;
-    > li {
-      border: 1px solid;
-      padding: 4px 4px 0px 4px;
-      border-top-right-radius: 5px;
-      border-top-left-radius: 5px;
-      cursor: pointer;
-    }
-    .fActived {
-      background-color: aqua;
-    }
-  }
   .uGroupName {
     font-size: 1.5rem;
     margin-top: 2%;
@@ -31,6 +17,7 @@
       form {
         margin-left: auto;
         margin-right: 0.5vw;
+        margin-bottom: 5px;
         display: flex;
         align-items: center;
         max-height: 29px;
@@ -39,12 +26,11 @@
           border-radius: 5px;
           border: 2px solid #ccc;
           p {
-            padding: 2px 5px;
-            border-right: none;
+            padding: 5px 10px;
             font-size: 0.9rem;
           }
           input {
-            padding: 2px 5px;
+            padding: 5px 5px;
             border: none;
             font-size: 0.9rem;
             &:focus {
@@ -61,53 +47,44 @@
         }
       }
     }
-    ul {
-      margin-top: 0.8rem;
-      .total-info {
-        font-weight: bold;
+    .tableTitle{
+      padding: 12px 0;
+      width: 100%;
+      text-align: center;
+      font-weight: bold;
+      border-bottom: 1px dashed #ddd;
+    }
+    .tableContent{
+      width: 100%;
+      text-align: center;
+      padding: 12px 0;
+      border-bottom: 1px dashed #ddd;
+    }
+    .uUsersList{
+      display: flex;
+      justify-content: space-between;
+      .uUsersName{
+        width: 45%;
+        min-width: 400px;
       }
-
-      li {
-        display: flex;
-        border-bottom: 1px dashed #ddd;
-        padding: 0.6rem 0 0.3rem 0;
-        &:last-child {
-          border-bottom: 1px solid #ddd;
-          margin-bottom: 20px;
-        }
-        .uInfo {
-          margin: auto 0;
-          display: flex;
-          width: 75%;
-          justify-content: space-around;
-          text-align: center;
-          .uAmount {
-            color: #ce0026;
-          }
-          p {
-            width: 16.6%;
-          }
-        }
-
-        .uEdit {
-          margin-left: auto;
-          margin-right: 2%;
-        }
-        .uArrow {
-          border-radius: 50%;
-          width: 1.5rem;
-          height: 1.5rem;
-          text-align: center;
-          margin-right: 3%;
-          padding: 0.3rem 0.2rem 0 0.2rem;
-          transition: 0.3s;
-          cursor: pointer;
-          &:hover {
-            background-color: #b5707c;
-          }
-        }
+      .uUsersAmount{
+        width: 15%;
+        min-width: 100px;
+      }
+      .uUsersLoginName{
+        width: 20%;
+        min-width: 150px;
+      }
+      .uUsersDetails{
+        width: 10%;
+        min-width: 60px;
+      }
+      .uUsersActive{
+        width: 10%;
+        min-width: 150px;
       }
     }
+  
   }
   .uPagination {
     margin-top: 6vh;

@@ -118,37 +118,6 @@ export default function CreateUser() {
 
   return (
     <div className={cx("fWrapper")}>
-      <ul className={cx("fMenu")}>
-        <li
-          onClick={() => {
-            navigate(`/users/${owner.groupId}`);
-          }}
-        >
-          Thành viên
-        </li>
-        <li
-          onClick={() => {
-            navigate("/createUser");
-          }}
-        >
-          Tạo tài khoản
-        </li>
-        <li
-          className={cx("fActived")}
-          onClick={() => {
-            navigate("/followProvince");
-          }}
-        >
-          Các tỉnh hay chạy
-        </li>
-        <li
-          onClick={() => {
-            navigate(`/transaction/${owner.groupId}`);
-          }}
-        >
-          Giao dịch
-        </li>
-      </ul>
       <div className={cx("fContent")}>
         <h2 className={cx("fTitle")}>Các tỉnh hay chạy</h2>
         <div className={cx("fFormSelect")}>

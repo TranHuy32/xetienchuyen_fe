@@ -70,37 +70,6 @@ export default function CreateUser() {
 
   return (
     <div className={cx("cuWrapper")}>
-      <ul className={cx("cuMenu")}>
-        <li
-          onClick={() => {
-            navigate(`/users/${owner.groupId}`);
-          }}
-        >
-          Thành viên
-        </li>
-        <li
-          onClick={() => {
-            navigate("/createUser");
-          }}
-          className={cx("cuActived")}
-        >
-          Tạo tài khoản
-        </li>
-        <li
-          onClick={() => {
-            navigate("/followProvince");
-          }}
-        >
-          Các tỉnh hay chạy
-        </li>
-        <li
-          onClick={() => {
-            navigate(`/transaction/${owner.groupId}`);
-          }}
-        >
-          Giao dịch
-        </li>
-      </ul>
       <div className={cx("cuContent")}>
         <h2 className={cx("cuTitle")}>Tạo tài khoản</h2>
         <form className={cx("cuForm")} onSubmit={handleCreateUser}>
@@ -115,6 +84,7 @@ export default function CreateUser() {
               id="name"
               value={name}
               onChange={changeHandler}
+              maxLength={40}
             ></input>
           </div>
           <div>

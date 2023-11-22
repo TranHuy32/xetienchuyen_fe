@@ -78,53 +78,22 @@ export default function Users() {
         console.log(error);
       });
   };
-  console.log(users);
   if (users) {
     return (
       <div className={cx("uWrapper")}>
-        <ul className={cx("uMenu")}>
-          <li
-            className={cx("fActived")}
-            onClick={() => {
-              navigate(`/users/${owner.groupId}`);
-            }}
-          >
-            Thành viên
-          </li>
-          <li
-            onClick={() => {
-              navigate("/createUser");
-            }}
-          >
-            Tạo tài khoản
-          </li>
-          <li
-            onClick={() => {
-              navigate("/followProvince");
-            }}
-          >
-            Các tỉnh hay chạy
-          </li>
-          <li
-            onClick={() => {
-              navigate(`/transaction/${owner.groupId}`);
-            }}
-          >
-            Giao dịch
-          </li>
-        </ul>
         <div>
-          <h2 className={cx("uGroupName")}>Nhóm {group.name}</h2>
+          <h2 className={cx("uGroupName")}>{group.name}</h2>
           <div className={cx("uContentBox")}>
             <div className={cx("uTitle")}>
-              <p>Danh sách thành viên trong nhóm:</p>
+              <p>Thành viên trong nhóm:</p>
               <form onSubmit={handleSearchSubmit}>
                 <div className={cx("dSearchBar")}>
                   <p>+84</p>
                   <input
-                    placeholder="Tìm kiếm..."
+                    placeholder="Nhập Số Điện Thoại..."
                     value={searchInput}
                     onChange={handleSearchInputChange}
+                    type="number"
                   ></input>
                 </div>
                 <img
@@ -134,41 +103,52 @@ export default function Users() {
                   onClick={handleSearchSubmit}
                 />
               </form>
-              {/* <button>Tạo tài khoản</button> */}
             </div>
-            <ul className={cx("")}>
-              <li className={cx("total-info")}>
-                <div className={cx("uInfo")}>
-                  <p>Tên</p>
-                  <p>Số dư</p>
-                  <p>Tên đăng nhập</p>
-                  {/* <p>Loại xe</p>
-                  <p>Số lượng ghế</p>
-                  <p>Biển số xe</p> */}
-                </div>
-                <p className={cx("uEdit")}>Chi tiết</p>
-              </li>
-              {users.map((user, index) => (
-                <li key={index} className={cx("")}>
-                  <div className={cx("uInfo")}>
-                    <p>{user.name}</p>
-                    <p className={cx("uAmount")}>{user.amount} k</p>
-                    <p>{user.userName}</p>
-                    {/* <p>{user.manufacturer}</p>
-                    <p>{user.carType}</p>
-                    <p>{user.licensePlate}</p> */}
+            <div className={cx("uUsersList")}>
+              <div className={cx("uUsersName")}>
+                <div className={cx("tableTitle")}>Tài Xế</div>
+                {users.map((user, index) => (
+                  <div className={cx("tableContent")}>{user.name}</div>
+                ))}
+              </div>
+              <div className={cx("uUsersAmount")}>
+                <div className={cx("tableTitle")}>Số Dư</div>
+                {users.map((user, index) => (
+                  <div className={cx("tableContent")}>{user.amount}</div>
+                ))}
+              </div>
+              <div className={cx("uUsersLoginName")}>
+                <div className={cx("tableTitle")}>Tên Đăng Nhập</div>
+                {users.map((user, index) => (
+                  <div className={cx("tableContent")}>{user.userName}</div>
+                ))}
+              </div>
+              <div className={cx("uUsersDetails")}>
+                <div className={cx("tableTitle")}>Chi Tiết</div>
+                {users.map((user, index) => (
+                  <div className={cx("tableContent")}>
+                    <p
+                      className={cx("uEdit", "uArrow")}
+                      onClick={() => {
+                        handleClickDetail(user._id);
+                      }}
+                    >
+                      {">"}
+                    </p>
                   </div>
-                  <p
-                    className={cx("uEdit", "uArrow")}
-                    onClick={() => {
-                      handleClickDetail(user._id);
-                    }}
-                  >
-                    {">"}
-                  </p>
-                </li>
-              ))}
-            </ul>
+                ))}
+              </div>
+              <div className={cx("uUsersActive")}>
+                <div className={cx("tableTitle")}>Kích Hoạt</div>
+                {users.map((user, index) => (
+                  <div className={cx("tableContent")}>
+                    <p>
+                      Chưa Kích Hoạt
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
         <div className={cx("uPagination")}>

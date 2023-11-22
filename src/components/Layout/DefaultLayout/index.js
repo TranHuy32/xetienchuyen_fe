@@ -15,6 +15,7 @@ function DefaultLayout({ children }) {
     navigate("/");
   };
   const owner = JSON.parse(localStorage.getItem("token_state")) || [];
+  console.log(owner);
   return (
     <div className={cx("dWrapper")}>
       <div className={cx("hWrapper")}>
@@ -26,13 +27,47 @@ function DefaultLayout({ children }) {
             Xe tiện chuyến
           </h2>
           <div className="hUserBox">
-            <p>{owner.ownerName}</p>
+            <p>{owner.name}</p>
             <a className={cx("hLogout")} onClick={logout}>
               Đăng xuất
             </a>
           </div>
         </div>
+        <div className="hMenu">
+          <ul>
+            <li
+              className={cx("fActived")}
+              onClick={() => {
+                navigate(`/users/${owner.groupId}`);
+              }}
+            >
+              Thành viên
+            </li>
+            <li
+              onClick={() => {
+                navigate("/createUser");
+              }}
+            >
+              Tạo tài khoản
+            </li>
+            <li
+              onClick={() => {
+                navigate("/followProvince");
+              }}
+            >
+              Các tỉnh hay chạy
+            </li>
+            <li
+              onClick={() => {
+                navigate(`/transaction/${owner.groupId}`);
+              }}
+            >
+              Giao dịch
+            </li>
+          </ul>
+        </div>
       </div>
+
       {/* End header */}
       <div className={cx("bWrapper")}>
         <div className={cx("")}>{children}</div>

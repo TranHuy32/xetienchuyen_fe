@@ -60,37 +60,7 @@ export default function Transaction() {
   if (transactions) {
     return (
       <div className={cx("tWrapper")}>
-        <ul className={cx("tMenu")}>
-          <li
-            onClick={() => {
-              navigate(`/users/${owner.groupId}`);
-            }}
-          >
-            Thành viên
-          </li>
-          <li
-            onClick={() => {
-              navigate("/createUser");
-            }}
-          >
-            Tạo tài khoản
-          </li>
-          <li
-            onClick={() => {
-              navigate("/followProvince");
-            }}
-          >
-            Các tỉnh hay chạy
-          </li>
-          <li
-            className={cx("fActived")}
-            onClick={() => {
-              navigate(`/transaction/${owner.groupId}`);
-            }}
-          >
-            Giao dịch
-          </li>
-        </ul>
+      
         <div>
           <h2 className={cx("tGroupName")}>Nhóm {group.name}</h2>
           <div className={cx("tContentBox")}>

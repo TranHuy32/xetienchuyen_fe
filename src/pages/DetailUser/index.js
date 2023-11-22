@@ -77,38 +77,7 @@ export default function DetailUser() {
 
   if (user) {
     return (
-      <div className={cx("dWrapper")}>
-        <ul className={cx("dMenu")}>
-          <li
-            className={cx("fActived")}
-            onClick={() => {
-              navigate(`/users/${owner.groupId}`);
-            }}
-          >
-            Thành viên
-          </li>
-          <li
-            onClick={() => {
-              navigate("/createUser");
-            }}
-          >
-            Tạo tài khoản
-          </li>
-          <li
-            onClick={() => {
-              navigate("/followProvince");
-            }}
-          >
-            Các tỉnh hay chạy
-          </li>
-          <li
-            onClick={() => {
-              navigate(`/transaction/${owner.groupId}`);
-            }}
-          >
-            Giao dịch
-          </li>
-        </ul>
+      <div className={cx("dtWrapper")}>
         <div className={cx("dContentWrapper")}>
           <h2 className={cx("dUserName")}>Thành viên {user.name}</h2>
           <div className={cx("dContentBox")}>

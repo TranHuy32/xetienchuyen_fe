@@ -13,14 +13,14 @@ function Login() {
   const navigate = useNavigate();
   const signIn = useSignIn();
   const [formData, setFormData] = useState({
-    ownerName: "",
+    userName: "",
     password: "",
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(`${beURL}/users-auth/loginOwner`, formData);
-      const { accessToken, refreshToken, owner } = response.data;
+      const { accessToken, refreshToken, user } = response.data;
       if (!response.data) {
         return alert("Sai Tên Tài Khoản Hoặc Mật Khẩu");
       }
@@ -28,11 +28,11 @@ function Login() {
         token: accessToken,
         tokenType: "Bearer",
         expiresIn: 30,
-        authState: owner,
+        authState: user,
         refreshToken: refreshToken,
         refreshTokenExpireIn: 43200,
       });
-      navigate(`/users/${owner.groupId}`);
+      navigate(`/users/${user.groupId}`);
       window.location.reload();
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -66,7 +66,7 @@ function Login() {
                   onChange={(e) =>
                     setFormData({
                       ...formData,
-                      ownerName: e.target.value,
+                      userName: e.target.value,
                     })
                   }
                 ></input>
