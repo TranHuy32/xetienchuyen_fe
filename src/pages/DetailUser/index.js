@@ -118,7 +118,9 @@ export default function DetailUser() {
         </div>
 
         <div className={cx("duTransactionContainer")}>
-          
+          <div className={cx("")}>Bảng 1</div>
+          <div className={cx("")}>Bảng 2</div>
+          <div className={cx("")}>Bảng 3</div>
         </div>
 
       </div>

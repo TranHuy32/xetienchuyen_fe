@@ -1,91 +1,121 @@
-
 .rWrapper {
-    min-width: 960px;
-    background-color: #fff;
-  
-    .rMenu {
+  min-width: 960px;
+  width: 90%;
+  margin: auto;
+  background-color: #fff;
+  .rGroupName {
+    font-size: 1.5rem;
+    margin-top: 2%;
+    margin-bottom: 2%;
+  }
+  .rContentBox {
+    .rTitle {
+      font-size: 1.2rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 1px solid #ddd;
       display: flex;
-      border-bottom: 1px solid;
-      margin-top: 0.5rem;
-  
-      >li {
-        border: 1px solid;
-        padding: 4px 4px 0px 4px;
-        border-top-right-radius: 5px;
-        border-top-left-radius: 5px;
-        cursor: pointer;
-      }
-  
-      .rActived {
-        background-color: aqua;
-      }
-    }
-  
-    .rContent {
-      >h2 {
-        text-align: center;
-        margin-top: 6vh;
-      }
-  
-      .rForm {
+      form {
+        margin-left: auto;
+        margin-right: 0.5vw;
+        margin-bottom: 5px;
         display: flex;
-        flex-direction: column;
         align-items: center;
-        margin-top: 3vh;
-  
-        >div {
-          min-width: 960px;
-          justify-content: center;
+        max-height: 29px;
+        .dSearchBar {
           display: flex;
-          margin: 1.5vh 0;
-  
-          >label {
-            width: 15%;
-            min-width: 150px;
-            margin: auto 0;
+          border-radius: 5px;
+          border: 2px solid #ccc;
+          p {
+            padding: 5px 10px;
+            font-size: 0.9rem;
           }
-  
-          >input {
-            width: 30%;
-            padding: 0.6rem;
-            border-radius: 6px;
-            max-width: 400px;
-          }
-        }
-        .rPassWord{
-          min-width: 960px;
-          margin: 1.5vh 0;
-          div{
-            width: 465px;
-            display: flex;
-            text-transform: capitalize;
-            align-items: center;
-            p{
-              padding: 0 10px ;
-              font-size: 1.2rem;
+          input {
+            padding: 5px 5px;
+            border: none;
+            font-size: 0.9rem;
+            &:focus {
+              outline: none;
+              border-color: transparent;
             }
           }
         }
-        >button {
-          margin-top: 2.5vh;
-          background-color: #fff;
-          padding: 15px 25px;
-          font-size: 1.1rem;
-          border: #e74c3c 1px solid;
-          border-radius: 5px;
+        img {
           cursor: pointer;
-          transition: 0.2s;
-  
-          &:hover {
-            background-color: #e74c3c;
-            color: #fff;
-          }
-  
-          &:active {
-            background-color: #fff;
-            color: #e74c3c;
-          }
+          overflow: auto;
+          max-width: 29px;
+          max-height: 29px;
         }
       }
     }
+    .tableTitle{
+      padding: 12px 0;
+      width: 100%;
+      text-align: center;
+      font-weight: bold;
+      border-bottom: 1px dashed #ddd;
+    }
+    .tableContent{
+      width: 100%;
+      text-align: center;
+      padding: 12px 0;
+      border-bottom: 1px dashed #ddd;
+      p{
+        cursor: pointer;
+      }
+      a{
+        cursor: pointer;
+      }
+    }
+    .rUsersList{
+      display: flex;
+      justify-content: space-between;
+      min-height: 500px;
+      .rUsersName{
+        width: 45%;
+        min-width: 400px;
+        margin-left: 1px;
+      }
+      .rUsersAmount{
+        width: 15%;
+        min-width: 100px;
+        margin-left: 1px;
+      }
+      .rUsersLoginName{
+        width: 20%;
+        min-width: 150px;
+        margin-left: 1px;
+      }
+      .rUsersDetails{
+        width: 10%;
+        min-width: 100px;
+        margin-left: 1px;
+      }
+      .rUsersActive{
+        width: 10%;
+        min-width: 150px;
+        margin-left: 1px;
+      }
+    }
+  
   }
+  .rPagination {
+    margin-top: 6vh;
+    display: flex;
+    justify-content: center;
+    > button {
+      margin: 0 3px;
+      padding: 5px 10px ;
+      text-align: center;
+      cursor: pointer;
+      font-weight: bold;
+      background-color: #fff;
+      border: 1px solid #e74c3c;
+      border-radius: 2px;
+    
+    }
+    .active {
+      background-color: #e74c3c;
+      color: #fff;
+    }
+  }
+}
