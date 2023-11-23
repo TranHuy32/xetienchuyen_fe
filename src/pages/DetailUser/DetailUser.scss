@@ -1,191 +1,70 @@
-.dtWrapper {
-  min-width: 960px;
-  // background-color: #fff;
-  .dMenu {
-    display: flex;
-    border-bottom: 1px solid;
-    margin-top: 0.5rem;
-    min-width: 100%;
-    > li {
-      border: 1px solid;
-      padding: 4px 4px 0px 4px;
-      border-top-right-radius: 5px;
-      border-top-left-radius: 5px;
-      cursor: pointer;
-    }
-    .fActived {
-      background-color: aqua;
+.imageBox {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: space-between;
+  margin: 20px auto;
+  background-color: #ddd;
+  border-radius: 10px;
+  img {
+    width: 150px;
+    height: 150px;
+    margin: 10px 20px;
+  }
+}
+
+.duInforContainer {
+  display: flex;
+  width: 50%;
+  margin: 20px auto;
+  justify-content: space-around;
+
+  .inforPortrait {
+    background-color: #ddd;
+    height: 280px;
+    width: 200px;
+
+    img {
+      //khi nào có ảnh tài xế thì chỉnh
     }
   }
-  .dContentWrapper {
-    min-width: 100%;
-  }
-  .dUserName {
-    font-size: 1.5rem;
-    margin-top: 3%;
-    margin-bottom: 1%;
-    text-align: center;
-  }
-  .dContentBox {
-    .dTitle {
-      font-size: 1.2rem;
-      padding-bottom: 0.3rem;
-      border-bottom: 1px solid #ddd;
-      display: flex;
-      > button {
-        margin-left: auto;
-        margin-right: 1rem;
-        background-color: #fff;
-        padding: 0.2rem;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: 0.3s;
-        &:hover {
-          background-color: aqua;
-        }
-        &:active {
-          background-color: rgb(30, 148, 227);
-        }
-      }
-    }
-    ul {
-      margin: 0.8rem 0;
-      // border-bottom: 1px solid #ddd;
 
-      .total-info {
-        font-weight: bold;
-      }
-      min-width: 100%;
+  .inforDetailBox {
+    width: 65%;
+    margin-left: 50px;
 
-      li {
-        margin-left: 10vw;
-        display: flex;
-        padding: 0.6rem 0 0.3rem 0;
-
-        p {
-          width: 25%;
-          &:first-child {
-            font-weight: bold;
-          }
-        }
-        &:last-child {
-          margin-bottom: 20px;
-        }
-        .dAmount {
-          color: #ce0026;
-        }
-        .dEdit {
-          margin-left: auto;
-          margin-right: 2%;
-        }
-      }
-    }
-  }
-  .dAllRidesWrapper {
-    margin-top: 3vh;
-    .dAllRidesBar {
-      padding-bottom: 5px;
-      border-bottom: 1px solid #000;
-      display: flex;
-      // margin: auto;
-      .dAllRidesTittle {
-      }
-      form {
-        margin-left: auto;
-        margin-right: 0.5vw;
-        display: flex;
-        align-items: center;
-        max-height: 29px;
-        .dSearchBar {
-          display: flex;
-          border-radius: 5px;
-          border: 2px solid #ccc;
-          p {
-            padding: 2px 5px;
-            border-right: none;
-            font-size: 0.9rem;
-          }
-          input {
-            padding: 2px 5px;
-            border: none;
-            font-size: 0.9rem;
-            &:focus {
-              outline: none;
-              border-color: transparent;
-            }
-          }
-        }
-        img {
-          cursor: pointer;
-          overflow: auto;
-          max-width: 29px;
-          max-height: 29px;
-        }
-      }
+    .detailName,
+    .detailLoginName,
+    .detailAmount {
+      padding: 10px;
+      text-transform: capitalize;
     }
 
-    ul {
-      margin-top: 0.8rem;
-      .total-info {
-        font-weight: bold;
+    .detailCarData {
+      padding: 0 10px;
+      text-transform: capitalize;
+
+      div {
+        padding: 10px 0;
       }
-      li {
-        display: flex;
-        border-bottom: 1px dashed #ddd;
-        padding: 0.6rem 0 0.3rem 0;
-        &:last-child {
-          border-bottom: 1px solid #ddd;
-          margin-bottom: 20px;
-        }
-        .dRideInfo {
-          margin: auto 0;
-          display: flex;
-          width: 75%;
-          justify-content: space-around;
-          text-align: center;
-          .dRideAmount {
-            color: #ce0026;
-          }
-          p {
-            width: 16.6%;
-          }
-        }
-        .dRideDetail {
-          margin-left: auto;
-          margin-right: 2%;
-        }
-        .dRideArrow {
-          border-radius: 50%;
-          width: 1.5rem;
-          height: 1.5rem;
-          text-align: center;
-          margin-right: 3%;
-          padding: 0.3rem 0.2rem 0 0.2rem;
-          transition: 0.3s;
-          cursor: pointer;
+
+      .dataCarImageBox {
+        button {
+          padding: 15px;
+          text-transform: capitalize;
+          border: none;
+          border-radius: 10px;
+          background-color: #fff;
+          border: 1px solid #FF6464;
+          font-size: 1rem;
+          font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
           &:hover {
-            background-color: #b5707c;
+            background-color: #FF6464;
+            color: #fff;
           }
         }
       }
     }
-  }
-  .dPagination {
-    margin-top: 6vh;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 6vh;
 
-    > button {
-      margin: 0 3px;
-      padding: 3.5px 4px 2px 4px;
-      text-align: center;
-      cursor: pointer;
-      font-weight: bold;
-      background-color: #fff;
-    }
-    .active {
-      background-color: aqua;
-    }
   }
 }

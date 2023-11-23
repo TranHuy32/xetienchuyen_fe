@@ -9,7 +9,7 @@ import { RequireAuth } from "react-auth-kit";
 import CreateUser from "~/pages/CreateUser";
 import Transaction from "~/pages/Transaction";
 import DetailUser from "~/pages/DetailUser";
-
+import Recharge from "~/pages/Recharge";
 const MainRoutes = () => {
   return (
     <BrowserRouter>
@@ -56,6 +56,17 @@ const MainRoutes = () => {
             <RequireAuth loginPath={"/"}>
               <DefaultLayout>
                 <CreateUser />
+              </DefaultLayout>
+            </RequireAuth>
+          }
+          exact
+        />
+        <Route
+          path={"/recharge"}
+          element={
+            <RequireAuth loginPath={"/"}>
+              <DefaultLayout>
+                <Recharge />
               </DefaultLayout>
             </RequireAuth>
           }

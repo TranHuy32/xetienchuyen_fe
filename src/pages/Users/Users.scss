@@ -69,6 +69,7 @@
     .uUsersList{
       display: flex;
       justify-content: space-between;
+      min-height: 500px;
       .uUsersName{
         width: 45%;
         min-width: 400px;
@@ -86,7 +87,7 @@
       }
       .uUsersDetails{
         width: 10%;
-        min-width: 60px;
+        min-width: 100px;
         margin-left: 1px;
       }
       .uUsersActive{

@@ -9,12 +9,13 @@ const cx = classNames.bind(styles);
 const beURL = process.env.REACT_APP_BE_URL;
 export default function DetailUser() {
   const [user, setUser] = useState();
+  const [carPicture, setCarPicture] = useState();
   const [rides, setRides] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
   const [searchInput, setSearchInput] = useState("");
-
+  const [showCarImage, setShowCarImage] = useState(false);
   const token = localStorage.getItem("token") || [];
   const config = {
     headers: { Authorization: `Bearer ${token}` },
@@ -27,6 +28,7 @@ export default function DetailUser() {
       .then((response) => {
         const data = response.data;
         setUser(data);
+        setCarPicture(data.car_images)
       })
       .catch((error) => {
         console.log(error);
@@ -45,6 +47,7 @@ export default function DetailUser() {
         console.log(error);
       });
   }, [token, user_id, pageSize, currentPage]);
+
   const handleClickDetail = () => {
     alert("ok");
   };
@@ -75,105 +78,49 @@ export default function DetailUser() {
       });
   };
 
+  const handleShowCarImage = (a) => {
+    setShowCarImage(!showCarImage)
+  }
+
+  console.log(carPicture);
   if (user) {
     return (
-      <div className={cx("dtWrapper")}>
-        <div className={cx("dContentWrapper")}>
-          <h2 className={cx("dUserName")}>Thành viên {user.name}</h2>
-          <div className={cx("dContentBox")}>
-            <div className={cx("dTitle")}></div>
-            <ul className={cx("")}>
-              <li></li>
-              <li>
-                <p>Tên</p>
-                <p>{user.name}</p>
-              </li>
-              <li>
-                <p>Số dư</p>
-                <p className={cx("dAmount")}>{user.amount} k</p>
-              </li>
-              <li>
-                <p>Tên đăng nhập</p>
-                <p>{user.userName}</p>
-              </li>
-              <li>
-                <p>Loại xe</p>
-                <p>{user.name}</p>
-              </li>
-            </ul>
+      <div>
+        <div className={cx("duInforContainer")}>
+          <div className={cx("inforPortrait")}>
+            <img></img>
           </div>
-          <div className={cx("dAllRidesWrapper")}>
-            <div className={cx("dAllRidesBar")}>
-              <h3 className={cx("dAllRidesTittle")}>Các chuyến đã nhận:</h3>
-              <form onSubmit={handleSearchSubmit}>
-                <div className={cx("dSearchBar")}>
-                  <p>+84</p>
-                  <input
-                    placeholder="Tìm kiếm..."
-                    value={searchInput}
-                    onChange={handleSearchInputChange}
-                  ></input>
-                </div>
-                <img
-                  src={searchIcon}
-                  alt="Search"
-                  className={cx("searchIcon")}
-                  onClick={handleSearchSubmit}
-                />
-              </form>
-            </div>
-            <ul className={cx("")}>
-              <li className={cx("total-info")}>
-                <div className={cx("dRideInfo")}>
-                  <p>Khách hàng</p>
-                  <p>Giá cước</p>
-                  <p>Hoa hồng</p>
-                  <p>Trạng thái</p>
-                </div>
-                <p className={cx("dRideDetail")}>Chi tiết</p>
-              </li>
-              {rides.map((ride, index) => (
-                <li key={index} className={cx("")}>
-                  <div className={cx("dRideInfo")}>
-                    <p>{"+84" + ride.customerPhone}</p>
-                    <p className={cx("dRideAmount")}>{ride.customerPrice} k</p>
-                    <p className={cx("dRideAmount")}>
-                      {ride.customerPrice - ride.appFee - ride.driverPrice} k
-                    </p>
-                    <p>
-                      {ride.status === "COMPLETED"
-                        ? "Đã hoàn thành"
-                        : ride.status === "PENDING"
-                        ? "Đang liên hệ"
-                        : ride.status === "TAKED"
-                        ? "Đang chạy"
-                        : "Trạng thái khác"}
-                    </p>
+          <div className={cx("inforDetailBox")}>
+            <div className={cx("detailName")}>Tên Tài Xế: {" " + user.name} </div>
+            <div className={cx("detailLoginName")}>tên đăng nhập: {" " + user.userName}</div>
+            <div className={cx("detailAmount")}>số dư: {" " + user.amount}</div>
+            <div className={cx("detailCarData")}>
+              <div className={cx("dataPlate")}>biển kiểm soát: {" " + user.licensePlate}</div>
+              <div className={cx("dateCarType")}>loại xe: {" " + user.carType} chỗ</div>
+              <div className={cx("dataCarImageBox")}>
+                <button
+                  onClick={() => handleShowCarImage(true)}
+                >
+                  {!showCarImage && "ấn để xem ảnh xe"}
+                  {showCarImage && "ẩn để ẩn ảnh"}
+                </button>
+                {showCarImage && (
+                  <div className={cx("imageBox")}>
+                    {carPicture.map((car, index) => (
+                      <img src={car.path}></img>
+                    ))}
                   </div>
-                  <p
-                    className={cx("dRideDetail", "dRideArrow")}
-                    onClick={() => {
-                      handleClickDetail(user._id);
-                    }}
-                  >
-                    {">"}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className={cx("dPagination")}>
-            {Array.from({ length: totalPages }, (_, index) => (
-              <button
-                key={index}
-                onClick={() => handlePageChange(index + 1)}
-                className={cx({ active: index + 1 === currentPage })}
-              >
-                {index + 1}
-              </button>
-            ))}
+
+                )}
+              </div>
+            </div>
           </div>
         </div>
+
+        <div className={cx("duTransactionContainer")}>
+          
+        </div>
+
       </div>
     );
   }

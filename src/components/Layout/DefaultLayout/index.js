@@ -65,7 +65,7 @@ function DefaultLayout({ children }) {
             </li> */}
             <li
               onClick={() => {
-                // navigate(``);
+                navigate(`/recharge`);
               }}
             >
               Nạp Tiền
