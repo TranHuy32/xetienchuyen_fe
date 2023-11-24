@@ -1,19 +1,5 @@
-.imageBox {
-  display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  justify-content: space-between;
-  margin: 20px auto;
-  background-color: #ddd;
-  border-radius: 10px;
-  img {
-    width: 150px;
-    height: 150px;
-    margin: 10px 20px;
-  }
-}
-
 .duInforContainer {
+  min-width: 960px;
   display: flex;
   width: 50%;
   margin: 20px auto;
@@ -47,24 +33,103 @@
       div {
         padding: 10px 0;
       }
+    }
 
-      .dataCarImageBox {
-        button {
-          padding: 15px;
-          text-transform: capitalize;
-          border: none;
-          border-radius: 10px;
-          background-color: #fff;
-          border: 1px solid #FF6464;
-          font-size: 1rem;
-          font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-          &:hover {
-            background-color: #FF6464;
-            color: #fff;
-          }
-        }
+  }
+}
+
+.duContainer {
+  min-width: 960px;
+  width: 80%;
+  margin: 0 auto;
+
+  .box1 {
+    .topBox1 {
+      background-color: #fff;
+      padding: 10px;
+      margin: 10px 0;
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #FF6464;
+      text-transform: capitalize;
+      font-size: 1.1rem;
+
+      &:hover {
+        background-color: #FF6464;
+        color: #fff;
       }
     }
 
+    .bottomBox1 {
+      .imageBox {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        // justify-content: space-between;
+        // margin: 20px auto;
+        background-color: rgba(221, 221, 221, 0.5);
+        border-radius: 10px;
+        padding: 10px;
+        img {
+          width: 150px;
+          height: 150px;
+          margin: 10px 20px;
+        }
+      }
+    }
+  }
+
+  .box2 {
+    .topBox2 {
+      background-color: #fff;
+      padding: 10px;
+      margin: 10px 0;
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #FF6464;
+      text-transform: capitalize;
+      font-size: 1.1rem;
+
+      &:hover {
+        background-color: #FF6464;
+        color: #fff;
+      }
+    }
+
+    .bottomBox2 {}
+    .emptyWarning{
+      // background-color: #ddd;
+      padding: 10px;
+      font-weight: bold;
+      font-size: 1rem;
+
+    }
+  }
+
+  .box3 {
+    .topBox3 {
+      background-color: #fff;
+      padding: 10px;
+      margin: 10px 0;
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #FF6464;
+      text-transform: capitalize;
+      font-size: 1.1rem;
+
+      &:hover {
+        background-color: #FF6464;
+        color: #fff;
+      }
+    }
+
+    .bottomBox3 {}
+    .emptyWarning{
+      // background-color: #ddd;
+      padding: 10px;
+      font-weight: bold;
+      font-size: 1rem;
+
+    }
   }
 }

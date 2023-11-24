@@ -22,6 +22,7 @@ export default function Users() {
   };
   const navigate = useNavigate();
   const { group_id } = useParams();
+  console.log(users);
 
   useEffect(() => {
     axios
@@ -138,7 +139,7 @@ export default function Users() {
                 ))}
               </div>
               <div className={cx("uUsersActive")}>
-                <div className={cx("tableTitle")}>Kích Hoạt</div>
+                <div className={cx("tableTitle")}>Trạng Thái</div>
                 {users.map((user, index) => (
                   <div className={cx("tableContent")}>
                     <p>
