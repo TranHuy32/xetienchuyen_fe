@@ -24,6 +24,7 @@
     display: flex;
     justify-content: space-between;
     padding: 0 32px;
+
     .from {
       padding: 0;
 
@@ -57,9 +58,11 @@
       }
     }
   }
-  .price{
+
+  .price {
     font-weight: bold;
   }
+
   .seller {
     display: flex;
 
@@ -129,10 +132,42 @@
 
     .detailName,
     .detailLoginName,
-    .detailAccountStatus,
     .detailAmount {
       padding: 10px;
       text-transform: capitalize;
+    }
+
+    .detailAccountStatus {
+      padding: 10px;
+      text-transform: capitalize;
+
+      button {
+        padding: 8px;
+        border: 1px solid #e74c3c;
+        border-radius: 8px;
+        margin-left: 16px;
+        cursor: pointer;
+
+        background-color: #FF6464;
+        color: #fff;
+
+        &:hover {
+          background-color: #fff;
+          color: black;
+        }
+      }
+
+      .active {
+
+        background-color: #fff;
+        color: black;
+
+        &:hover {
+
+          background-color: #FF6464;
+          color: #fff;
+        }
+      }
     }
 
     .detailCarData {

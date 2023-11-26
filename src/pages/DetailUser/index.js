@@ -5,6 +5,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import searchIcon from "~/components/Image/search-icon.png";
 import { type } from "@testing-library/user-event/dist/type";
+import { act } from "react-dom/test-utils";
 
 const cx = classNames.bind(styles);
 const beURL = process.env.REACT_APP_BE_URL;
@@ -21,11 +22,13 @@ export default function DetailUser() {
   const [pageSize, setPageSize] = useState(10);
   const [totalRidesPages, setTotalRidesPages] = useState(0);
   const [totalCreatedPages, setTotalCreatedPages] = useState(0);
+  const [accountStatus, setAccountStatus] = useState("");
   const [showCarImage, setShowCarImage] = useState(false);
   const [showRidesList, setShowRidesList] = useState(false);
   const [showCreatedList, setShowCreatedList] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
   const [showCreatedDetail, setShowCreatedDetail] = useState(false);
+  const [reload, setReload] = useState(false);
   const token = localStorage.getItem("token") || [];
 
   const config = {
@@ -50,12 +53,17 @@ export default function DetailUser() {
         const data = response.data;
         setUser(data);
         setCarPicture(data.car_images)
+        if(data.active){
+          setAccountStatus("Đã Kích Hoạt")
+        }else{
+          setAccountStatus("Chưa Kích Hoạt")
+        }
       })
       .catch((error) => {
         console.log(error);
       });
 
-  }, [token, user_id]);
+  }, [token, user_id, reload]);
 
   useEffect(() => {
     //get lịch sử đã nhận
@@ -179,7 +187,27 @@ export default function DetailUser() {
     setDetailRide([])
   }
 
-  console.log(detailRide);
+  const handleChangeActive = (active) => {
+    const type = !active
+    axios
+      .put(
+        `${beURL}/users/manager/${user_id}`,
+        {active: type},
+        config
+      )
+      .then((response) => {
+        const data = response.data;
+        setReload(!reload);
+        if(data){
+          setAccountStatus("Đã Kích Hoạt")
+        }else{
+          setAccountStatus("Chưa Kích Hoạt")
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   if (user) {
     return (
@@ -471,7 +499,13 @@ export default function DetailUser() {
           <div className={cx("inforDetailBox")}>
             <div className={cx("detailName")}>Tên Tài Xế: {" " + user.name} </div>
             <div className={cx("detailLoginName")}>tên đăng nhập: {" " + user.userName}</div>
-            <div className={cx("detailAccountStatus")}>Trạng Thái Tài Khoản:</div>
+            <div className={cx("detailAccountStatus")}>
+              Trạng Thái Tài Khoản: {accountStatus}
+              <button
+                className={user.active && "active" || ""}
+                onClick={() => handleChangeActive(user.active)}
+              >{user.active && "Tắt Hoạt Động" || "Kích Hoạt"}
+              </button></div>
             <div className={cx("detailAmount")}>số dư: {" " + user.amount}</div>
             <div className={cx("detailCarData")}>
               <div className={cx("dataPlate")}>biển kiểm soát: {" " + user.licensePlate}</div>

@@ -108,25 +108,25 @@ export default function Users() {
               <div className={cx("uUsersName")}>
                 <div className={cx("tableTitle")}>Tài Xế</div>
                 {users.map((user, index) => (
-                  <div className={cx("tableContent")}>{user.name}</div>
+                  <div className={cx("tableContent")} key={index}>{user.name}</div>
                 ))}
               </div>
               <div className={cx("uUsersAmount")}>
                 <div className={cx("tableTitle")}>Số Dư</div>
                 {users.map((user, index) => (
-                  <div className={cx("tableContent")}>{user.amount}</div>
+                  <div className={cx("tableContent")} key={index}>{user.amount}</div>
                 ))}
               </div>
               <div className={cx("uUsersLoginName")}>
                 <div className={cx("tableTitle")}>Tên Đăng Nhập</div>
                 {users.map((user, index) => (
-                  <div className={cx("tableContent")}>{user.userName}</div>
+                  <div className={cx("tableContent")} key={index}>{user.userName}</div>
                 ))}
               </div>
               <div className={cx("uUsersDetails")}>
                 <div className={cx("tableTitle")}>Chi Tiết</div>
                 {users.map((user, index) => (
-                  <div className={cx("tableContent")}>
+                  <div className={cx("tableContent")} key={index}>
                     <a
                       onClick={() => {
                         handleClickDetail(user._id);
@@ -140,9 +140,9 @@ export default function Users() {
               <div className={cx("uUsersActive")}>
                 <div className={cx("tableTitle")}>Trạng Thái</div>
                 {users.map((user, index) => (
-                  <div className={cx("tableContent")}>
+                  <div className={cx("tableContent")} key={index}>
                     <p>
-                      Chưa Kích Hoạt
+                      {user.active && "Đã Kích Hoạt" || "Chưa Kích Hoạt"}
                     </p>
                   </div>
                 ))}
