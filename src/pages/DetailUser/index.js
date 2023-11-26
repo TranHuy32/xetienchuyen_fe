@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import searchIcon from "~/components/Image/search-icon.png";
+import { type } from "@testing-library/user-event/dist/type";
 
 const cx = classNames.bind(styles);
 const beURL = process.env.REACT_APP_BE_URL;
@@ -11,11 +12,12 @@ export default function DetailUser() {
   const [user, setUser] = useState();
   const [carPicture, setCarPicture] = useState();
   const [rides, setRides] = useState([]);
-  const [CreatedList, setCreatedList] = useState([]);
+  const [createdList, setCreatedList] = useState([]);
   const [currentRidesPage, setCurrentRidesPage] = useState(1);
   const [currentCreatedPage, setCurrentCreatedPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
-  const [totalPages, setTotalPages] = useState(0);
+  const [totalRidesPages, setTotalRidesPages] = useState(0);
+  const [totalCreatedPages, setTotalCreatedPages] = useState(0);
   const [searchInput, setSearchInput] = useState("");
   const [showCarImage, setShowCarImage] = useState(false);
   const [showRidesList, setShowRidesList] = useState(false);
@@ -63,7 +65,7 @@ export default function DetailUser() {
       .then((response) => {
         const data = response.data;
         setRides(data.rides);
-        setTotalPages(Math.ceil(data.totalCount / pageSize));
+        setTotalRidesPages(Math.ceil(data.totalCount / pageSize));
       })
       .catch((error) => {
         console.log(error);
@@ -74,13 +76,14 @@ export default function DetailUser() {
     //get lịch sử đã tạo
     axios
       .get(
-        `${beURL}/ride/historyCreatedByOwner/${user_id}?page=${currentRidesPage}&pageSize=${pageSize}&date=${formattedDate}`,
+        `${beURL}/ride/historyCreatedByOwner/${user_id}?page=${currentCreatedPage}&pageSize=${pageSize}`,
         config
       )
       .then((response) => {
         const data = response.data;
+        console.log(data);
         setCreatedList(data.rides);
-        setTotalPages(Math.ceil(data.totalCount / pageSize));
+        setTotalCreatedPages(Math.ceil(data.totalCount / pageSize));
       })
       .catch((error) => {
         console.log(error);
@@ -149,38 +152,89 @@ export default function DetailUser() {
             {rides.length !== 0 && showRidesList && (
               <div className={cx("bottomBox2")}>
                 <div className={cx("duRidesList")}>
+                  <div className={cx("rlType")}>
+                    <div className={cx("tableTitle")}>Phân Loại</div>
+                    {rides.map((ride, index) => (
+                      <div className={cx("tableContent")} key={index}>
+                        {ride.type === "PARCEL" && <div>Giao Hàng</div>}
+                        {ride.type === "RIDE" && <div>Chở Khách</div>}
+                      </div>
+                    ))}
+                  </div>
                   <div className={cx("rlAddress")}>
-                    <div className={cx("tableTitle")}>Điểm Đi/Điểm Đến</div>
-                    {/* {users.map((user, index) => (
-        <div className={cx("tableContent")}>{user.name}</div>
-      ))} */}
+                    <div className={cx("tableTitle")}>
+                      <div>Điểm Đi</div>
+                      <div>Điểm Đến</div>
+                    </div>
+                    {rides.map((ride, index) => (
+                      <div className={cx("tableContent")} key={index}>
+                        {ride.type === "RIDE" && (
+                          <div>{ride.startPoint}</div>
+                        )}
+                        {ride.type === "PARCEL" && (
+                          <div>{ride.receivePoint}</div>
+                        )}
+                        {ride.type === "RIDE" && (
+                          <div>{ride.endPoint}</div>
+                        )}
+                        {ride.type === "PARCEL" && (
+                          <div>{ride.sendPoint}</div>
+                        )}
+                      </div>
+                    ))}
                   </div>
                   <div className={cx("rlAcceptTime")}>
                     <div className={cx("tableTitle")}>Thời Gian Nhận</div>
-                    {/* {users.map((user, index) => (
-        <div className={cx("tableContent")}>{user.userName}</div>
-      ))} */}
+                    {rides.map((ride, index) => {
+                      var timestamp = ride.changeDate;
+                      var date = new Date(timestamp);
+                      var month = date.getMonth() + 1; // Months are zero-based
+                      var day = date.getDate();
+                      var hours = date.getHours();
+                      var minutes = date.getMinutes();
+                      var formattedHours = hours < 10 ? '0' + hours : hours;
+                      var formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+                      var formattedReceiveTime = formattedHours + ':' + formattedMinutes;
+                      var formattedReceiveDate = day + '/' + month;
+                      return (
+                        <div className={cx("tableContent")} key={index}>
+                          <div>{formattedReceiveTime}</div>
+                          <div>{formattedReceiveDate}</div>
+                        </div>
+                      );
+                    })}
+
                   </div>
                   <div className={cx("rlStatus")}>
                     <div className={cx("tableTitle")}>Trạng Thái</div>
-                    {/* {users.map((user, index) => (
-        <div className={cx("tableContent")}>
-          <a
-            onClick={() => {
-              handleClickDetail(user._id);
-            }}
-          >
-            {"Xem Chi Tiết"}
-          </a>
-        </div>
-      ))} */}
+                    {rides.map((ride, index) => (
+                      <div className={cx("tableContent")} key={index}>
+                        {ride.status === "COMPLETED" && <div>Đã Hoàn Thành</div>}
+                        {ride.status === "CANCELED" && <div>Đã Huỷ</div>}
+                        {ride.status === "PENDING" && <div>Đang Liên Hệ Khách Hàng</div>}
+                        {ride.status === "TAKED" && <div>Đang Thực Hiện</div>}
+                      </div>
+                    ))}
                   </div>
                   <div className={cx("rlDetail")}>
                     <div className={cx("tableTitle")}>Chi Tiết</div>
-                    {/* {users.map((user, index) => (
-        <div className={cx("tableContent")}>{user.amount}</div>
-      ))} */}
+                    {rides.map((ride, index) => (
+                      <div className={cx("tableContent")} key={index}>
+                        Xem Chi Tiết
+                      </div>
+                    ))}
                   </div>
+                </div>
+                <div className={cx("duPagination")}>
+                  {Array.from({ length: totalRidesPages }, (_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleRidesPageChange(index + 1)}
+                      className={cx({ active: index + 1 === currentRidesPage })}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
                 </div>
               </div>
             )}
@@ -194,35 +248,99 @@ export default function DetailUser() {
               {!showCreatedList && "Chuyến xe đã tạo"}
               {showCreatedList && "Ẩn Danh Sách Chuyến xe đã tạo"}
             </div>
-            <div className={cx("bottomBox3")}>
-              {CreatedList.length !== 0 && showCreatedList && (
-                <div className={cx("bottomBox2")}>
-                  <div className={cx("duCreatedList")}>
-                    <div className={cx("rlAddress")}>
-                      <div className={cx("tableTitle")}>Điểm Đi/Điểm Đến</div>
-                      {/* {users.map((user, index) => (
-                        <div className={cx("tableContent")}>{user.name}</div>
-                      ))} */}
+            {createdList.length !== 0 && showCreatedList && (
+              <div className={cx("bottomBox3")}>
+                <div className={cx("duCreatedList")}>
+                  <div className={cx("clType")}>
+                    <div className={cx("tableTitle")}>Phân Loại</div>
+                    {createdList.map((create, index) => (
+                      <div className={cx("tableContent")} key={index}>
+                        {create.type === "PARCEL" && <div>Giao Hàng</div>}
+                        {create.type === "RIDE" && <div>Chở Khách</div>}
+                      </div>
+                    ))}
+                  </div>
+                  <div className={cx("clAddress")}>
+                    <div className={cx("tableTitle")}>
+                      <div>Điểm Đi</div>
+                      <div>Điểm Đến</div>
                     </div>
-                    <div className={cx("rlCreateTime")}>
-                      <div className={cx("tableTitle")}>Thời Gian Tạo</div>
-                      {/* map */}
-                    </div>
-                    <div className={cx("rlStatus")}>
-                      <div className={cx("tableTitle")}>Trạng Thái</div>
+                    {createdList.map((create, index) => (
+                      <div className={cx("tableContent")} key={index}>
+                        {create.type === "RIDE" && (
+                          <div>{create.startPoint}</div>
+                        )}
+                        {create.type === "PARCEL" && (
+                          <div>{create.receivePoint}</div>
+                        )}
+                        {create.type === "RIDE" && (
+                          <div>{create.endPoint}</div>
+                        )}
+                        {create.type === "PARCEL" && (
+                          <div>{create.sendPoint}</div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  <div className={cx("clCreatedTime")}>
+                    <div className={cx("tableTitle")}>Thời Gian Tạo</div>
+                    {createdList.map((ride, index) => {
+                      var timestamp = ride.createdAt;
+                      var date = new Date(timestamp);
+                      var month = date.getMonth() + 1; // Months are zero-based
+                      var day = date.getDate();
+                      var hours = date.getHours();
+                      var minutes = date.getMinutes();
+                      var formattedHours = hours < 10 ? '0' + hours : hours;
+                      var formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+                      var formattedCreatedTime = formattedHours + ':' + formattedMinutes;
+                      var formattedCreatedDate = day + '/' + month;
+                      return (
+                        <div className={cx("tableContent")} key={index}>
+                          <div>{formattedCreatedTime}</div>
+                          <div>{formattedCreatedDate}</div>
+                        </div>
+                      );
+                    })}
 
-                    </div>
-                    <div className={cx("rlDetail")}>
-                      <div className={cx("tableTitle")}>Chi Tiết</div>
-                      {/* map */}
-                    </div>
+                  </div>
+                  <div className={cx("clStatus")}>
+                    <div className={cx("tableTitle")}>Trạng Thái</div>
+                    {createdList.map((ride, index) => (
+                      <div className={cx("tableContent")} key={index}>
+                        {ride.status === "COMPLETED" && <div>Đã Hoàn Thành</div>}
+                        {ride.status === "CANCELED" && <div>Đã Huỷ</div>}
+                        {ride.status === "PENDING" && <div>Đang Liên Hệ Khách Hàng</div>}
+                        {ride.status === "TAKED" && <div>Đang Thực Hiện</div>}
+                        {ride.status === "READY" && <div>Chưa Có Người Nhận</div>}
+                      </div>
+                    ))}
+                  </div>
+                  <div className={cx("clDetail")}>
+                    <div className={cx("tableTitle")}>Chi Tiết</div>
+                    {createdList.map((ride, index) => (
+                      <div className={cx("tableContent")} key={index}>
+                        Xem Chi Tiết
+                      </div>
+                    ))}
                   </div>
                 </div>
-              )}
-              {CreatedList.length === 0 && showCreatedList && (
-                <div className={cx("emptyWarning")}>Không Có Chuyến Nào đã Tạo</div>
-              )}
-            </div>
+                <div className={cx("duPagination")}>
+                  {Array.from({ length: totalCreatedPages }, (_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleCreatedPageChange(index + 1)}
+                      className={cx({ active: index + 1 === currentRidesPage })}
+                    >
+                      {index + 1}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+            {createdList.length === 0 && showCreatedList && (
+              <div className={cx("emptyWarning")}>Không Có Chuyến Nào đã Tạo</div>
+            )}
           </div>
 
         </div>
