@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import styles from "./DetailUser.scss";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import searchIcon from "~/components/Image/search-icon.png";
@@ -9,34 +9,36 @@ import { type } from "@testing-library/user-event/dist/type";
 const cx = classNames.bind(styles);
 const beURL = process.env.REACT_APP_BE_URL;
 export default function DetailUser() {
+  const { user_id } = useParams();
   const [user, setUser] = useState();
   const [carPicture, setCarPicture] = useState();
   const [rides, setRides] = useState([]);
   const [createdList, setCreatedList] = useState([]);
+  const [detailRide, setDetailRide] = useState([]);
+  const [detailParcel, setDetailParcel] = useState([]);
   const [currentRidesPage, setCurrentRidesPage] = useState(1);
   const [currentCreatedPage, setCurrentCreatedPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalRidesPages, setTotalRidesPages] = useState(0);
   const [totalCreatedPages, setTotalCreatedPages] = useState(0);
-  const [searchInput, setSearchInput] = useState("");
   const [showCarImage, setShowCarImage] = useState(false);
   const [showRidesList, setShowRidesList] = useState(false);
   const [showCreatedList, setShowCreatedList] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
+  const [showCreatedDetail, setShowCreatedDetail] = useState(false);
   const token = localStorage.getItem("token") || [];
+
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
   const navigate = useNavigate();
-  const { user_id } = useParams();
+
   const owner = JSON.parse(localStorage.getItem("token_state")) || [];
 
   var currentDate = new Date();
-
-  // Get various components of the date
   var year = currentDate.getFullYear();
   var month = currentDate.getMonth() + 1; // Months are zero-based
   var day = currentDate.getDate();
-
   // Format the date as a string
   var formattedDate = day + '/' + month + '/' + year
 
@@ -81,7 +83,6 @@ export default function DetailUser() {
       )
       .then((response) => {
         const data = response.data;
-        console.log(data);
         setCreatedList(data.rides);
         setTotalCreatedPages(Math.ceil(data.totalCount / pageSize));
       })
@@ -102,9 +103,367 @@ export default function DetailUser() {
     setShowCarImage(!showCarImage)
   }
 
+  const handleShowDetail = (type, id, box) => {
+    if (type === "RIDE" && box === 2) {
+      //get rides data 
+      axios
+        .get(
+          `${beURL}/ride/detailByOwner/${id}`,
+          config
+        )
+        .then((response) => {
+          const data = response.data;
+          setDetailRide(data)
+          setShowDetail(true)
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    if (type === "PARCEL" && box === 2) {
+      //get parcel data 
+      axios
+        .get(
+          `${beURL}/parcel/detailByOwner/${id}`,
+          config
+        )
+        .then((response) => {
+          const data = response.data;
+          setDetailParcel(data)
+          setShowDetail(true)
+          console.log(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    if (type === "RIDE" && box === 3) {
+      //get rides data 
+      axios
+        .get(
+          `${beURL}/ride/detailByOwner/${id}`,
+          config
+        )
+        .then((response) => {
+          const data = response.data;
+          setDetailRide(data)
+          setShowCreatedDetail(true)
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    if (type === "PARCEL" && box === 3) {
+      //get parcel data 
+      axios
+        .get(
+          `${beURL}/parcel/detailByOwner/${id}`,
+          config
+        )
+        .then((response) => {
+          const data = response.data;
+          setDetailParcel(data)
+          setShowCreatedDetail(true)
+          console.log(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }
+
+  const handleCancel = () => {
+    setShowDetail(false)
+    setShowCreatedDetail(false)
+    setDetailParcel([])
+    setDetailRide([])
+  }
+
+  console.log(detailRide);
+
   if (user) {
     return (
       <div>
+        {(showDetail && detailRide.length !== 0) && (
+          <Fragment>
+            <div className={cx("overlay")} onClick={() => handleCancel()}></div>
+            <div className={cx("duDetailContainer")}>
+              <div className={cx("customer")}>
+                <div className={cx("customerName")}>tên khách hàng: {detailRide.customerName}</div>
+                <div className={cx("customerPhone")}>SĐT khách hàng: {detailRide.customerPhone}</div>
+              </div>
+
+
+              <div className={cx("travel")}>
+                <div className={cx("from")}>
+                  <div className={cx("start1")}>điểm đi chi tiết: {detailRide.startDetail.startDetail}</div>
+                  <div className={cx("start2")}>điểm đi: {detailRide.startDetail.startDistrictName + "-" + detailRide.startDetail.startProvinceName}</div>
+                </div>
+                <div className={cx("moveIcon")}>
+                  {">>>"}
+                </div>
+                <div className={cx("to")}>
+                  <div className={cx("end1")}>điểm đến chi tiết: {detailRide.endDetail.endDetail}</div>
+                  <div className={cx("end2")}>điểm đến: {detailRide.endDetail.endDistrictName + "-" + detailRide.endDetail.endProvinceName}</div>
+                </div>
+              </div>
+
+              <div className={cx("numberPeople")}>Số Khách: {detailRide.numberPeople} người</div>
+
+              <div className={cx("price")}>Thu Khách: {detailRide.customerPrice} k</div>
+
+              <div className={cx("seller")}>
+                <div className={cx("fee1")}>hoa hồng: {detailRide.commission} k</div>
+                <div className={cx("sellerPhone")}>Trung Gian: {detailRide.sellerPhone}</div>
+              </div>
+
+
+              <div className={cx("fee2")}>app phí: {detailRide.appFee} k</div>
+
+              <div className={cx("receive")}>thực nhận: {detailRide.driverPrice} k</div>
+
+              <div className={cx("note")}>Ghi Chú: {detailRide.note}</div>
+            </div>
+          </Fragment>
+        )}
+        {(showCreatedDetail && detailRide.length !== 0) && (
+          <Fragment>
+            <div className={cx("overlay")} onClick={() => handleCancel()}></div>
+            <div className={cx("duDetailContainer")}>
+              <div className={cx("customer")}>
+                <div className={cx("customerName")}>tên khách hàng: {detailRide.customerName}</div>
+                <div className={cx("customerPhone")}>SĐT khách hàng: {detailRide.customerPhone}</div>
+              </div>
+
+
+              <div className={cx("travel")}>
+                <div className={cx("from")}>
+                  <div className={cx("start1")}>điểm đi chi tiết: {detailRide.startDetail.startDetail}</div>
+                  <div className={cx("start2")}>điểm đi: {detailRide.startDetail.startDistrictName + "-" + detailRide.startDetail.startProvinceName}</div>
+                </div>
+                <div className={cx("moveIcon")}>
+                  {">>>"}
+                </div>
+                <div className={cx("to")}>
+                  <div className={cx("end1")}>điểm đến chi tiết: {detailRide.endDetail.endDetail}</div>
+                  <div className={cx("end2")}>điểm đến: {detailRide.endDetail.endDistrictName + "-" + detailRide.endDetail.endProvinceName}</div>
+                </div>
+              </div>
+
+              <div className={cx("numberPeople")}>Số Khách: {detailRide.numberPeople} người</div>
+
+              <div className={cx("price")}>Thu Khách: {detailRide.customerPrice} k</div>
+
+              <div className={cx("seller")}>
+                <div className={cx("fee1")}>hoa hồng: {detailRide.commission} k</div>
+                <div className={cx("sellerPhone")}>Tài Xế: {detailRide.driverPhone} </div>
+              </div>
+
+
+              <div className={cx("fee2")}>app phí: {detailRide.appFee} k</div>
+
+              <div className={cx("receive")}>thực nhận: {detailRide.driverPrice} k</div>
+
+              <div className={cx("note")}>Ghi Chú: {detailRide.note}</div>
+            </div>
+          </Fragment>
+        )}
+        {(showDetail && detailParcel.length !== 0) && (
+          <Fragment>
+            <div className={cx("overlay")} onClick={() => handleCancel()}></div>
+            <div className={cx("duDetailContainer")}>
+              <div className={cx("parcelName")}>tên hàng: {detailParcel.parcelName !== null && detailParcel.parcelName}</div>
+              <div className={cx("parcelWeight")}>cân nặng: {detailParcel.weight} kg</div>
+              <div className={cx("parcelSize")}>
+                kích thước:
+                {detailParcel.size && (
+                  <>
+                    {detailParcel.size.width + "x" + detailParcel.size.height + "x" + detailParcel.size.length}
+                  </>
+                )}
+              </div>
+
+              <div className={cx("sendTime")}>
+                thời gian nhận hàng: {
+                  (() => {
+                    // Extracting the timestamp from detailParcel.receiveTime
+                    var timestamp = detailParcel.sendTime;
+                    // Creating a new Date object using the timestamp
+                    var date = new Date(timestamp);
+                    // Extracting month, day, hours, and minutes from the date object
+                    var month = date.getMonth() + 1; // Months are zero-based
+                    var day = date.getDate();
+                    var hours = date.getHours();
+                    var minutes = date.getMinutes();
+                    // Formatting hours and minutes to have leading zeros if needed
+                    var formattedHours = hours < 10 ? '0' + hours : hours;
+                    var formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+                    // Creating formatted strings for time and date
+                    var formattedReceiveTime = formattedHours + ':' + formattedMinutes;
+                    var formattedReceiveDate = day + '/' + month;
+                    // Returning the formatted time and date
+                    return (
+                      formattedReceiveTime + " " + formattedReceiveDate
+                    );
+                  })()
+                }
+              </div>
+
+
+              <div className={cx("sender")}>
+                <div className={cx("name")}>tên người gửi:</div>
+                <div className={cx("phone")}>sđt người gửi:{detailParcel.senderPhone}</div>
+              </div>
+              <div className={cx("sendFrom1")}>nơi gửi: {detailParcel.sendPoint}</div>
+              <div className={cx("receiveTime")}>thời gian giao hàng:
+                {
+                  (() => {
+                    // Extracting the timestamp from detailParcel.receiveTime
+                    var timestamp = detailParcel.receiveTime;
+                    // Creating a new Date object using the timestamp
+                    var date = new Date(timestamp);
+                    // Extracting month, day, hours, and minutes from the date object
+                    var month = date.getMonth() + 1; // Months are zero-based
+                    var day = date.getDate();
+                    var hours = date.getHours();
+                    var minutes = date.getMinutes();
+                    // Formatting hours and minutes to have leading zeros if needed
+                    var formattedHours = hours < 10 ? '0' + hours : hours;
+                    var formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+                    // Creating formatted strings for time and date
+                    var formattedReceiveTime = formattedHours + ':' + formattedMinutes;
+                    var formattedReceiveDate = day + '/' + month;
+                    // Returning the formatted time and date
+                    return (
+                      formattedReceiveTime + " " + formattedReceiveDate
+                    );
+                  })()
+                }</div>
+              <div className={cx("receiver")}>
+                <div className={cx("name")}>tên người nhận:</div>
+                <div className={cx("phone")}>sđt người nhận:{detailParcel.receiverPhone}</div>
+              </div>
+
+              <div className={cx("sendto1")}>nơi nhận: {detailParcel.receivePoint}</div>
+
+              <div className={cx("shippingPayer")}>người trả phí ship:
+                {detailParcel.shippingPayer === "RECEIVER" && " người nhận"}
+                {detailParcel.shippingPayer === "SENDER" && " người gửi"}
+              </div>
+              <div className={cx("prePay")}>ứng trước: {detailParcel.prePay === true && "có" || "không"}</div>
+              <div className={cx("senderAmount")}>tiền thu khách gửi: {detailParcel.senderAmount} k</div>
+              <div className={cx("receiverAmount")}>tiền thu khách nhận: {detailParcel.prePay && " ứng "} {detailParcel.receiverAmount} k</div>
+              <div className={cx("cod")}>Tiền thu hộ: {detailParcel.cod} k</div>
+              <div className={cx("appFee")}>phí app: {detailParcel.appFee} k</div>
+
+
+
+            </div>
+          </Fragment>
+        )}
+        {(showCreatedDetail && detailParcel.length !== 0) && (
+          <Fragment>
+            <div className={cx("overlay")} onClick={() => handleCancel()}></div>
+            <div className={cx("duDetailContainer")}>
+              <div className={cx("parcelName")}>tên hàng: {detailParcel.parcelName !== null && detailParcel.parcelName}</div>
+              <div className={cx("parcelWeight")}>cân nặng: {detailParcel.weight} kg</div>
+              <div className={cx("parcelSize")}>
+                kích thước:
+                {detailParcel.size && (
+                  <>
+                    {detailParcel.size.width + "x" + detailParcel.size.height + "x" + detailParcel.size.length}
+                  </>
+                )}
+              </div>
+
+              <div className={cx("sendTime")}>
+                thời gian nhận hàng: {
+                  (() => {
+                    // Extracting the timestamp from detailParcel.receiveTime
+                    var timestamp = detailParcel.sendTime;
+                    // Creating a new Date object using the timestamp
+                    var date = new Date(timestamp);
+                    // Extracting month, day, hours, and minutes from the date object
+                    var month = date.getMonth() + 1; // Months are zero-based
+                    var day = date.getDate();
+                    var hours = date.getHours();
+                    var minutes = date.getMinutes();
+                    // Formatting hours and minutes to have leading zeros if needed
+                    var formattedHours = hours < 10 ? '0' + hours : hours;
+                    var formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+                    // Creating formatted strings for time and date
+                    var formattedReceiveTime = formattedHours + ':' + formattedMinutes;
+                    var formattedReceiveDate = day + '/' + month;
+                    // Returning the formatted time and date
+                    return (
+                      formattedReceiveTime + " " + formattedReceiveDate
+                    );
+                  })()
+                }
+              </div>
+
+
+              <div className={cx("sender")}>
+                <div className={cx("name")}>tên người gửi:</div>
+                <div className={cx("phone")}>sđt người gửi:{detailParcel.senderPhone}</div>
+              </div>
+              <div className={cx("sendFrom1")}>nơi gửi: {detailParcel.sendPoint}</div>
+              <div className={cx("receiveTime")}>thời gian giao hàng:
+                {
+                  (() => {
+                    // Extracting the timestamp from detailParcel.receiveTime
+                    var timestamp = detailParcel.receiveTime;
+                    // Creating a new Date object using the timestamp
+                    var date = new Date(timestamp);
+                    // Extracting month, day, hours, and minutes from the date object
+                    var month = date.getMonth() + 1; // Months are zero-based
+                    var day = date.getDate();
+                    var hours = date.getHours();
+                    var minutes = date.getMinutes();
+                    // Formatting hours and minutes to have leading zeros if needed
+                    var formattedHours = hours < 10 ? '0' + hours : hours;
+                    var formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+                    // Creating formatted strings for time and date
+                    var formattedReceiveTime = formattedHours + ':' + formattedMinutes;
+                    var formattedReceiveDate = day + '/' + month;
+                    // Returning the formatted time and date
+                    return (
+                      formattedReceiveTime + " " + formattedReceiveDate
+                    );
+                  })()
+                }</div>
+              <div className={cx("receiver")}>
+                <div className={cx("name")}>tên người nhận:</div>
+                <div className={cx("phone")}>sđt người nhận:{detailParcel.receiverPhone}</div>
+              </div>
+
+              <div className={cx("sendto1")}>nơi nhận: {detailParcel.receivePoint}</div>
+
+              <div className={cx("shippingPayer")}>người trả phí ship:
+                {detailParcel.shippingPayer === "RECEIVER" && " người nhận"}
+                {detailParcel.shippingPayer === "SENDER" && " người gửi"}
+              </div>
+              <div className={cx("prePay")}>ứng trước: {detailParcel.prePay === true && "có" || "không"}</div>
+              <div className={cx("senderAmount")}>tiền thu khách gửi: {detailParcel.senderAmount} k</div>
+              <div className={cx("receiverAmount")}>tiền thu khách nhận: {detailParcel.prePay && " ứng "} {detailParcel.receiverAmount} k</div>
+              <div className={cx("cod")}>Tiền thu hộ: {detailParcel.cod} k</div>
+              <div className={cx("appFee")}>phí app: {detailParcel.appFee} k</div>
+
+
+
+            </div>
+          </Fragment>
+        )}
+        {(user.licensePlate === null || user.carType === 0 || carPicture.length === 0) && (
+          <div className={cx("duMissingWarningContainer")}>
+            <div className={cx("mwMessage")}>Hồ Sơ Hiện Đang Thiếu
+              {user.licensePlate === null && " " + "Biến Số Xe." + " "}
+              {user.carType === 0 && " " + "Số Chỗ Ngồi." + " "}
+              {carPicture.length === 0 && " " + "Ảnh Chụp Xe." + " "}
+            </div>
+            <div className={cx("mwFixButton")}>Bổ Xung Ngay</div>
+          </div>
+        )}
         <div className={cx("duInforContainer")}>
           <div className={cx("inforPortrait")}>
             <img></img>
@@ -112,6 +471,7 @@ export default function DetailUser() {
           <div className={cx("inforDetailBox")}>
             <div className={cx("detailName")}>Tên Tài Xế: {" " + user.name} </div>
             <div className={cx("detailLoginName")}>tên đăng nhập: {" " + user.userName}</div>
+            <div className={cx("detailAccountStatus")}>Trạng Thái Tài Khoản:</div>
             <div className={cx("detailAmount")}>số dư: {" " + user.amount}</div>
             <div className={cx("detailCarData")}>
               <div className={cx("dataPlate")}>biển kiểm soát: {" " + user.licensePlate}</div>
@@ -172,13 +532,13 @@ export default function DetailUser() {
                           <div>{ride.startPoint}</div>
                         )}
                         {ride.type === "PARCEL" && (
-                          <div>{ride.receivePoint}</div>
+                          <div>{ride.sendPoint}</div>
                         )}
                         {ride.type === "RIDE" && (
                           <div>{ride.endPoint}</div>
                         )}
                         {ride.type === "PARCEL" && (
-                          <div>{ride.sendPoint}</div>
+                          <div>{ride.receivePoint}</div>
                         )}
                       </div>
                     ))}
@@ -219,7 +579,10 @@ export default function DetailUser() {
                   <div className={cx("rlDetail")}>
                     <div className={cx("tableTitle")}>Chi Tiết</div>
                     {rides.map((ride, index) => (
-                      <div className={cx("tableContent")} key={index}>
+                      <div className={cx("tableContent")}
+                        key={index}
+                        onClick={() => handleShowDetail(ride.type, ride._id, 2)}
+                      >
                         Xem Chi Tiết
                       </div>
                     ))}
@@ -271,13 +634,13 @@ export default function DetailUser() {
                           <div>{create.startPoint}</div>
                         )}
                         {create.type === "PARCEL" && (
-                          <div>{create.receivePoint}</div>
+                          <div>{create.sendPoint}</div>
                         )}
                         {create.type === "RIDE" && (
                           <div>{create.endPoint}</div>
                         )}
                         {create.type === "PARCEL" && (
-                          <div>{create.sendPoint}</div>
+                          <div>{create.receivePoint}</div>
                         )}
                       </div>
                     ))}
@@ -319,7 +682,10 @@ export default function DetailUser() {
                   <div className={cx("clDetail")}>
                     <div className={cx("tableTitle")}>Chi Tiết</div>
                     {createdList.map((ride, index) => (
-                      <div className={cx("tableContent")} key={index}>
+                      <div className={cx("tableContent")}
+                        key={index}
+                        onClick={() => handleShowDetail(ride.type, ride._id, 3)}
+                      >
                         Xem Chi Tiết
                       </div>
                     ))}

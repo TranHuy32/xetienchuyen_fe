@@ -24,6 +24,16 @@ button {
 // html {
 //     font-size: 62.5%;
 // }
+.overlay{
+  position:fixed;
+  z-index:999;
+  width:120vw;
+  height:120vh;
+  top: 0;
+  background-color: black;
+  background-color:rgba(0,0,0,.75);
+  z-index: 15000;
+}
 body {
   font-family: "Roboto", sans-serif;
   text-rendering: optimizeSpeed;

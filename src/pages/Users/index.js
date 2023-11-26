@@ -22,7 +22,6 @@ export default function Users() {
   };
   const navigate = useNavigate();
   const { group_id } = useParams();
-  console.log(users);
 
   useEffect(() => {
     axios
