@@ -13,6 +13,11 @@ export default function DetailUser() {
   const { user_id } = useParams();
   const [user, setUser] = useState();
   const [carPicture, setCarPicture] = useState();
+  const [state, setState] = useState({
+    car_images: [],
+    licensePlate: "",
+    carType: "",
+  });
   const [rides, setRides] = useState([]);
   const [createdList, setCreatedList] = useState([]);
   const [detailRide, setDetailRide] = useState([]);
@@ -28,6 +33,7 @@ export default function DetailUser() {
   const [showCreatedList, setShowCreatedList] = useState(false);
   const [showDetail, setShowDetail] = useState(false);
   const [showCreatedDetail, setShowCreatedDetail] = useState(false);
+  const [showFixInfoWindow, setShowFixInfoWindow] = useState(false);
   const [reload, setReload] = useState(false);
   const token = localStorage.getItem("token") || [];
 
@@ -53,9 +59,9 @@ export default function DetailUser() {
         const data = response.data;
         setUser(data);
         setCarPicture(data.car_images)
-        if(data.active){
+        if (data.active) {
           setAccountStatus("Đã Kích Hoạt")
-        }else{
+        } else {
           setAccountStatus("Chưa Kích Hoạt")
         }
       })
@@ -69,7 +75,8 @@ export default function DetailUser() {
     //get lịch sử đã nhận
     axios
       .get(
-        `${beURL}/ride/historyReceivedByOwner/${user_id}?page=${currentRidesPage}&pageSize=${pageSize}&date=${formattedDate}`,
+        // `${beURL}/ride/historyReceivedByOwner/${user_id}?page=${currentRidesPage}&pageSize=${pageSize}&date=${formattedDate}`,
+        `${beURL}/ride/historyReceivedByOwner/${user_id}?page=${currentRidesPage}&pageSize=${pageSize}`,
         config
       )
       .then((response) => {
@@ -181,26 +188,66 @@ export default function DetailUser() {
   }
 
   const handleCancel = () => {
+    setShowFixInfoWindow(false)
     setShowDetail(false)
     setShowCreatedDetail(false)
     setDetailParcel([])
     setDetailRide([])
+    setState({
+      car_images: [],
+      licensePlate: "",
+      carType: "",
+    })
   }
+
+  const handleShowFixInfoWindow = () => {
+    setShowFixInfoWindow(true)
+  }
+
+  const isImageFile = (file) => {
+    const acceptedFormats = ["image/png", "image/jpeg", "image/jpg"];
+    return acceptedFormats.includes(file.type);
+  };
+
+  function handleFileInputChange(event) {
+    const fileInput = event.target;
+    const fileLabel = document.getElementById("car_images");
+    const files = event.target.files;
+
+    if (files && files.length > 0) {
+      const fileArray = Array.from(files);
+      const imageFiles = fileArray.filter(isImageFile);
+
+      // Check if adding new image files will exceed the limit
+      if (state.car_images.length + imageFiles.length <= 5) {
+        setState((prevState) => ({
+          ...prevState,
+          car_images: [...prevState.car_images, ...imageFiles],
+        }));
+      } else {
+        alert("Số Ảnh Đã Đạt Tối Đa");
+      }
+    }
+  }
+
+  const changeHandler = (e) => {
+    setState({ ...state, [e.target.name]: e.target.value });
+  };
 
   const handleChangeActive = (active) => {
     const type = !active
     axios
       .put(
         `${beURL}/users/manager/${user_id}`,
-        {active: type},
+        { active: type },
         config
       )
       .then((response) => {
         const data = response.data;
         setReload(!reload);
-        if(data){
+        if (data) {
           setAccountStatus("Đã Kích Hoạt")
-        }else{
+        } else {
           setAccountStatus("Chưa Kích Hoạt")
         }
       })
@@ -209,9 +256,131 @@ export default function DetailUser() {
       });
   }
 
+  const handleSubmitFixInfo = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("car_images", state.car_images);
+    formData.append("licensePlate", state.licensePlate);
+    formData.append("carType", state.carType);
+    console.log(formData);
+    const formDataObj = {};
+    formData.forEach((value, key) => {
+      formDataObj[key] = value;
+    });
+
+    axios
+      .put(
+        `${beURL}/users/update/${user_id}`,
+        formData,
+        config
+      )
+      .then((response) => {
+        console.log(response);
+        setState({
+          car_images: [],
+          licensePlate: "",
+          carType: "",
+        })
+        alert("Thành Công")
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  const handleRemoveImage = (fileName) => {
+    // Create a copy of the current car_images array
+    const updatedCarImages = [...state.car_images];
+
+    // Find the index of the file with the specified name
+    const indexToRemove = updatedCarImages.findIndex((file) => file.name === fileName);
+
+    // If the file with the specified name is found, remove it from the array
+    if (indexToRemove !== -1) {
+      updatedCarImages.splice(indexToRemove, 1);
+
+      // Update the state with the new array
+      setState((prevState) => ({
+        ...prevState,
+        car_images: updatedCarImages,
+      }));
+    }
+  }
+
+  const { licensePlate, carType } = state;
+
+  console.log(state);
+
   if (user) {
     return (
       <div>
+        {(showFixInfoWindow) && (
+          <Fragment>
+            <div className={cx("overlay")} onClick={() => handleCancel()}></div>
+            <div className={cx("FixInfoWindow")}>
+              <div className={cx("fixBox1")}>
+                <label for="seat">
+                  Nhập Số Chỗ Ngồi:
+                </label>
+                <input
+                  onChange={changeHandler}
+                  name="carType"
+                  id="seat"
+                  type="number"
+                  value={carType}
+                  placeholder="Số Chỗ Ngồi"
+                ></input>
+              </div>
+              <div className={cx("fixBox2")}>
+                <label for="carplate">
+                  Nhập Biển Số Xe:
+                </label>
+                <input
+                  onChange={changeHandler}
+                  name="licensePlate"
+                  id="carplate"
+                  type="text"
+                  value={licensePlate}
+                  placeholder="Biển Số Xe"
+
+                ></input>
+              </div>
+              <div className={cx("fixImageBox")}>
+                <div htmlFor="carImage">Ảnh Chụp Xe:</div>
+                <input
+                  id="carImage"
+                  onChange={handleFileInputChange}
+                  type="file"
+                  name="car_images"
+                  accept="image/png,image/jpeg,image/jpg"
+                  className={cx("custom-file-input")}
+                  multiple
+                ></input>
+                <label
+                  id="file-label"
+                  className="custom-file-label"
+                  htmlFor="carImage"
+                >
+                  Ấn Để Chọn Ảnh
+                </label>
+              </div>
+              {state.car_images.length > 0 &&
+                state.car_images.map((image, index) => (
+                  <div className={cx("fixImageNameBox")}>
+                    <div className={cx("removeImageButton")}
+                      onClick={() => handleRemoveImage(image.name)}
+                    >Xoá</div>
+                    <div key={index} className={cx("imageName")}>{image.name}</div>
+                  </div>
+
+                ))
+              }
+              <button id="submitFixInfo"
+                onClick={handleSubmitFixInfo}
+              >Gửi Đi</button>
+            </div>
+          </Fragment>
+        )}
         {(showDetail && detailRide.length !== 0) && (
           <Fragment>
             <div className={cx("overlay")} onClick={() => handleCancel()}></div>
@@ -378,7 +547,7 @@ export default function DetailUser() {
                 {detailParcel.shippingPayer === "RECEIVER" && " người nhận"}
                 {detailParcel.shippingPayer === "SENDER" && " người gửi"}
               </div>
-              <div className={cx("prePay")}>ứng trước: {detailParcel.prePay === true && "có" || "không"}</div>
+              <div className={cx("prePay")}>ứng trước: {detailParcel.prePay === true && ("có" || "không")}</div>
               <div className={cx("senderAmount")}>tiền thu khách gửi: {detailParcel.senderAmount} k</div>
               <div className={cx("receiverAmount")}>tiền thu khách nhận: {detailParcel.prePay && " ứng "} {detailParcel.receiverAmount} k</div>
               <div className={cx("cod")}>Tiền thu hộ: {detailParcel.cod} k</div>
@@ -471,7 +640,7 @@ export default function DetailUser() {
                 {detailParcel.shippingPayer === "RECEIVER" && " người nhận"}
                 {detailParcel.shippingPayer === "SENDER" && " người gửi"}
               </div>
-              <div className={cx("prePay")}>ứng trước: {detailParcel.prePay === true && "có" || "không"}</div>
+              <div className={cx("prePay")}>ứng trước: {detailParcel.prePay === true && ("có" || "không")}</div>
               <div className={cx("senderAmount")}>tiền thu khách gửi: {detailParcel.senderAmount} k</div>
               <div className={cx("receiverAmount")}>tiền thu khách nhận: {detailParcel.prePay && " ứng "} {detailParcel.receiverAmount} k</div>
               <div className={cx("cod")}>Tiền thu hộ: {detailParcel.cod} k</div>
@@ -485,16 +654,18 @@ export default function DetailUser() {
         {(user.licensePlate === null || user.carType === 0 || carPicture.length === 0) && (
           <div className={cx("duMissingWarningContainer")}>
             <div className={cx("mwMessage")}>Hồ Sơ Hiện Đang Thiếu
-              {user.licensePlate === null && " " + "Biến Số Xe." + " "}
-              {user.carType === 0 && " " + "Số Chỗ Ngồi." + " "}
-              {carPicture.length === 0 && " " + "Ảnh Chụp Xe." + " "}
+              {user.licensePlate === null && " Biến Số Xe. "}
+              {user.carType === 0 && " Số Chỗ Ngồi. "}
+              {carPicture.length === 0 && " Ảnh Chụp Xe. "}
             </div>
-            <div className={cx("mwFixButton")}>Bổ Xung Ngay</div>
+            <div className={cx("mwFixButton")}
+              onClick={() => handleShowFixInfoWindow()}
+            >Bổ Xung Ngay</div>
           </div>
         )}
         <div className={cx("duInforContainer")}>
           <div className={cx("inforPortrait")}>
-            <img></img>
+            <img alt="ảnh chân dung"></img>
           </div>
           <div className={cx("inforDetailBox")}>
             <div className={cx("detailName")}>Tên Tài Xế: {" " + user.name} </div>
@@ -502,36 +673,41 @@ export default function DetailUser() {
             <div className={cx("detailAccountStatus")}>
               Trạng Thái Tài Khoản: {accountStatus}
               <button
-                className={user.active && "active" || ""}
+                className={user.active && "active"}
                 onClick={() => handleChangeActive(user.active)}
-              >{user.active && "Tắt Hoạt Động" || "Kích Hoạt"}
+              >
+                {user.active && "Tắt Hoạt Động"}
+                {!user.active && "Kích Hoạt"}
               </button></div>
             <div className={cx("detailAmount")}>số dư: {" " + user.amount}</div>
             <div className={cx("detailCarData")}>
-              <div className={cx("dataPlate")}>biển kiểm soát: {" " + user.licensePlate}</div>
-              <div className={cx("dateCarType")}>loại xe: {" " + user.carType} chỗ</div>
+              <div className={cx("dataPlate")}>biển kiểm soát: {user.licensePlate !== "Null" && user.licensePlate}</div>
+              <div className={cx("dateCarType")}>loại xe: {user.carType !== 0 && (user.carType + " chỗ")}</div>
             </div>
           </div>
         </div>
 
         <div className={cx("duContainer")}>
           <div className={cx("box1")}>
-            <div className={cx("topBox1")}>
-              {carPicture.length !== 0 &&
-                <div id="buttonShowCarImage"
-                  onClick={() => handleShowCarImage(true)}
-                >
-                  {!showCarImage && "xem ảnh xe"}
-                  {showCarImage && "ẩn ảnh xe"}
-                </div>
-              }
-              {carPicture.length === 0 && "Không Có Ảnh Xe"}
-            </div>
+            {carPicture.length !== 0 &&
+              <div className={cx("topBox1")}
+                onClick={() => handleShowCarImage(true)}
+              >
+                {!showCarImage && "xem ảnh xe"}
+                {showCarImage && "ẩn ảnh xe"}
+              </div>
+            }
+            {carPicture.length === 0 && (
+              <div className={cx("topBox1")}
+              >
+                Không Có Ảnh Xe
+              </div>
+            )}
             <div className={cx("bottomBox1")}>
               {showCarImage && (
                 <div className={cx("imageBox")}>
                   {carPicture.map((car, index) => (
-                    <img src={car.path} key={index}></img>
+                    <img src={car.path} key={index} alt="ảnh xe"></img>
                   ))}
                 </div>
 

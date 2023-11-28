@@ -80,6 +80,102 @@
   }
 }
 
+.FixInfoWindow {
+  width: 960px;
+  min-height: 200px;
+  background-color: #fff;
+  position: fixed;
+  left: calc(50% - 480px);
+  top: 144px;
+  margin: auto;
+  z-index: 20000;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  .fixBox1,
+  .fixBox2 {
+    width: 70%;
+    margin: 20px auto;
+    display: flex;
+
+    label {
+      width: 180px;
+      align-items: center;
+      display: flex;
+    }
+
+    input {
+      padding: 8px 16px;
+      border-radius: 4px;
+      border: none;
+      background-color: #ddd;
+
+      &:focus {
+        background-color: #fff;
+      }
+    }
+  }
+
+  .fixImageBox {
+    display: flex;
+    width: 70%;
+    margin:20px auto;
+
+    div{
+      width: 180px;
+      align-items: center;
+      display: flex;
+    }
+    .custom-file-input {
+      display: none;
+    }
+
+    .custom-file-label {
+      min-width: 80px;
+      min-height: 20px;
+      padding: 8px 16px;
+      background-color: #FF6464;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #fff;
+      // margin-left: 76px;
+    }
+  }
+  .fixImageNameBox{
+    display: flex;
+    width: 70%;
+    margin: 4px auto;
+    .imageName{
+      padding: 8px;
+      max-width: 500px;
+      overflow-x: hidden;
+    }
+    .removeImageButton{
+      padding: 8px;
+      background-color: #FF6464;
+      color: #fff;
+      border-radius: 4px;
+    }
+  }
+  #submitFixInfo{
+    background-color: #FF6464;
+    padding: 16px 64px;
+    font-size: medium;
+    border: #FF6464;
+    align-self: center;
+    margin-bottom: 16px;
+    margin-top: 24px;
+    border-radius: 8px;
+    color: #fff;
+    border: 1px solid #FF6464;
+    &:hover{
+      background-color: #fff;
+      color: #FF6464;
+      border: 1px solid #FF6464;
+    }
+  }
+}
+
 .duMissingWarningContainer {
   background-color: #ddd;
   border-radius: 16px;
@@ -195,7 +291,7 @@
       margin: 10px 0;
       width: 100%;
       border-radius: 10px;
-      border: 1px solid #FF6464;
+      border: 1px solid #888;
       text-transform: capitalize;
       font-size: 1.1rem;
 
@@ -232,7 +328,7 @@
       margin: 10px 0;
       width: 100%;
       border-radius: 10px;
-      border: 1px solid #FF6464;
+      border: 1px solid #888;
       text-transform: capitalize;
       font-size: 1.1rem;
 
@@ -414,7 +510,7 @@
       margin: 10px 0;
       width: 100%;
       border-radius: 10px;
-      border: 1px solid #FF6464;
+      border: 1px solid #888;
       text-transform: capitalize;
       font-size: 1.1rem;
 
