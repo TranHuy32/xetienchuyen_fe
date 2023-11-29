@@ -259,14 +259,16 @@ export default function DetailUser() {
   const handleSubmitFixInfo = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("car_images", state.car_images);
+    // formData.append("car_images", state.car_images);
     formData.append("licensePlate", state.licensePlate);
     formData.append("carType", state.carType);
-    console.log(formData);
-    const formDataObj = {};
-    formData.forEach((value, key) => {
-      formDataObj[key] = value;
-    });
+    for (let i = 0; i < state.car_images.length; i++) {
+      formData.append('car_images', state.car_images[i]);
+    }
+    // const formDataObj = {};
+    // formData.forEach((value, key) => {
+    //   formDataObj[key] = value;
+    // });
 
     axios
       .put(
