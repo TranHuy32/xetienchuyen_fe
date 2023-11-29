@@ -283,7 +283,9 @@ export default function DetailUser() {
           licensePlate: "",
           carType: "",
         })
+        setReload(!reload)
         alert("Thành Công")
+        handleCancel()
       })
       .catch((error) => {
         console.log(error);
@@ -320,6 +322,7 @@ export default function DetailUser() {
           <Fragment>
             <div className={cx("overlay")} onClick={() => handleCancel()}></div>
             <div className={cx("FixInfoWindow")}>
+              <h2 className={cx("windowTitle")}>Thêm Thông Tin</h2>
               <div className={cx("fixBox1")}>
                 <label for="seat">
                   Nhập Số Chỗ Ngồi:
@@ -330,7 +333,7 @@ export default function DetailUser() {
                   id="seat"
                   type="number"
                   value={carType}
-                  placeholder="Số Chỗ Ngồi"
+                  placeholder={user.carType !== 0 && (user.carType || "Số Chỗ Ngồi")} 
                 ></input>
               </div>
               <div className={cx("fixBox2")}>
@@ -343,7 +346,7 @@ export default function DetailUser() {
                   id="carplate"
                   type="text"
                   value={licensePlate}
-                  placeholder="Biển Số Xe"
+                  placeholder={user.licensePlate !== null && (user.licensePlate || "Biển Số Xe")} 
 
                 ></input>
               </div>
