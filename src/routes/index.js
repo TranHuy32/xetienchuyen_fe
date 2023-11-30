@@ -1,4 +1,4 @@
-import Home from "~/pages/Home/index";
+
 import CreateGroup from "~/pages/CreateGroup/index";
 import Users from "~/pages/Users/index";
 import Login from "~/pages/Login/login";
@@ -10,24 +10,20 @@ import CreateUser from "~/pages/CreateUser";
 import Transaction from "~/pages/Transaction";
 import DetailUser from "~/pages/DetailUser";
 import Recharge from "~/pages/Recharge";
+import NapTien from "~/pages/naptien/naptien";
 const MainRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
         {/* Login */}
         <Route path={"/"} element={<Login />} exact />
-        {/* Home */}
-        {/* <Route
-          path={"/"}
+        <Route
+          path={"/naptien"}
           element={
-            <RequireAuth loginPath={"/login"}>
-              <DefaultLayout>
-                <Home />
-              </DefaultLayout>
-            </RequireAuth>
+            <NapTien />
           }
           exact
-        /> */}
+        />
         <Route
           path={"/createGroup"}
           element={

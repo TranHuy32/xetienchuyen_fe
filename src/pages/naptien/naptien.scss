@@ -1,0 +1,121 @@
+.ntWrapper{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.infoContainer{
+    width: 30%;
+    min-width: 415px;
+    height: 500px;
+    // background-color: ;
+    margin-right: 40px;
+    padding: 16px;
+    .ntTitle{
+        font-size: 1.5rem;
+        margin-bottom: 12px;
+        font-weight: bold;
+    }
+    .ntBox{
+        background-color: #fff;
+        border: 1px solid #ddd;
+        padding: 12px;
+        border-radius: 20px;
+        .select1{
+            // background-color: #ddd;
+            min-height: 52px;
+            display:flex;
+            // align-items: center;
+            flex-direction: column;
+            .dropDownSelect{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: calc(100% - 16px);
+                min-width: 370px;
+                height: 52px;
+                padding-left: 16px;
+                border: 1px solid #ddd;
+                border-top-right-radius: 8px;
+                border-top-left-radius: 8px;
+                img{
+                    height: 16px;
+                    padding-right: 16px;
+                }
+            }
+            .dropDownMenu{
+                position: absolute;
+                margin-top: 54px;
+                z-index: 10000;
+                background-color: #fff;
+                width: calc(30% - 24px);
+                div{
+                    border-bottom: #ddd 1px solid;
+                    border-left: #ddd 1px solid;
+                    border-right: #ddd 1px solid;;
+                    padding: 8px 16px;
+                }
+            }
+        }
+        .showAdminInfo1, .showAdminInfo2,.showAdminInfo3{
+            padding: 16px;
+        }
+        .inputBox1, .inputBox2{
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            label{
+                min-width: 132px;
+            }
+            input{
+                padding: 8px;
+                border-radius: 4px;
+                border: 1px solid #ddd;
+            }
+        }
+        button{
+            pointer-events: none;
+            background-color: #00457d;
+            color: #fff;
+            border: none;
+            padding: 8px 32px;
+            border-radius: 8px;
+            opacity: 0.5;
+            margin-top: 16px;
+            margin-bottom: 16px;
+            margin-left: calc(50% - 45px - 16px);
+        }
+        .ready{
+            opacity: 1;
+            pointer-events: visible;
+            cursor: pointer;
+            &:hover{
+
+            }
+        }
+    }
+}
+.qrContainer{
+    min-width: 480px;
+    height: 480px;
+    background-color: #ddd;
+    padding: 12px;
+    border-radius: 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    div{
+        font-size: 1.5rem;
+        margin-bottom: 12px;
+        font-weight: bold;
+        height: 52px;
+    }
+    img{
+        height: 80%;
+        width: 80%;
+        border-radius: 16px;
+        margin-bottom: 42px;
+    }
+}
