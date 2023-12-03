@@ -231,6 +231,7 @@ function NapTien() {
                             inputMode="numeric"
                             value={moneyInputAmount}
                             onChange={changeAmountHandler}
+                            maxLength={13}
                         >
                         </input>
                         {/* <div>*Không Thể Để Trống</div> */}
