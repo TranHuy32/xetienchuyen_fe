@@ -22,7 +22,9 @@ export default function Users() {
   };
   const navigate = useNavigate();
   const { group_id } = useParams();
+  const owner = JSON.parse(localStorage.getItem("token_state")) || [];
 
+  //get group và user data
   useEffect(() => {
     axios
       .get(`${beURL}/group/detail/${group_id}`, config)
@@ -47,10 +49,12 @@ export default function Users() {
         console.log(error);
       });
   }, [token, group_id, currentPage, pageSize]);
+
+  console.log(totalPages);
+
   const handleClickDetail = (user_id) => {
     navigate(`/userDetail/${user_id}`);
   };
-  const owner = JSON.parse(localStorage.getItem("token_state")) || [];
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -127,13 +131,13 @@ export default function Users() {
                 <div className={cx("tableTitle")}>Chi Tiết</div>
                 {users.map((user, index) => (
                   <div className={cx("tableContent")} key={index}>
-                    <a
+                    <div
                       onClick={() => {
                         handleClickDetail(user._id);
                       }}
                     >
                       {"Xem Chi Tiết"}
-                    </a>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -142,7 +146,8 @@ export default function Users() {
                 {users.map((user, index) => (
                   <div className={cx("tableContent")} key={index}>
                     <p>
-                      {user.active && "Đã Kích Hoạt" || "Chưa Kích Hoạt"}
+                      {user.active && "Đã Kích Hoạt"}
+                      {!user.active && "Chưa Kích Hoạt"}
                     </p>
                   </div>
                 ))}
@@ -151,7 +156,7 @@ export default function Users() {
           </div>
         </div>
         <div className={cx("uPagination")}>
-          {Array.from({ length: totalPages }, (_, index) => (
+          {/* {Array.from({ length: totalPages }, (_, index) => (
             <button
               key={index}
               onClick={() => handlePageChange(index + 1)}
@@ -159,7 +164,58 @@ export default function Users() {
             >
               {index + 1}
             </button>
-          ))}
+          ))} */}
+          {currentPage > 3 && (
+            <button
+            >
+              ...
+            </button>
+          )}
+
+          {currentPage > 2 && (
+            <button
+              onClick={() => handlePageChange(currentPage - 2)}
+            >
+              {currentPage - 2}
+            </button>
+          )}
+          {currentPage > 1 && (
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+            >
+              {currentPage - 1}
+            </button>
+          )}
+
+          <button
+            onClick={() => handlePageChange(currentPage)}
+            className={cx({ active: currentPage })}
+          >
+            {currentPage}
+          </button>
+          {currentPage < totalPages && (
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              className={cx()}
+            >
+              {currentPage + 1}
+            </button>
+          )}
+          {(currentPage + 1) < totalPages && (
+            <button
+              onClick={() => handlePageChange(currentPage + 2)}
+              className={cx()}
+            >
+              {currentPage + 2}
+            </button>
+          )}
+          {currentPage < (totalPages - 2) && (
+            <button
+            >
+              ...
+            </button>
+          )}
+
         </div>
       </div>
     );
