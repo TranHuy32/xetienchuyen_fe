@@ -26,42 +26,27 @@
       .lgBox {
         height: 60%;
         width: 100%;
-        // border-bottom: 1px solid black;
         input {
-          width: 90%;
+          width: calc(100% - 50px);
           height: 45px;
           border: 1px #bdc3c7 solid;
-          padding-left: 25px;
+          padding: 0 25px;
           border-radius: 10px;
           background-color: #fff;
         }
-        .lgAccountBox {
-          width: 80%;
+        .lgAccountBox, .lgPasswordBox {
+          width: 70%;
           margin: 2vh auto;
           margin-top: 5vh;
-          padding-left: 25px;
+          // padding-left: 25px;
         }
-        .lgPasswordBox {
-          width: 80%;
-          margin: 2vh auto;
-          padding-left: 25px;
-        }
+
         .lgLoginButtonBox {
           width: 80%;
           margin: 2vh auto;
-          input {
-            width: 90%;
-            margin-top: 4vh;
-            background-color: #3498db;
-            color: #fff;
-            font-size: 1.3rem;
-            border: none;
-            border-radius: 10px;
-            padding: 0;
-          }
           display: flex;
           justify-content: center;
-          button {
+          p{
             width: 80%;
             // margin-top: 4vh;
             margin: 4vh 0 0 0;
@@ -71,11 +56,55 @@
             border: none;
             border-radius: 10px;
             padding: 0;
-            height: 45px;
+            // height: 45px;
+            padding: 16px 15px;
             cursor: pointer;
-
+            text-align: center;
             &:hover {
               background-color: #006bb3;
+            }
+          }
+          .FAContainer {
+            background-color: #fff;
+            position: fixed;
+            // left: calc(50%);
+            top: 144px;
+            width: 400px;
+            left: calc(50% - 200px);
+            height: max-content;
+            top: calc(45% - 100px);
+            z-index: 20000;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            .FATitle{
+              font-size: 1.4rem;
+              padding: 24px 0;
+            }
+            .inputContainer {
+              display: flex;
+              input {
+                width: 16px;
+                height: 32px;
+                padding: 8px;
+                text-align: center;
+                margin: 4px;
+                border-radius: 8px;
+                font-size: 1.4rem;
+                border: 1px solid #ddd;
+              }
+            }
+            button{
+              background-color: #3498db;
+              color: #fff;
+              border: none;
+              padding: 16px 32px;
+              border-radius: 16px;
+              margin: 24px 0;
+              &:hover{
+                background-color: #006bb3;
+              }
             }
           }
         }
@@ -83,6 +112,7 @@
     }
   }
 }
+
 
 @media (max-width: 768px) {
   .lgBody {

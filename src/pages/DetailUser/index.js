@@ -313,8 +313,6 @@ export default function DetailUser() {
 
   const { licensePlate, carType } = state;
 
-  console.log(state);
-
   if (user) {
     return (
       <div>
