@@ -78,7 +78,7 @@ function Login() {
         ...formData,
         twoFaCode: concatenatedString,
       })
-      return formData;
+      return;
     }
   };
 

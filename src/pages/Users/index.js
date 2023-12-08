@@ -50,8 +50,6 @@ export default function Users() {
       });
   }, [token, group_id, currentPage, pageSize]);
 
-  console.log(totalPages);
-
   const handleClickDetail = (user_id) => {
     navigate(`/userDetail/${user_id}`);
   };
@@ -73,8 +71,6 @@ export default function Users() {
       )
       .then((response) => {
         const data = response.data;
-        console.log(response);
-
         setUsers(data.users);
         setTotalPages(Math.ceil(data.totalCount / pageSize));
       })

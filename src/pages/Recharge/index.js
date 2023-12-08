@@ -22,6 +22,8 @@ export default function Users() {
 
   const handleSubmit2FACode = () => {
     setShow2FAInput(false)
+    const otp = concatenateValues();
+    console.log(otp);
   }
 
   function clickEvent(event, nextInputId, prevInputId) {
@@ -48,6 +50,33 @@ export default function Users() {
       return; // Return early if the entered value is not a digit
     }
   }
+
+  const concatenateValues = () => {
+    const input1Value = document.getElementById("text1").value;
+    const input2Value = document.getElementById("text2").value;
+    const input3Value = document.getElementById("text3").value;
+    const input4Value = document.getElementById("text4").value;
+    const input5Value = document.getElementById("text5").value;
+    const input6Value = document.getElementById("text6").value;
+
+    const isNumericInRange = (value) => {
+      return /^\d$/.test(value) && Number(value) >= 0 && Number(value) <= 9;
+    };
+
+    if (
+      !isNumericInRange(input1Value) ||
+      !isNumericInRange(input2Value) ||
+      !isNumericInRange(input3Value) ||
+      !isNumericInRange(input4Value) ||
+      !isNumericInRange(input5Value) ||
+      !isNumericInRange(input6Value)
+    ) {
+      alert("Mã Xác Thực Không Hợp Lệ")
+    } else {
+      const concatenatedString = `${input1Value}${input2Value}${input3Value}${input4Value}${input5Value}${input6Value}`;
+      return concatenatedString;
+    }
+  };
 
   return (
     <div className={cx("rcWrapper")}>
