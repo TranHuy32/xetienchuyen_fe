@@ -21,32 +21,34 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    concatenateValues()
-    try {
-      const response = await axios.post(`${beURL}/users-auth/loginOwner`, formData);
-      const { accessToken, refreshToken, user } = response.data;
-      if (!response.data) {
-        return alert("Sai Tên Tài Khoản Hoặc Mật Khẩu");
-      }
-      signIn({
-        token: accessToken,
-        tokenType: "Bearer",
-        expiresIn: 30,
-        authState: user,
-        refreshToken: refreshToken,
-        refreshTokenExpireIn: 43200,
-      });
-      navigate(`/users/${user.groupId}`);
-      window.location.reload();
-    } catch (error) {
-      if (error.response && error.response.status === 401) {
-        console.log(error.response);
-        return;
-      } else {
-        console.log(error);
-        return error;
+    if (concatenateValues()) {
+      try {
+        const response = await axios.post(`${beURL}/users-auth/loginOwner`, formData);
+        const { accessToken, refreshToken, user } = response.data;
+        if (!response.data) {
+          return alert("Sai Tên Tài Khoản Hoặc Mật Khẩu");
+        }
+        signIn({
+          token: accessToken,
+          tokenType: "Bearer",
+          expiresIn: 30,
+          authState: user,
+          refreshToken: refreshToken,
+          refreshTokenExpireIn: 43200,
+        });
+        navigate(`/users/${user.groupId}`);
+        window.location.reload();
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          console.log(error.response);
+          return;
+        } else {
+          console.log(error);
+          return error;
+        }
       }
     }
+
   };
 
   console.log(formData);
@@ -58,6 +60,14 @@ function Login() {
     const input4Value = document.getElementById("text4").value;
     const input5Value = document.getElementById("text5").value;
     const input6Value = document.getElementById("text6").value;
+
+
+    const input1 = document.getElementById("text1");
+    const input2 = document.getElementById("text2");
+    const input3 = document.getElementById("text3");
+    const input4 = document.getElementById("text4");
+    const input5 = document.getElementById("text5");
+    const input6 = document.getElementById("text6");
 
     const isNumericInRange = (value) => {
       return /^\d$/.test(value) && Number(value) >= 0 && Number(value) <= 9;
@@ -72,13 +82,24 @@ function Login() {
       !isNumericInRange(input6Value)
     ) {
       alert("Mã Xác Thực Không Hợp Lệ")
+      // Clear values of all inputs
+      input1.value = "";
+      input2.value = "";
+      input3.value = "";
+      input4.value = "";
+      input5.value = "";
+      input6.value = "";
+
+      // Set focus to the first input
+      input1.focus();
+      return false
     } else {
       const concatenatedString = `${input1Value}${input2Value}${input3Value}${input4Value}${input5Value}${input6Value}`;
       setFormData({
         ...formData,
         twoFaCode: concatenatedString,
       })
-      return;
+      return true;
     }
   };
 
@@ -94,7 +115,7 @@ function Login() {
     }
 
     if (!/^\d$/.test(currentInput.value)) {
-      return; 
+      return;
     }
 
     if (currentInput.value >= 0 && currentInput.value <= 9) {
