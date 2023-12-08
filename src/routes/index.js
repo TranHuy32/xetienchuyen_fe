@@ -11,16 +11,27 @@ import Transaction from "~/pages/Transaction";
 import DetailUser from "~/pages/DetailUser";
 import Recharge from "~/pages/Recharge";
 import NapTien from "~/pages/naptien/naptien";
+
+import AdminDefaultLayout from "~/components/Layout/AdminDefaultLayout/AdminDefaultLayout";
+import AdminLogin from "~/AdminPages/AdminLogin";
+import AdminHome from "~/AdminPages/AdminHome";
+
 const MainRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Login */}
-        <Route path={"/"} element={<Login />} exact />
         <Route
           path={"/naptien"}
           element={
             <NapTien />
+          }
+          exact
+        />
+        {/* user ROUTES */}
+        <Route
+          path={"/"}
+          element={
+            <Login />
           }
           exact
         />
@@ -101,6 +112,25 @@ const MainRoutes = () => {
           }
           exact
         />
+
+        {/* admin routes */}
+        <Route
+          path={"/adminlogin"}
+          element={
+            <AdminLogin />
+          }
+          exact
+        />
+        <Route
+          path={"/adminhome"}
+          element={
+            <AdminDefaultLayout>
+              <AdminHome />
+            </AdminDefaultLayout>
+          }
+          exact
+        />
+
       </Routes>
     </BrowserRouter>
   );
