@@ -10,6 +10,45 @@ const beURL = process.env.REACT_APP_BE_URL;
 
 function AdminLogin() {
 
+  const navigate = useNavigate();
+  const signIn = useSignIn();
+  const [formData, setFormData] = useState({
+    userName: "",
+    password: "",
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(`${beURL}/users-auth/loginAdmin`, formData);
+      const { accessToken, refreshToken, admin } = response.data;
+      if (!response.data) {
+        return alert("Sai Tên Tài Khoản Hoặc Mật Khẩu");
+      }
+      console.log(formData);
+      signIn({
+        token: accessToken,
+        tokenType: "Bearer",
+        expiresIn: 30,
+        authState: admin,
+        refreshToken: refreshToken,
+        refreshTokenExpireIn: 43200,
+      });
+      navigate(`/adminhome`);
+      // window.location.reload();
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        console.log(error.response.data.message);
+        alert(error.response.data.message)
+        return;
+      } else {
+        alert(error.response.data.message)
+        console.log(error);
+        return error;
+      }
+    }
+  };
+
   return (
     <div className={cx("lgWrapper")}>
       <div className={cx("lgBody")}>
@@ -18,7 +57,7 @@ function AdminLogin() {
           <div className={cx("lgRightContainer")}>
             <h2>ADMIN</h2>
             <form className={cx("lgBox")}
-            // onSubmit={handleSubmit}
+              onSubmit={handleSubmit}
             >
               <div className={cx("lgAccountBox")}>
                 <input
@@ -26,12 +65,12 @@ function AdminLogin() {
                   className={cx("account-input")}
                   type="text"
                   placeholder="Tên Đăng Nhập"
-                // onChange={(e) =>
-                //   setFormData({
-                //     ...formData,
-                //     userName: e.target.value,
-                //   })
-                // }
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      userName: e.target.value,
+                    })
+                  }
                 ></input>
               </div>
               <div className={cx("lgPasswordBox")}>
@@ -40,39 +79,19 @@ function AdminLogin() {
                   className={cx("password-input")}
                   type="password"
                   placeholder="Mật Khẩu"
-                // onChange={(e) =>
-                //   setFormData({
-                //     ...formData,
-                //     password: e.target.value,
-                //   })
-                // }
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      password: e.target.value,
+                    })
+                  }
                 ></input>
               </div>
-              <div className={cx("lgLoginButtonBox")}>
-                <p
-                // onClick={() => (setShow2FAInput(true))}
+              <div className={cx("adminlgLoginButtonBox")}>
+                <button type="submit" value={"Log in"}
                 >
                   Đăng Nhập
-                </p>
-                {/* {show2FAInput && (
-                  <Fragment>
-                    <div className={cx("overlay")} onClick={() => handleCancel()}></div>
-                    <div className={cx("FAContainer")}>
-                      <div className={cx("FATitle")}>Nhập Mã Xác Thực 2FA: </div>
-                      <div className={cx("inputContainer")}>
-                        <input type="number" pattern="[0-9]" id="text1" onKeyUp={(e) => inputEvent(e, "text2", "text1")} autoFocus />
-                        <input type="number" pattern="[0-9]" id="text2" onKeyUp={(e) => inputEvent(e, "text3", "text1")} />
-                        <input type="number" pattern="[0-9]" id="text3" onKeyUp={(e) => inputEvent(e, "text4", "text2")} />
-                        <input type="number" pattern="[0-9]" id="text4" onKeyUp={(e) => inputEvent(e, "text5", "text3")} />
-                        <input type="number" pattern="[0-9]" id="text5" onKeyUp={(e) => inputEvent(e, "text6", "text4")} />
-                        <input type="number" pattern="[0-9]" id="text6" onKeyUp={(e) => inputEvent(e, "submit", "text5")} />
-                      </div>
-                      <button type="submit" value={"Log in"}>
-                        Xác Nhận
-                      </button>
-                    </div>
-                  </Fragment>
-                )} */}
+                </button>
               </div>
             </form>
           </div>

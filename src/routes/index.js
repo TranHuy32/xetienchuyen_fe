@@ -20,117 +20,22 @@ const MainRoutes = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path={"/naptien"}
-          element={
-            <NapTien />
-          }
-          exact
-        />
-        {/* user ROUTES */}
-        <Route
-          path={"/"}
-          element={
-            <Login />
-          }
-          exact
-        />
-        <Route
-          path={"/createGroup"}
-          element={
-            <RequireAuth loginPath={"/"}>
-              <DefaultLayout>
-                <CreateGroup />
-              </DefaultLayout>
-            </RequireAuth>
-          }
-          exact
-        />
-        <Route
-          path={"/users/:group_id"}
-          element={
-            <RequireAuth loginPath={"/"}>
-              <DefaultLayout>
-                <Users />
-              </DefaultLayout>
-            </RequireAuth>
-          }
-          exact
-        />
-        <Route
-          path={"/createUser"}
-          element={
-            <RequireAuth loginPath={"/"}>
-              <DefaultLayout>
-                <CreateUser />
-              </DefaultLayout>
-            </RequireAuth>
-          }
-          exact
-        />
-        <Route
-          path={"/recharge"}
-          element={
-            <RequireAuth loginPath={"/"}>
-              <DefaultLayout>
-                <Recharge />
-              </DefaultLayout>
-            </RequireAuth>
-          }
-          exact
-        />
-        <Route
-          path={"/followProvince"}
-          element={
-            <RequireAuth loginPath={"/"}>
-              <DefaultLayout>
-                <FollowProvince />
-              </DefaultLayout>
-            </RequireAuth>
-          }
-          exact
-        />
-        <Route
-          path={"/transaction/:group_id"}
-          element={
-            <RequireAuth loginPath={"/"}>
-              <DefaultLayout>
-                <Transaction />
-              </DefaultLayout>
-            </RequireAuth>
-          }
-          exact
-        />
-        <Route
-          path={"/userDetail/:user_id"}
-          element={
-            <RequireAuth loginPath={"/"}>
-              <DefaultLayout>
-                <DetailUser />
-              </DefaultLayout>
-            </RequireAuth>
-          }
-          exact
-        />
-
         {/* admin routes */}
-        <Route
-          path={"/adminlogin"}
-          element={
-            <AdminLogin />
-          }
-          exact
-        />
-        <Route
-          path={"/adminhome"}
-          element={
-            <AdminDefaultLayout>
-              <AdminHome />
-            </AdminDefaultLayout>
-          }
-          exact
-        />
+        <Route path={"/adminlogin"} element={<AdminLogin />} exact />
 
+        <Route path={"/adminhome"} element={<RequireAuth loginPath={"/adminlogin"}><AdminDefaultLayout><AdminHome /></AdminDefaultLayout></RequireAuth>} exact />
+
+        {/* user ROUTES */}
+        <Route path={"/naptien"} element={<NapTien />} exact />
+        <Route path={"/"} element={<Login />} exact />
+
+        <Route path={"/createGroup"} element={<RequireAuth loginPath={"/"}><DefaultLayout><CreateGroup /></DefaultLayout></RequireAuth>} exact />
+        <Route path={"/users/:group_id"} element={<RequireAuth loginPath={"/"}><DefaultLayout><Users /></DefaultLayout></RequireAuth>} exact />
+        <Route path={"/createUser"} element={<RequireAuth loginPath={"/"}><DefaultLayout><CreateUser /></DefaultLayout></RequireAuth>} exact />
+        <Route path={"/recharge"} element={<RequireAuth loginPath={"/"}><DefaultLayout><Recharge /></DefaultLayout></RequireAuth>} exact />
+        <Route path={"/followProvince"} element={<RequireAuth loginPath={"/"}><DefaultLayout><FollowProvince /></DefaultLayout></RequireAuth>} exact />
+        <Route path={"/transaction/:group_id"} element={<RequireAuth loginPath={"/"}><DefaultLayout><Transaction /></DefaultLayout></RequireAuth>} exact />
+        <Route path={"/userDetail/:user_id"} element={<RequireAuth loginPath={"/"}><DefaultLayout><DetailUser /></DefaultLayout></RequireAuth>} exact />
       </Routes>
     </BrowserRouter>
   );
