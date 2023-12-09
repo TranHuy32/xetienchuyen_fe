@@ -11,8 +11,13 @@ function AdminHome() {
     const [currentPage, setCurrentPage] = useState(1);
     const [groupList, setGroupList] = useState([]);
     const [inputValue, setInputValue] = useState('');
-    const [reloadList, setReloadList] = useState(false)
+    const [changeNameValue, setChangeNameValue] = useState('');
+    const [reloadList, setReloadList] = useState(false);
+    const [changeNameState, setChangeNameState] = useState("");
     const [formGroupData, setFormGroupData] = useState({
+        name: "",
+    });
+    const [formChangeNameData, setFormChangeNameData] = useState({
         name: "",
     });
 
@@ -21,6 +26,7 @@ function AdminHome() {
     const config = {
         headers: { Authorization: `Bearer ${token}` },
     };
+    //get group list
     useEffect(() => {
         axios
             .get(`${beURL}/group/all`, config)
@@ -60,17 +66,55 @@ function AdminHome() {
             alert("Nhập Tên Nhóm Muốn Tạo");
         }
     }
+
+    const handleChangeName = (groupId) => {
+        // console.log(groupId);
+        // if (changeNameValue.length > 0) {
+        //     axios
+        //         .put(`${beURL}/group/update/${groupId}`,
+        //             formChangeNameData
+        //             , config)
+        //         .then((response) => {
+        //             const data = response.data;
+        //             console.log(data);
+        //         })
+        //         .catch((error) => {
+        //             console.log(error);
+        //         });
+        // }else{
+        //     console.log("chua nhap ten");
+        // }
+
+        
+        // // setChangeNameState("")
+        // // handleClearChangeName()
+        // // setReloadList(!reloadList)
+    }
+
+    const handleGroupNameChange = (e) => {
+        setChangeNameValue(e.target.value)
+        setFormChangeNameData({
+            ...formChangeNameData,
+            name: e.target.value,
+        })
+    };
+
+    const handleClearChangeName = () => {
+        setChangeNameValue('');
+    };
+
     const handleInputChange = (e) => {
         setInputValue(e.target.value);
         setFormGroupData({
             ...formGroupData,
             name: e.target.value,
-          })
-      };
+        })
+    };
 
     const handleClearInput = () => {
         setInputValue('');
     };
+
     return (
         <Fragment>
             <div className={cx("createGroupBox")}>
@@ -99,8 +143,24 @@ function AdminHome() {
                         {groupList.map((group, index) => (
                             <tr key={index}>
                                 <td>
-                                    {group.name}
-                                    <button>Đổi tên</button>
+                                    {changeNameState !== group._id && (
+                                        <Fragment>
+                                            {group.name}
+                                            <button onClick={() => setChangeNameState(group._id)}>Đổi tên</button>
+                                        </Fragment>
+                                    )}
+                                    {changeNameState === group._id && (
+                                        <Fragment>
+                                            <input
+                                                type="text"
+                                                value={changeNameValue}
+                                                onChange={handleGroupNameChange}
+                                                placeholder="Nhập Tên Group Mới"
+
+                                            ></input>
+                                            <button onClick={() => handleChangeName(group._id)}>Xác Nhận</button>
+                                        </Fragment>
+                                    )}
                                 </td>
                                 <td>decoy </td>
                                 <td>decoy </td>
