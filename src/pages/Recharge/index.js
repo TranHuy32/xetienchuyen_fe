@@ -186,6 +186,10 @@ export default function Users() {
                     <strong>Nạp Tiền Thành Công</strong>
                   )
                   }
+                   {bill.status === "CANCEL" && (
+                    <strong>Đã Huỷ</strong>
+                  )
+                  }
                 </td>
               </tr>
             );
