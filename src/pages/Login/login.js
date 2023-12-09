@@ -16,7 +16,7 @@ function Login() {
   const [formData, setFormData] = useState({
     userName: "",
     password: "",
-    // twoFaCode: "",
+    twoFaCode: "",
   });
 
   const handleSubmit = async (e) => {
@@ -28,6 +28,7 @@ function Login() {
         if (!response.data) {
           return alert("Sai Tên Tài Khoản Hoặc Mật Khẩu");
         }
+        console.log(formData);
         signIn({
           token: accessToken,
           tokenType: "Bearer",
@@ -41,6 +42,7 @@ function Login() {
       } catch (error) {
         if (error.response && error.response.status === 401) {
           console.log(error.response);
+          console.log(formData);
           return;
         } else {
           console.log(error);
@@ -48,10 +50,9 @@ function Login() {
         }
       }
     }
-
   };
 
-  console.log(formData);
+
 
   const concatenateValues = () => {
     const input1Value = document.getElementById("text1").value;
@@ -185,7 +186,7 @@ function Login() {
                         <input type="number" pattern="[0-9]" id="text5" onKeyUp={(e) => inputEvent(e, "text6", "text4")} />
                         <input type="number" pattern="[0-9]" id="text6" onKeyUp={(e) => inputEvent(e, "submit", "text5")} />
                       </div>
-                      <button type="submit" value={"Log in"}>
+                      <button type="submit" value={"Log in"} onClick={() => concatenateValues()}>
                         Xác Nhận
                       </button>
                     </div>
