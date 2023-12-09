@@ -1,16 +1,37 @@
 import classNames from "classnames";
 import styles from "./Recharge.scss";
 import { Fragment, useEffect, useState } from "react";
-
+import axios from "axios";
 const cx = classNames.bind(styles);
 const beURL = process.env.REACT_APP_BE_URL;
 
 export default function Users() {
+  const [paymentList, setPaymentList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(8);
   const [totalPages, setTotalPages] = useState(0);
-
   const [show2FAInput, setShow2FAInput] = useState(false);
+  const [selectedPaymentId, setSelectedPaymentId] = useState("");
+  const [refreshList, setRefreshList] = useState(false);
+
+  const token = localStorage.getItem("token") || [];
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+
+  //get payment list
+  useEffect(() => {
+    axios
+      .get(`${beURL}/payment/allByOwner?page=${currentPage}&pageSize=${pageSize}`, config)
+      .then((response) => {
+        const data = response.data;
+        setPaymentList(data.payments);
+        setTotalPages(Math.ceil(data.totalCount / pageSize))
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [totalPages, currentPage, refreshList]);
 
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
@@ -18,14 +39,47 @@ export default function Users() {
 
   const handleCancel = () => {
     setShow2FAInput(false)
+    setSelectedPaymentId("")
   }
 
+  const handleOpenOTPInput = (paymentId) => {
+    setShow2FAInput(true)
+    setSelectedPaymentId(paymentId)
+  }
+  //send otp to accept
   const handleSubmit2FACode = () => {
-    setShow2FAInput(false)
+    // setShow2FAInput(false)
     const otp = concatenateValues();
-    console.log(otp);
+    console.log({
+      "action": "ACEPT",
+      "twoFaCode": otp,
+      "paymentId": selectedPaymentId,
+    });
+    axios
+      .put(`${beURL}/payment/action`,
+        {
+          "action": "ACCEPT",
+          "twoFaCode": otp,
+          "paymentId": selectedPaymentId,
+        }
+        , config)
+      .then((response) => {
+        const data = response.data;
+        console.log(data);
+        if (data.message === "SUCCESS") {
+          alert("Thành Công")
+          setShow2FAInput(false)
+          setSelectedPaymentId("")
+          setRefreshList(!refreshList)
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
   }
 
+  //auto focus next input
   function clickEvent(event, nextInputId, prevInputId) {
     const currentInput = event.target;
 
@@ -51,6 +105,7 @@ export default function Users() {
     }
   }
 
+  //combine otp code
   const concatenateValues = () => {
     const input1Value = document.getElementById("text1").value;
     const input2Value = document.getElementById("text2").value;
@@ -110,83 +165,89 @@ export default function Users() {
           </tr>
         </thead>
 
-        {Array.from({ length: 8 }, (_, index) => (
-          <tbody key={index}>
-            <tr>
-              <td>decoy</td>
-              <td>decoy</td>
-              <td>decoy</td>
-              <td>decoy</td>
-              <td>
-                <button onClick={() => setShow2FAInput(true)}>Xác Thực</button>
-              </td>
-            </tr>
-          </tbody>
-
-        ))}
+        <tbody>
+          {paymentList.map((bill, index) => {
+            let inputTime = bill.createdAt;
+            let date = new Date(inputTime);
+            let formattedTime =
+              `${("0" + date.getHours()).slice(-2)}:${("0" + date.getMinutes()).slice(-2)}
+            ${("0" + date.getDate()).slice(-2)}/${("0" + (date.getMonth() + 1)).slice(-2)}`;
+            return (
+              <tr key={index}>
+                <td>{formattedTime}</td>
+                <td>{bill.user._id}</td>
+                <td>{bill.user.userName}</td>
+                <td>{bill.amount} k</td>
+                <td>
+                  {bill.status === "PENDING" && (
+                    <button onClick={() => handleOpenOTPInput(bill._id)}>Xác Thực</button>
+                  )}
+                  {bill.status === "COMPLETED" && (
+                    <strong>Nạp Tiền Thành Công</strong>
+                  )
+                  }
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
       </table>
-      <div className={cx("rcPagination")}>
-        {/* {Array.from({ length: totalPages }, (_, index) => (
+      {paymentList.length !== 0 && (
+        <div className={cx("rcPagination")}>
+          {currentPage > 3 && (
             <button
-              key={index}
-              onClick={() => handlePageChange(index + 1)}
-              className={cx({ active: index + 1 === currentPage })}
             >
-              {index + 1}
+              ...
             </button>
-          ))} */}
-        {currentPage > 3 && (
-          <button
-          >
-            ...
-          </button>
-        )}
+          )}
 
-        {currentPage > 2 && (
-          <button
-            onClick={() => handlePageChange(currentPage - 2)}
-          >
-            {currentPage - 2}
-          </button>
-        )}
-        {currentPage > 1 && (
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-          >
-            {currentPage - 1}
-          </button>
-        )}
+          {currentPage > 2 && (
+            <button
+              onClick={() => handlePageChange(currentPage - 2)}
+            >
+              {currentPage - 2}
+            </button>
+          )}
+          {currentPage > 1 && (
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+            >
+              {currentPage - 1}
+            </button>
+          )}
 
-        <button
-          onClick={() => handlePageChange(currentPage)}
-          className={cx({ active: currentPage })}
-        >
-          {currentPage}
-        </button>
-        {currentPage < totalPages && (
           <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            className={cx()}
+            onClick={() => handlePageChange(currentPage)}
+            className={cx({ active: currentPage })}
           >
-            {currentPage + 1}
+            {currentPage}
           </button>
-        )}
-        {(currentPage + 1) < totalPages && (
-          <button
-            onClick={() => handlePageChange(currentPage + 2)}
-            className={cx()}
-          >
-            {currentPage + 2}
-          </button>
-        )}
-        {currentPage < (totalPages - 2) && (
-          <button
-          >
-            ...
-          </button>
-        )}
+          {currentPage < totalPages && (
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              className={cx()}
+            >
+              {currentPage + 1}
+            </button>
+          )}
+          {(currentPage + 1) < totalPages && (
+            <button
+              onClick={() => handlePageChange(currentPage + 2)}
+              className={cx()}
+            >
+              {currentPage + 2}
+            </button>
+          )}
+          {currentPage < (totalPages - 2) && (
+            <button
+            >
+              ...
+            </button>
+          )}
 
-      </div>
+        </div>
+      )}
+
     </div>
   );
 }

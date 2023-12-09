@@ -1,6 +1,6 @@
 .rcWrapper {
   min-height: 110vh;
-
+  min-width: 960px;
   .FAContainer {
     background-color: #fff;
     position: fixed;
@@ -59,13 +59,12 @@
 
     tr {
       :first-child {
-        width: 10%;
+        width: 20%;
         // min-width: ;
       }
-
       :last-child {
         width: 15%;
-
+        min-width: 160px;
         button {
           padding: 8px 0;
           width: 80%;
