@@ -84,7 +84,6 @@ function AdminHome() {
         // }else{
         //     console.log("chua nhap ten");
         // }
-            
         setChangeNameState("")
         handleClearChangeName()
         setReloadList(!reloadList)

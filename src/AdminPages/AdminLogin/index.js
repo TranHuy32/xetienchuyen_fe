@@ -21,20 +21,20 @@ function AdminLogin() {
     e.preventDefault();
     try {
       const response = await axios.post(`${beURL}/users-auth/loginAdmin`, formData);
-      const { accessToken, refreshToken, admin } = response.data;
+      const { accessToken, refreshToken, user } = response.data;
+      console.log(response);
       if (!response.data) {
         return alert("Sai Tên Tài Khoản Hoặc Mật Khẩu");
       }
-      console.log(formData);
       signIn({
         token: accessToken,
         tokenType: "Bearer",
         expiresIn: 30,
-        authState: admin,
+        authState: user,
         refreshToken: refreshToken,
         refreshTokenExpireIn: 43200,
       });
-      navigate(`/adminhome`);
+      navigate(`/adminlogin/adminhome`);
       // window.location.reload();
     } catch (error) {
       if (error.response && error.response.status === 401) {

@@ -21,13 +21,15 @@ function AdminDefaultLayout({ children }) {
         <div className={cx("adhContent")}>
           <h2
             className={cx("adhTextLogo")}
-            onClick={() => navigate(`/users/${owner.groupId}`)}
+          // onClick={() => navigate(`/users/${owner.groupId}`)}
           >
             Quản Lý
           </h2>
           <div className="adhUserBox">
             <p>Admin</p>
-            <a className={cx("adhLogout")} onClick={logout}>
+            <a className={cx("adhLogout")}
+              onClick={() => logout()}
+            >
               Đăng xuất
             </a>
           </div>
@@ -35,10 +37,10 @@ function AdminDefaultLayout({ children }) {
         <div className="adhMenu">
           <ul>
             <li
-              className={cx("fActived")}
-            // onClick={() => {
-            //   navigate(`/users/${owner.groupId}`);
-            // }}
+              className={cx("")}
+            onClick={() => {
+              navigate(`/adminlogin/adminhome`);
+            }}
             >
               Quản Lý Group
             </li>
@@ -50,9 +52,9 @@ function AdminDefaultLayout({ children }) {
               Quản Lý Owner
             </li>
             <li
-            // onClick={() => {
-            //   navigate("/followProvince");
-            // }}
+            onClick={() => {
+              navigate("/adminlogin/adminadsmanager");
+            }}
             >
               Quản Lý Quảng Cáo
             </li>

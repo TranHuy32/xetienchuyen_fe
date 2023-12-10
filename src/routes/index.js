@@ -15,6 +15,7 @@ import NapTien from "~/pages/naptien/naptien";
 import AdminDefaultLayout from "~/components/Layout/AdminDefaultLayout/AdminDefaultLayout";
 import AdminLogin from "~/AdminPages/AdminLogin";
 import AdminHome from "~/AdminPages/AdminHome";
+import AdminAds from "~/AdminPages/AdminAds/index"
 
 const MainRoutes = () => {
   return (
@@ -23,8 +24,9 @@ const MainRoutes = () => {
         {/* admin routes */}
         <Route path={"/adminlogin"} element={<AdminLogin />} exact />
 
-        <Route path={"/adminhome"} element={<RequireAuth loginPath={"/adminlogin"}><AdminDefaultLayout><AdminHome /></AdminDefaultLayout></RequireAuth>} exact />
+        <Route path={"/adminlogin/adminhome"} element={<RequireAuth loginPath={"/adminlogin"}><AdminDefaultLayout><AdminHome /></AdminDefaultLayout></RequireAuth>} exact />
 
+        <Route path={"/adminlogin/adminadsmanager"} element={<RequireAuth loginPath={"/adminlogin"}><AdminDefaultLayout><AdminAds /></AdminDefaultLayout></RequireAuth>} exact />
         {/* user ROUTES */}
         <Route path={"/naptien"} element={<NapTien />} exact />
         <Route path={"/"} element={<Login />} exact />
