@@ -1,0 +1,58 @@
+.flex-row {
+    display: flex;
+}
+
+.space-between {
+    justify-content: space-between;
+}
+
+.adsList {
+    width: 80%;
+    margin: auto;
+    min-width: 960px;
+
+    .box {  
+        margin-top: 16px;
+        border: 1px solid #1abcfe;
+        border-radius: 16px;
+        .inforBox{
+            width: 50%;
+            div{
+                padding: 12px;
+                display: flex;
+                align-items: center;
+                text-transform: capitalize;
+                a{
+                    margin-left: 8px;
+                    text-decoration: underline;
+                    font-weight: bold;
+                }
+                button{
+                    background-color: #f24e1e;
+                    border: none;
+                    padding: 8px 16px;
+                    border-radius: 8px;
+                    color: #fff;
+                    margin-right: 40%;
+                    &:hover{
+                        background-color: #1abcfe;
+                    }
+                }
+            }
+            .link{
+                margin-top: 12px;
+            }
+
+        }
+
+
+        img {
+            max-width: 50%;
+            object-fit:scale-down;  
+            padding: 16px;
+            margin-right: 32px;
+            max-height: 200px;
+        }
+    }
+
+}
