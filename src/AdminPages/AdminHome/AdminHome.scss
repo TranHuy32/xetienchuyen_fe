@@ -21,64 +21,65 @@
         margin-left: 8px;
     }
 }
-
-table {
-    width: 80%;
-    max-width: 1200px;
-    min-width: 960px;
-    margin: auto;
-    background-color: #fff;
-    margin-bottom: 10vh;
-    thead {
-        tr {
-            :first-child {
-                border-top-left-radius: 16px;
-            }
-
-            :last-child {
-                border-top-right-radius: 16px;
-            }
-
-            th {
-                width: 25%;
-                padding: 16px 0;
-                background-color: #0acf83;
-                text-transform: capitalize;
+.adListGroup{
+    table {
+        width: 80%;
+        max-width: 1200px;
+        min-width: 960px;
+        margin: auto;
+        background-color: #fff;
+        margin-bottom: 10vh;
+        thead {
+            tr {
+                :first-child {
+                    border-top-left-radius: 16px;
+                }
+    
+                :last-child {
+                    border-top-right-radius: 16px;
+                }
+    
+                th {
+                    width: 25%;
+                    padding: 16px 0;
+                    background-color: #0acf83;
+                    text-transform: capitalize;
+                }
             }
         }
-    }
-
-    tbody {
-        tr {
-            td {
-                width: 25%;
-                text-align: center;
-                padding: 16px 0;
-                border-bottom: 1px dashed #0acf83;
-            }
-            :first-child{
-                width: 40%;
-                text-align: left;
-                padding-left: 32px;
-                font-size: 24px;
-                button{
-                    padding: 8px 16px;
-                    background-color: #1abcfe;
-                    border-radius: 8px;
-                    border: none;
-                    float: right;
-                    font-size: 1rem;
-                    width: max-content;
-                    margin-right: 16px;
-                    font-size: 12px;
-                    color: #fff;
+    
+        tbody {
+            tr {
+                td {
+                    width: 25%;
+                    text-align: center;
+                    padding: 16px 0;
+                    border-bottom: 1px dashed #0acf83;
                 }
-                input{
-                    height: 14px;
-                    width: 50%;
-                    padding: 8px 16px;
-                    font-size: 1rem;
-                    border-radius: 8px;
+                :first-child{
+                    width: 40%;
+                    text-align: left;
+                    padding-left: 32px;
+                    font-size: 24px;
+                    button{
+                        padding: 8px 16px;
+                        background-color: #1abcfe;
+                        border-radius: 8px;
+                        border: none;
+                        float: right;
+                        font-size: 1rem;
+                        width: max-content;
+                        margin-right: 16px;
+                        font-size: 12px;
+                        color: #fff;
+                    }
+                    input{
+                        height: 14px;
+                        width: 50%;
+                        padding: 8px 16px;
+                        font-size: 1rem;
+                        border-radius: 8px;
+                    }
                 }
             }
         }

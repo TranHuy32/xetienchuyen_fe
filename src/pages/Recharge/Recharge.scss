@@ -60,7 +60,6 @@
     tr {
       :first-child {
         width: 20%;
-        // min-width: ;
       }
       :last-child {
         width: 15%;
@@ -72,6 +71,7 @@
           background-color: #ff6969;
           border: none;
           border-radius: 8px;
+          text-align: center;
         }
       }
 

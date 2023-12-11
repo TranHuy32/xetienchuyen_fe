@@ -127,13 +127,13 @@ function AdminHome() {
                     Tạo Group
                 </button>
             </div>
-            <div className={cx("bảng list group")}>
+            <div className={cx("adListGroup")}>
                 <table>
                     <thead>
                         <tr>
                             <th>Tên Group</th>
                             <th>tên owner</th>
-                            <th>Chưa Biết</th>
+                            {/* <th>Chưa Biết</th> */}
                             <th>App Phí</th>
                         </tr>
                     </thead>
@@ -144,7 +144,7 @@ function AdminHome() {
                                     {changeNameState !== group._id && (
                                         <Fragment>
                                             {group.name}
-                                            <button onClick={() => setChangeNameState(group._id)}>Đổi tên</button>
+                                            {/* <button onClick={() => setChangeNameState(group._id)}>Đổi tên</button> */}
                                         </Fragment>
                                     )}
                                     {changeNameState === group._id && (
@@ -161,7 +161,7 @@ function AdminHome() {
                                     )}
                                 </td>
                                 <td>decoy </td>
-                                <td>decoy </td>
+                                {/* <td>decoy </td> */}
                                 <td>{group.appFee}</td>
                             </tr>
                         ))}
