@@ -47,8 +47,29 @@ function AdminAds() {
             .catch((error) => {
                 console.log(error);
             });
-
     }
+
+    const handleSetActive = (isActive, id) =>{
+        var status = !isActive
+        axios
+            .put(`${beURL}/ads/activeAds/${id}`,
+                {
+                    "active": status
+                }
+                , config)
+            .then((response) => {
+                const data = response.data;
+                if (data.message === "SUCCESS") {
+                    setReloadList(!reloadList)
+                }
+
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    console.log(adsList);
     return (
         <Fragment>
 
@@ -61,19 +82,19 @@ function AdminAds() {
                             <div className={cx("type")}>Type: {ads.type}</div>
                             <div className={cx("groupId")}>GroupId: {ads.groupId === null && ("Không có" || ads.groupId)}</div>
                             <div className={cx("flex-row space-between")}>
-                                <p className={cx("isBanner")}>Set Banner:
-                                   <strong> {ads.isBanner && (" Đã Set ")}</strong>
+                                <p className={cx("isBanner")}>Banner:
+                                    <strong> {ads.isBanner && (" Đã Set ")}</strong>
                                     {!ads.isBanner && (" Chưa Set ")}
                                 </p>
                                 <button onClick={() => handleSetBanner(ads.isBanner, ads._id)}>Thay Đổi</button>
                             </div>
-                            {/* <div className={cx("flex-row space-between")}>
+                            <div className={cx("flex-row space-between")}>
                                 <p className={cx("isActive")}>Kích Hoạt:
-                                    {ads.isBanner && (" Đã Active ")}
-                                    {!ads.isBanner && (" Chưa Active ")}
+                                    <strong>{ads.active && (" Đã Active ")}</strong>
+                                    {!ads.active && (" Chưa Active ")}
                                 </p>
-                                <button onClick={() => handleSetBanner(ads.isBanner, ads._id)}>Thay Đổi</button>
-                            </div> */}
+                                <button onClick={() => handleSetActive(ads.active, ads._id)}>Thay Đổi</button>
+                            </div>
                         </div>
 
                         <img alt="ảnh" src={ads.image_ads.path} className={cx("Image")}></img>
