@@ -102,8 +102,12 @@ function AdminAds() {
     const handleCreateNewAds = () => {
         if (state.adsPhoneNumber.length === 10) {
             if (isImageFile(state.image_ads)) {
+                const formData = new FormData();
+                formData.append('adsPhoneNumber', state.adsPhoneNumber);
+                formData.append('adsLink', state.adsLink);
+                formData.append('image_ads', state.image_ads);
                 axios
-                    .post(`${beURL}/ads/create`, state, config)
+                    .post(`${beURL}/ads/create`, formData, config)
                     .then((response) => {
                         const data = response.data;
                         console.log(data);
@@ -118,7 +122,7 @@ function AdminAds() {
             alert("Kiểm Tra Lại Số Điện Thoại")
         }
     }
-    
+
     const handleCancel = () => {
         setShowCreateAds(false)
         setState({
@@ -127,6 +131,8 @@ function AdminAds() {
             image_ads: null,
         })
     }
+
+    console.log(state);
 
     return (
         <Fragment>

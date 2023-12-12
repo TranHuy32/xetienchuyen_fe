@@ -45,9 +45,9 @@ function AdminDefaultLayout({ children }) {
               Quản Lý Group
             </li>
             <li
-            // onClick={() => {
-            //   navigate("/createUser");
-            // }}
+            onClick={() => {
+              navigate("/adminlogin/adminownermanager");
+            }}
             >
               Quản Lý Owner
             </li>

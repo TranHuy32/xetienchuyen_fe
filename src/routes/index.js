@@ -16,6 +16,7 @@ import AdminDefaultLayout from "~/components/Layout/AdminDefaultLayout/AdminDefa
 import AdminLogin from "~/AdminPages/AdminLogin";
 import AdminHome from "~/AdminPages/AdminHome";
 import AdminAds from "~/AdminPages/AdminAds/index"
+import AdminOwner from "~/AdminPages/AdminOwner/index"
 
 const MainRoutes = () => {
   return (
@@ -27,6 +28,8 @@ const MainRoutes = () => {
         <Route path={"/adminlogin/adminhome"} element={<RequireAuth loginPath={"/adminlogin"}><AdminDefaultLayout><AdminHome /></AdminDefaultLayout></RequireAuth>} exact />
 
         <Route path={"/adminlogin/adminadsmanager"} element={<RequireAuth loginPath={"/adminlogin"}><AdminDefaultLayout><AdminAds /></AdminDefaultLayout></RequireAuth>} exact />
+
+        <Route path={"/adminlogin/adminownermanager"} element={<RequireAuth loginPath={"/adminlogin"}><AdminDefaultLayout><AdminOwner /></AdminDefaultLayout></RequireAuth>} exact />
         {/* user ROUTES */}
         <Route path={"/naptien"} element={<NapTien />} exact />
         <Route path={"/"} element={<Login />} exact />

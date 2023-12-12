@@ -8,7 +8,6 @@ const cx = classNames.bind(styles);
 const beURL = process.env.REACT_APP_BE_URL;
 
 function AdminHome() {
-    const [currentPage, setCurrentPage] = useState(1);
     const [groupList, setGroupList] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [changeNameValue, setChangeNameValue] = useState('');
@@ -38,7 +37,7 @@ function AdminHome() {
             .catch((error) => {
                 console.log(error);
             });
-    }, [currentPage, reloadList]);
+    }, [reloadList]);
 
     const handleCreateNewGroup = () => {
         if (formGroupData.name.length > 0) {
