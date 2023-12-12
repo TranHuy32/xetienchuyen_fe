@@ -9,13 +9,18 @@ const beURL = process.env.REACT_APP_BE_URL;
 function AdminAds() {
     const [adsList, setAdsList] = useState([])
     const [reloadList, setReloadList] = useState(false)
+    const [showCreateAds, setShowCreateAds] = useState(false)
+    const [state, setState] = useState({
+        adsPhoneNumber: "",
+        adsLink: "",
+        image_ads: null,
+    });
 
     const token = localStorage.getItem("token") || [];
     const config = {
         headers: { Authorization: `Bearer ${token}` },
     };
 
-    console.log(adsList);
 
     useEffect(() => {
         axios
@@ -49,7 +54,7 @@ function AdminAds() {
             });
     }
 
-    const handleSetActive = (isActive, id) =>{
+    const handleSetActive = (isActive, id) => {
         var status = !isActive
         axios
             .put(`${beURL}/ads/activeAds/${id}`,
@@ -69,10 +74,106 @@ function AdminAds() {
             });
     }
 
-    console.log(adsList);
+    const handleShowCreateAds = () => {
+        setShowCreateAds(true)
+    }
+
+    const changeHandler = (e) => {
+        setState({ ...state, [e.target.name]: e.target.value });
+    };
+
+    const isImageFile = (file) => {
+        const acceptedFormats = ["image/png", "image/jpeg", "image/jpg"];
+        return acceptedFormats.includes(file.type);
+    };
+
+    const changeFileHandler = (event) => {
+        const file = event.target.files[0];
+        if (isImageFile(file)) {
+            setState((prevState) => ({
+                ...prevState,
+                image_ads: file,
+            }));
+        } else {
+            alert("Chọn Ảnh Có Định Dạng png / jpeg / jpg")
+        }
+    };
+
+    const handleCreateNewAds = () => {
+        if (state.adsPhoneNumber.length === 10) {
+            if (isImageFile(state.image_ads)) {
+                axios
+                    .post(`${beURL}/ads/create`, state, config)
+                    .then((response) => {
+                        const data = response.data;
+                        console.log(data);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            } else {
+                alert("Chọn Ảnh Đúng Định Dạng")
+            }
+        } else {
+            alert("Kiểm Tra Lại Số Điện Thoại")
+        }
+    }
+    
+    const handleCancel = () => {
+        setShowCreateAds(false)
+        setState({
+            adsPhoneNumber: "",
+            adsLink: "",
+            image_ads: null,
+        })
+    }
+
     return (
         <Fragment>
-
+            {showCreateAds && (
+                <Fragment>
+                    <div className={cx("overlay")} onClick={handleCancel}></div>
+                    <div className={cx("createAdsBox")}>
+                        <div className={cx("boxTitle")}>Thông Tin Quảng Cáo</div>
+                        <div className={cx("boxInput1")}>
+                            <label for="adsPhoneNumber">Số Điện Thoại:</label>
+                            <input
+                                id="adsPhoneNumber"
+                                onChange={changeHandler}
+                                name="adsPhoneNumber"
+                                type="number"
+                                value={state.adsPhoneNumber}
+                                placeholder="Nhập Số Điện Thoại ..."
+                                maxLength={10}
+                            ></input>
+                        </div>
+                        <div className={cx("boxInput2")}>
+                            <label for="adsLink">Link: </label>
+                            <input
+                                id="adsLink"
+                                onChange={changeHandler}
+                                name="adsLink"
+                                type="text"
+                                value={state.adsLink}
+                                placeholder="Link Quảng Cáo ..."
+                            ></input>
+                        </div>
+                        <div className={cx("boxInput3")}>
+                            <label for="image_ads">Chọn Ảnh: </label>
+                            <input
+                                id="image_ads"
+                                onChange={changeFileHandler}
+                                name="image_ads"
+                                type="file"
+                                // value={state.image_ads}
+                                placeholder="Chọn Ảnh Quảng Cáo..."
+                            ></input>
+                        </div>
+                        <button onClick={handleCreateNewAds}>Tạo Quảng Cáo</button>
+                    </div>
+                </Fragment>
+            )}
+            <div className={cx("showCreateAds")} onClick={() => handleShowCreateAds()}>Tạo Quảng Cáo Mới +</div>
             <div className={cx("adsList")}>
                 {adsList.map((ads, index) => (
                     <div key={index} className={cx("flex-row space-between box")}>
