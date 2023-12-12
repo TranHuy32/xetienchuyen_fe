@@ -78,6 +78,7 @@ function AdminOwner() {
                 }
                 if(data.active === true){
                     alert("Thành Công ")
+                    handleCancel()
                 }
                 setReloadList(!reloadList)
             })
