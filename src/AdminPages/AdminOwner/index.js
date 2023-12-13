@@ -20,6 +20,15 @@ function AdminOwner() {
     const [isTwoFa, setIsTwoFa] = useState()
     const [showCreateOwner, setShowCreateOwner] = useState(false)
     const [showGroupList, setShowGroupList] = useState(false)
+    const [showQRFA, setShowQRFA] = useState(false)
+    const [qrURL, setQrURL] = useState("")
+    const [checkBox2FA, setCheckBox2FA] = useState(false)
+    const [showInput2FaCode, setShowInput2FaCode] = useState(false)
+    const [formTurnOn2Fa, setFormTurnOn2Fa] = useState({
+        twoFaCode: "",
+        ownerId: "",
+    })
+
     const [formData, setFormData] = useState({
         name: "",
         userName: "",
@@ -31,6 +40,8 @@ function AdminOwner() {
     const config = {
         headers: { Authorization: `Bearer ${token}` },
     };
+
+
 
     //get group list
     useEffect(() => {
@@ -60,23 +71,23 @@ function AdminOwner() {
     }, [reloadList, token, currentPage, pageSize]);
 
     const handleCreateOwner = () => {
-        if(formData.name === "" || formData.userName === "" || formData.password === "" || formData.groupId === ""){
+        if (formData.name === "" || formData.userName === "" || formData.password === "" || formData.groupId === "") {
             alert("Điền Đầy Đủ Thông Tin")
             return
         }
-        if(formData.userName.length !== 10){
+        if (formData.userName.length !== 10) {
             alert("Tên Đăng Nhập Phải Là Số Điện Thoại")
             return
         }
         axios
-            .post(`${beURL}/users-auth/registerOwner`, formData,config)
+            .post(`${beURL}/users-auth/registerOwner`, formData, config)
             .then((response) => {
                 const data = response.data;
                 console.log(data);
-                if(data === "UserName Existed!"){
+                if (data === "UserName Existed!") {
                     alert(data)
                 }
-                if(data.active === true){
+                if (data.active === true) {
                     alert("Thành Công ")
                     handleCancel()
                 }
@@ -125,6 +136,13 @@ function AdminOwner() {
             password: "",
             groupId: ""
         })
+        setCheckBox2FA(false)
+        setShowQRFA(false)
+        setShowInput2FaCode(false)
+        setFormTurnOn2Fa({
+            twoFaCode: "",
+            ownerId: "",
+        })
     }
 
     const handleShowAddGmail = (id, twoFA) => {
@@ -142,8 +160,102 @@ function AdminOwner() {
         })
     }
 
+    const handleGetQR = (id) => {
+        setShowQRFA(true)
+        setCheckBox2FA(false)
+        axios
+            .get(`${beURL}/users-auth/2fa/qr/${id}`, config)
+            .then((response) => {
+                const data = response.data;
+                setQrURL(data)
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+    }
+
+    const handleCheck2FA = (status2fa, id) => {
+        if (status2fa) {
+            setCheckBox2FA(true)
+            setSelectedId(id)
+        } else {
+            alert("Hãy Tạo Mã QR Và Cài Đặt GG Authenicator")
+        }
+    }
+
+    const handleCheckTurnOn2Fa = (id) => {
+        setShowInput2FaCode(true)
+        setFormTurnOn2Fa({
+            ...formTurnOn2Fa,
+            ownerId: id,
+        })
+    }
+
+    const handleTurnOn2FA = () => {
+        axios
+            .post(`${beURL}/users-auth/2fa/turn-on`, formTurnOn2Fa ,config)
+            .then((response) => {
+                const data = response.data;
+                console.log(data);
+                if(data){
+                    setReloadList(!reloadList)
+                    handleCancel()
+                }else{
+                    alert("Thất Bại")
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+    console.log(formTurnOn2Fa);
+
     return (
         <Fragment>
+            {showInput2FaCode && (
+                <Fragment>
+                    <div className={cx("overlay")} onClick={handleCancel}></div>
+                    <div className={cx("input2FaCodeBox")}>
+                        <label for="faCode">Nhập 2FA Code:</label>
+                        <input
+                            required
+                            type="number"
+                            maxLength={6}
+                            id="faCode"
+                            placeholder="Code 6 Chữ Số..."
+                            onChange={(e) =>
+                                setFormTurnOn2Fa({
+                                    ...formTurnOn2Fa,
+                                    twoFaCode: e.target.value,
+                                })}
+                        >
+                        </input>
+                        <button onClick={handleTurnOn2FA}>Xác Nhận</button>
+                    </div>
+
+                </Fragment>
+            )}
+            {showQRFA && (
+                <Fragment>
+                    <div className={cx("overlay")} onClick={handleCancel}></div>
+                    <img src={qrURL} alt="QR-CODE" id="qr-2fa"></img>
+                </Fragment>
+            )}
+            {checkBox2FA && (
+                <Fragment>
+                    <div className={cx("overlay")} onClick={handleCancel}></div>
+                    <div className={cx("check2FABox")}>
+                        <div className={cx("warning1")}>Nếu Tạo QR Mới Sẽ Vô Hiệu Hoá QR Trước Đó</div>
+                        <div className={cx("warning2")}>Bạn Chắc Chắn Muốn Tạo Mới?</div>
+                        <div className={cx("selectBox")}>
+                            <div className={cx("cancel")} onClick={handleCancel}>Huỷ Bỏ</div>
+                            <div className={cx("accept")} onClick={() => { handleGetQR(selectedId) }}>Tạo Mới</div>
+                        </div>
+                    </div>
+                </Fragment>
+            )}
             {showCreateOwner && (
                 <Fragment>
                     <div className={cx("overlay")} onClick={handleCancel}></div>
@@ -176,7 +288,7 @@ function AdminOwner() {
                                         ...formData,
                                         userName: e.target.value,
                                     })}
-                                    
+
                             />
                         </div>
                         <div className={cx("inputPasswordBox")}>
@@ -260,7 +372,7 @@ function AdminOwner() {
                                 </td>
                                 <td>
                                     {!owner.isTwoFactorAuthenticationEnabled && (
-                                        <button>Bật 2FA</button>
+                                        <button onClick={() => handleCheckTurnOn2Fa(owner._id)}>Bật 2FA</button>
                                     )}
                                     {owner.isTwoFactorAuthenticationEnabled && (
                                         <button>Tắt 2FA</button>
@@ -268,10 +380,10 @@ function AdminOwner() {
                                 </td>
                                 <td>
                                     {!owner.isTwoFactorAuthenticationEnabled && (
-                                        <button>Tạo QR</button>
+                                        <button onClick={() => handleGetQR(owner._id)}>Tạo QR</button>
                                     )}
                                     {owner.isTwoFactorAuthenticationEnabled && (
-                                        <button>
+                                        <button onClick={() => handleCheck2FA(owner.isTwoFactorAuthenticationEnabled, owner._id)}>
                                             QR Mới
                                         </button>
                                     )}

@@ -1,4 +1,85 @@
 
+#qr-2fa{
+    position: absolute;
+    z-index: 20000;
+    background-color: #fff;
+    height: 320px;
+    width: 320px;
+    left: calc(50% - 160px);
+
+}
+
+.input2FaCodeBox{
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    left: 30%;
+    background-color: #fff;
+    position: absolute;
+    z-index: 20000;
+    padding: 16px;
+    border-radius: 16px;
+    label{
+        padding: 16px 0;
+    }
+    input{
+        padding: 16px;
+        border-radius: 8px;
+        border: 1px solid black;
+    }
+    button{
+        background-color: #ff6969;
+        color: #fff;
+        padding: 16px 32px;
+        margin-top: 16px;
+        border: none;
+        border-radius: 16px;
+        font-size: 16px;
+    }
+}
+
+.check2FABox{
+    position: absolute;
+    z-index: 20000;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 560px;
+    border-radius: 16px;
+    left: calc(50% - 280px);
+    div{
+        padding: 16px 32px;
+        text-align: center;
+    }
+    .warning1{
+        font-size: 24px;
+        font-weight: bold;
+    }
+    .selectBox{
+        display: flex;
+        justify-content: space-between;
+        width: 80%;
+        margin: auto;
+        margin-bottom: 16px;
+        .cancel{
+            background-color: #ff6969;
+            color: #fff;
+            border-radius: 8px;
+            &:hover{
+                background-color: #9A031E;
+            }
+        }
+        .accept{
+            background-color: #0acf83;
+            border-radius: 8px;
+            color: #fff;
+            &:hover{
+                background-color: #9ADE7B;
+            }
+        }
+    }
+}
 .createNewOwnerBox{
     background-color: #fff;
     z-index: 20000;
@@ -42,13 +123,12 @@
             padding: 16px 32px;
             width: calc(100% - 64px);
             text-align: center;
-            border-top-right-radius: 16px;
-            border-top-left-radius: 16px;
+            border-radius: 8px;
         }
         .selectGroupDropMenu{
             display: flex;
             flex-direction: column;
-            background-color: #ddd;
+            // background-color: #ddd;
             position: absolute;
             width: calc(100% - 64px);
             margin-top: 53px;
@@ -57,13 +137,12 @@
             overflow-x: hidden;
             height: 220px;
             .selectElement{
-                border-bottom: 1px solid black;
-                border-left: 1px solid black;
-                border-right: 1px solid black;
+                border-bottom: 2px solid #fff;
                 background-color: #ddd;
                 width: calc(100% - 32px);
                 text-align: center;
                 padding: 16px 0 16px 32px;
+                // border-radius: 8px;
             }
         }
     }
