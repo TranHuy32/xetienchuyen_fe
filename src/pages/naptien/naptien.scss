@@ -105,7 +105,7 @@
     border-radius: 28px;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    // justify-content: space-around;
     align-items: center;
     div{
         font-size: 1.5rem;
@@ -117,12 +117,21 @@
         height: 80%;
         width: 80%;
         border-radius: 16px;
-        margin-bottom: 42px;
+        margin-bottom: 16px;
     }
 }
 
 .mobile-only{
     display: none;
+}
+
+#save-qr-image-pc{
+    background-color: #FF6969;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    padding: 8px 16px;
+    margin-bottom: 16px;
 }
 
 /* Mobile-specific styles */

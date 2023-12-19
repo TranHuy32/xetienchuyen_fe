@@ -195,7 +195,7 @@ function NapTien() {
                 {submitted && (
                     <img src={qrURL} alt="qr-code"></img>
                 )}
-                <button>Lưu Mã QR(Ảnh)</button>
+                <button id="save-qr-image-pc" onClick={handleSaveQR}>Lưu Mã QR(Ảnh)</button>
             </div>
             {qrGenerated && (
                 <div className={cx("mbContainer2", "mobile-only")}>
