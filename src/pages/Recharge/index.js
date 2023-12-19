@@ -2,6 +2,7 @@ import classNames from "classnames";
 import styles from "./Recharge.scss";
 import { Fragment, useEffect, useState } from "react";
 import axios from "axios";
+import { type } from "@testing-library/user-event/dist/type";
 const cx = classNames.bind(styles);
 const beURL = process.env.REACT_APP_BE_URL;
 
@@ -71,7 +72,7 @@ export default function Users() {
           setShow2FAInput(false)
           setSelectedPaymentId("")
           setRefreshList(!refreshList)
-        }else if(data.message !== "SUCCESS"){
+        } else if (data.message !== "SUCCESS") {
           alert(data.message + ". Mã Lỗi: " + data.code)
           setShow2FAInput(false)
           setSelectedPaymentId("")
@@ -90,28 +91,40 @@ export default function Users() {
   //auto focus next input
   function clickEvent(event, nextInputId, prevInputId) {
     const currentInput = event.target;
+    const backspaceCount = (Number(currentInput.dataset.backspaceCount) || 0) + 1;
+    console.log(currentInput.value
 
-    if (currentInput.value >= 0 && currentInput.value <= 9) {
+      );
+    if (event.key === 'Backspace') {
+      if (backspaceCount === 1) {
+        // Xoá giá trị hiện tại, nhưng không chuyển focus
+        currentInput.dataset.backspaceCount = backspaceCount;
+        return;
+      }
+     
+
+      const prevInput = document.getElementById(prevInputId);
+      if (backspaceCount === 2) {
+        prevInput.focus();
+      }
+
+      // Reset backspace count after navigating to the previous input
+      currentInput.dataset.backspaceCount = 0;
+    } else if (event.key >= '0' && event.key <= '9') {
       const nextInput = document.getElementById(nextInputId);
       if (nextInput) {
         nextInput.focus();
       }
-    } else {
+
+      // Reset backspace count after focusing on the next input
+      currentInput.dataset.backspaceCount = 0;
+    } else if (!/^\d$/.test(event.key)) {
+      // Return early if the entered value is not a digit
+      currentInput.dataset.backspaceCount = 0;
       return;
     }
-
-    if (event.key === 'Backspace' && currentInput.value.length === 0) {
-      const prevInput = document.getElementById(prevInputId);
-      if (prevInput) {
-        prevInput.focus();
-      }
-      return; // Stop further execution
-    }
-
-    if (!/^\d$/.test(currentInput.value)) {
-      return; // Return early if the entered value is not a digit
-    }
   }
+
 
   //combine otp code
   const concatenateValues = () => {
@@ -194,7 +207,7 @@ export default function Users() {
                     <strong>Nạp Tiền Thành Công</strong>
                   )
                   }
-                   {bill.status === "CANCEL" && (
+                  {bill.status === "CANCEL" && (
                     <strong>Đã Huỷ</strong>
                   )
                   }
