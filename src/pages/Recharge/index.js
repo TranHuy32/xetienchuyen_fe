@@ -71,10 +71,18 @@ export default function Users() {
           setShow2FAInput(false)
           setSelectedPaymentId("")
           setRefreshList(!refreshList)
+        }else if(data.message !== "SUCCESS"){
+          alert(data.message + ". Mã Lỗi: " + data.code)
+          setShow2FAInput(false)
+          setSelectedPaymentId("")
+          setRefreshList(!refreshList)
         }
       })
       .catch((error) => {
         console.log(error);
+        if (error.message === "Request failed with status code 401") {
+          alert("Hãy Kiểm Tra Lại Mã Xác Thực")
+        }
       });
 
   }
@@ -141,12 +149,12 @@ export default function Users() {
           <div className={cx("FAContainer")}>
             <div className={cx("FATitle")}>Nhập Mã Xác Thực 2FA: </div>
             <div className={cx("inputContainer")}>
-              <input type="number" pattern="[0-9]" id="text1" onKeyUp={(e) => clickEvent(e, "text2", "text1")} autoFocus />
-              <input type="number" pattern="[0-9]" id="text2" onKeyUp={(e) => clickEvent(e, "text3", "text1")} />
-              <input type="number" pattern="[0-9]" id="text3" onKeyUp={(e) => clickEvent(e, "text4", "text2")} />
-              <input type="number" pattern="[0-9]" id="text4" onKeyUp={(e) => clickEvent(e, "text5", "text3")} />
-              <input type="number" pattern="[0-9]" id="text5" onKeyUp={(e) => clickEvent(e, "text6", "text4")} />
-              <input type="number" pattern="[0-9]" id="text6" onKeyUp={(e) => clickEvent(e, "submit", "text5")} />
+              <input maxlength="1" type="number" pattern="[0-9]" id="text1" onKeyUp={(e) => clickEvent(e, "text2", "text1")} autoFocus />
+              <input maxlength="1" type="number" pattern="[0-9]" id="text2" onKeyUp={(e) => clickEvent(e, "text3", "text1")} />
+              <input maxlength="1" type="number" pattern="[0-9]" id="text3" onKeyUp={(e) => clickEvent(e, "text4", "text2")} />
+              <input maxlength="1" type="number" pattern="[0-9]" id="text4" onKeyUp={(e) => clickEvent(e, "text5", "text3")} />
+              <input maxlength="1" type="number" pattern="[0-9]" id="text5" onKeyUp={(e) => clickEvent(e, "text6", "text4")} />
+              <input maxlength="1" type="number" pattern="[0-9]" id="text6" onKeyUp={(e) => clickEvent(e, "submit", "text5")} />
 
             </div>
             <button id="submit" onClick={() => handleSubmit2FACode()}>Xác Nhận</button>
