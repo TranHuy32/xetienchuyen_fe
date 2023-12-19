@@ -26,7 +26,7 @@ function Login() {
       twoFaCode: otp,
     })
   }, [otp]);
-  console.log(formData);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (otp.length === 6) {
@@ -48,8 +48,10 @@ function Login() {
         window.location.reload();
       } catch (error) {
         if (error.response && error.response.status === 401) {
-          console.log(error.response);
-          console.log(formData);
+        
+          if ("Wrong authentication code" === error.response.data.message) {
+            alert("Kiểm Tra Lại Mã Xác Thực")
+          }
           return;
         } else {
           console.log(error);
