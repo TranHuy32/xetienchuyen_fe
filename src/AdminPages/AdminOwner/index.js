@@ -17,6 +17,7 @@ function AdminOwner() {
     const [gmail, setGmail] = useState("")
     const [selectedId, setSelectedId] = useState("")
     const [selectedGroupId, setSelectedGroupId] = useState("")
+    const [selectedGroupName, setSelectedGroupName] = useState("")
     const [isTwoFa, setIsTwoFa] = useState()
     const [showCreateOwner, setShowCreateOwner] = useState(false)
     const [showGroupList, setShowGroupList] = useState(false)
@@ -41,8 +42,7 @@ function AdminOwner() {
         headers: { Authorization: `Bearer ${token}` },
     };
 
-
-
+    console.log(selectedGroupName);
     //get group list
     useEffect(() => {
         axios
@@ -83,7 +83,6 @@ function AdminOwner() {
             .post(`${beURL}/users-auth/registerOwner`, formData, config)
             .then((response) => {
                 const data = response.data;
-                console.log(data);
                 if (data === "UserName Existed!") {
                     alert(data)
                 }
@@ -122,6 +121,7 @@ function AdminOwner() {
     }
 
     const handleCancel = () => {
+        setSelectedGroupName("")
         setShowAddGmail(false)
         setGmail("")
         setSelectedId("")
@@ -151,9 +151,10 @@ function AdminOwner() {
         setIsTwoFa(twoFA)
     }
 
-    const handleSelectGroup = (id) => {
+    const handleSelectGroup = (id, name) => {
         setShowGroupList(false)
         setSelectedGroupId(id)
+        setSelectedGroupName(name)
         setFormData({
             ...formData,
             groupId: id,
@@ -209,8 +210,6 @@ function AdminOwner() {
                 console.log(error);
             });
     }
-
-    console.log(formTurnOn2Fa);
 
     return (
         <Fragment>
@@ -306,11 +305,14 @@ function AdminOwner() {
                             />
                         </div>
                         <div className={cx("selectGroupBox")}>
-                            <div className={cx("selectTitle")} onClick={() => setShowGroupList(!showGroupList)}>Chọn Group</div>
+                            <div className={cx("selectTitle")} onClick={() => setShowGroupList(!showGroupList)}>
+                                {selectedGroupName !== "" && selectedGroupName}
+                                {selectedGroupName === "" && "Chọn Group"}
+                                </div>
                             {showGroupList && (
                                 <div className={cx("selectGroupDropMenu")}>
                                     {groupList.map((group, index) => (
-                                        <div className={cx("selectElement")} key={index} onClick={() => handleSelectGroup(group._id)}>{group.name}</div>
+                                        <div className={cx("selectElement")} key={index} onClick={() => handleSelectGroup(group._id, group.name)}>{group.name}</div>
                                     ))}
                                 </div>
                             )}
