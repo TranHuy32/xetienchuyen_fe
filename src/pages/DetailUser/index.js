@@ -909,7 +909,7 @@ export default function DetailUser() {
                     <button
                       key={index}
                       onClick={() => handleCreatedPageChange(index + 1)}
-                      className={cx({ active: index + 1 === currentRidesPage })}
+                      className={cx({ active: index + 1 === currentCreatedPage })}
                     >
                       {index + 1}
                     </button>
