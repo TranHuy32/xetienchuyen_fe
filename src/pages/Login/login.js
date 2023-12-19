@@ -5,12 +5,13 @@ import { useSignIn, useSignOut } from "react-auth-kit";
 import axios from "axios";
 import { useEffect, useState, Fragment } from "react";
 import Users from "../Users";
-
+import OtpInput from 'react-otp-input';
 const cx = classNames.bind(styles);
 const beURL = process.env.REACT_APP_BE_URL;
 
 function Login() {
   const [show2FAInput, setShow2FAInput] = useState(false);
+  const [otp, setOtp] = useState('')
   const navigate = useNavigate();
   const signIn = useSignIn();
   const [formData, setFormData] = useState({
@@ -19,16 +20,22 @@ function Login() {
     twoFaCode: "",
   });
 
+  useEffect(() => {
+    setFormData({
+      ...formData,
+      twoFaCode: otp,
+    })
+  }, [otp]);
+  console.log(formData);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (concatenateValues()) {
+    if (otp.length === 6) {
       try {
         const response = await axios.post(`${beURL}/users-auth/loginOwner`, formData);
         const { accessToken, refreshToken, user } = response.data;
         if (!response.data) {
           return alert("Sai Tên Tài Khoản Hoặc Mật Khẩu");
         }
-        console.log(formData);
         signIn({
           token: accessToken,
           tokenType: "Bearer",
@@ -49,83 +56,8 @@ function Login() {
           return error;
         }
       }
-    }
-  };
-
-
-
-  const concatenateValues = () => {
-    const input1Value = document.getElementById("text1").value;
-    const input2Value = document.getElementById("text2").value;
-    const input3Value = document.getElementById("text3").value;
-    const input4Value = document.getElementById("text4").value;
-    const input5Value = document.getElementById("text5").value;
-    const input6Value = document.getElementById("text6").value;
-
-
-    const input1 = document.getElementById("text1");
-    const input2 = document.getElementById("text2");
-    const input3 = document.getElementById("text3");
-    const input4 = document.getElementById("text4");
-    const input5 = document.getElementById("text5");
-    const input6 = document.getElementById("text6");
-
-    const isNumericInRange = (value) => {
-      return /^\d$/.test(value) && Number(value) >= 0 && Number(value) <= 9;
-    };
-
-    if (
-      !isNumericInRange(input1Value) ||
-      !isNumericInRange(input2Value) ||
-      !isNumericInRange(input3Value) ||
-      !isNumericInRange(input4Value) ||
-      !isNumericInRange(input5Value) ||
-      !isNumericInRange(input6Value)
-    ) {
-      alert("Mã Xác Thực Không Hợp Lệ")
-      // Clear values of all inputs
-      input1.value = "";
-      input2.value = "";
-      input3.value = "";
-      input4.value = "";
-      input5.value = "";
-      input6.value = "";
-
-      // Set focus to the first input
-      input1.focus();
-      return false
-    } else {
-      const concatenatedString = `${input1Value}${input2Value}${input3Value}${input4Value}${input5Value}${input6Value}`;
-      setFormData({
-        ...formData,
-        twoFaCode: concatenatedString,
-      })
-      return true;
-    }
-  };
-
-  function inputEvent(event, nextInputId, prevInputId) {
-    const currentInput = event.target;
-
-    if (event.key === 'Backspace' && currentInput.value.length === 0) {
-      const prevInput = document.getElementById(prevInputId);
-      if (prevInput) {
-        prevInput.focus();
-      }
-      return;
-    }
-
-    if (!/^\d$/.test(currentInput.value)) {
-      return;
-    }
-
-    if (currentInput.value >= 0 && currentInput.value <= 9) {
-      const nextInput = document.getElementById(nextInputId);
-      if (nextInput) {
-        nextInput.focus();
-      }
-    } else {
-      return;
+    }else{
+      alert("Hãy Kiểm Tra Lại Mã Xác Thực")
     }
   };
 
@@ -179,14 +111,15 @@ function Login() {
                     <div className={cx("FAContainer")}>
                       <div className={cx("FATitle")}>Nhập Mã Xác Thực 2FA: </div>
                       <div className={cx("inputContainer")}>
-                        <input type="number" pattern="[0-9]" id="text1" onKeyUp={(e) => inputEvent(e, "text2", "text1")} autoFocus />
-                        <input type="number" pattern="[0-9]" id="text2" onKeyUp={(e) => inputEvent(e, "text3", "text1")} />
-                        <input type="number" pattern="[0-9]" id="text3" onKeyUp={(e) => inputEvent(e, "text4", "text2")} />
-                        <input type="number" pattern="[0-9]" id="text4" onKeyUp={(e) => inputEvent(e, "text5", "text3")} />
-                        <input type="number" pattern="[0-9]" id="text5" onKeyUp={(e) => inputEvent(e, "text6", "text4")} />
-                        <input type="number" pattern="[0-9]" id="text6" onKeyUp={(e) => inputEvent(e, "submit", "text5")} />
+                        <OtpInput
+                          value={otp}
+                          onChange={setOtp}
+                          numInputs={6}
+                          renderSeparator={<span> </span>}
+                          renderInput={(props) => <input {...props} />}
+                        />
                       </div>
-                      <button type="submit" value={"Log in"} onClick={() => concatenateValues()}>
+                      <button type="submit" value={"Log in"}>
                         Xác Nhận
                       </button>
                     </div>

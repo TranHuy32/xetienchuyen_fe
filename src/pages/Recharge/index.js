@@ -3,12 +3,14 @@ import styles from "./Recharge.scss";
 import { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import { type } from "@testing-library/user-event/dist/type";
+import OtpInput from 'react-otp-input';
 const cx = classNames.bind(styles);
 const beURL = process.env.REACT_APP_BE_URL;
 
 export default function Users() {
   const [paymentList, setPaymentList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [OTP2fa, setOTP2fa] = useState('');
   const [pageSize, setPageSize] = useState(8);
   const [totalPages, setTotalPages] = useState(0);
   const [show2FAInput, setShow2FAInput] = useState(false);
@@ -50,7 +52,7 @@ export default function Users() {
   //send otp to accept
   const handleSubmit2FACode = () => {
     // setShow2FAInput(false)
-    const otp = concatenateValues();
+    const otp = OTP2fa;
     console.log({
       "action": "ACEPT",
       "twoFaCode": otp,
@@ -94,14 +96,14 @@ export default function Users() {
     const backspaceCount = (Number(currentInput.dataset.backspaceCount) || 0) + 1;
     console.log(currentInput.value
 
-      );
+    );
     if (event.key === 'Backspace') {
       if (backspaceCount === 1) {
         // Xoá giá trị hiện tại, nhưng không chuyển focus
         currentInput.dataset.backspaceCount = backspaceCount;
         return;
       }
-     
+
 
       const prevInput = document.getElementById(prevInputId);
       if (backspaceCount === 2) {
@@ -162,13 +164,13 @@ export default function Users() {
           <div className={cx("FAContainer")}>
             <div className={cx("FATitle")}>Nhập Mã Xác Thực 2FA: </div>
             <div className={cx("inputContainer")}>
-              <input maxlength="1" type="number" pattern="[0-9]" id="text1" onKeyUp={(e) => clickEvent(e, "text2", "text1")} autoFocus />
-              <input maxlength="1" type="number" pattern="[0-9]" id="text2" onKeyUp={(e) => clickEvent(e, "text3", "text1")} />
-              <input maxlength="1" type="number" pattern="[0-9]" id="text3" onKeyUp={(e) => clickEvent(e, "text4", "text2")} />
-              <input maxlength="1" type="number" pattern="[0-9]" id="text4" onKeyUp={(e) => clickEvent(e, "text5", "text3")} />
-              <input maxlength="1" type="number" pattern="[0-9]" id="text5" onKeyUp={(e) => clickEvent(e, "text6", "text4")} />
-              <input maxlength="1" type="number" pattern="[0-9]" id="text6" onKeyUp={(e) => clickEvent(e, "submit", "text5")} />
-
+              <OtpInput
+                value={OTP2fa}
+                onChange={setOTP2fa}
+                numInputs={6}
+                renderSeparator={<span></span>}
+                renderInput={(props) => <input {...props} />}
+              />
             </div>
             <button id="submit" onClick={() => handleSubmit2FACode()}>Xác Nhận</button>
           </div>
