@@ -69,9 +69,9 @@ function NapTien() {
                     "accountName": adminName,
                     "bank": bankBin,
                     "amount": amount,
-                    "addInfo": userName,
+                    "memo": userName,
                     "format": "text",
-                    "template": "compact2"
+                    "template": "print"
                     //compact2 có thêm thông tin người nhận và số tiền trên ảnh
                     //compact thì không có 
                     //qr_only thì chỉ có mã, không có logo vietqr, napas cũng như ngan hàng
