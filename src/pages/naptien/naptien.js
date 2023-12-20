@@ -23,6 +23,7 @@ function NapTien() {
     const [showInfor, setShowInfor] = useState(false);
     const [showAnotherOption, setShowAnotherOption] = useState(false)
     const [trackValidAmount, setTrackValidAmount] = useState(false)
+    const [reloadQR, setReloadQR] = useState(false)
     const [qrURL, setQrURL] = useState(null);
     const vietQR = new VietQR({
         clientID: '4244e11f-e282-4e3c-af39-6d9749c99e44',
@@ -86,7 +87,7 @@ function NapTien() {
                     console.error('Error generating QR code:', err);
                 });
         };
-    }, [bankBin, submitted]);
+    }, [bankBin, submitted, reloadQR]);
 
     //lưu mã qr
     const handleSaveQR = () => {
@@ -131,6 +132,7 @@ function NapTien() {
         }
     }
     const handleSelectAmount = (value) => {
+        setReloadQR(!reloadQR)
         setAmount(value)
         setShowAnotherOption(false)
     }
