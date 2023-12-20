@@ -121,7 +121,6 @@ function NapTien() {
             // Cập nhật giá trị trong state với số thay vì chuỗi
             setAmount(numericValue);
             setMoneyInputAmount(formattedValue);
-
             // Cập nhật trạng thái trackValidAmount dựa trên kết quả kiểm tra
             setTrackValidAmount(isDivisibleBy50000);
         } else {
@@ -142,6 +141,7 @@ function NapTien() {
     }
     const handleSubbmit = () => {
         setSubmitted(true)
+        setReloadQR(!reloadQR)
     };
     const handleShowBankDropDownMenu = () => {
         setShowBankDropDownMenu(!showBankDropDownMenu)

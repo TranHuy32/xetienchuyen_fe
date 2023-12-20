@@ -1,6 +1,8 @@
 .ntWrapper {
     height: 100vh;
     width: 100vw;
+    display: flex ;
+    justify-content: center;
 }
 .notAllowedToDisplay{
     display: none;
@@ -334,7 +336,9 @@
 
             img {
                 width: calc(100vw - 32px);
-                border-radius: 8px;
+                border-radius: 4px;
+                align-self: center;
+                border: 1px solid black;
             }
 
             button {
