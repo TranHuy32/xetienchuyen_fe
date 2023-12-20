@@ -59,12 +59,6 @@
       text-align: center;
       padding: 12px 0;
       border-bottom: 1px dashed #ddd;
-      p{
-        cursor: pointer;
-      }
-      a{
-        cursor: pointer;
-      }
     }
     .uUsersList{
       display: flex;
@@ -89,6 +83,11 @@
         width: 25%;
         min-width: 100px;
         margin-left: 1px;
+        #more-detail-link{
+          text-decoration: underline;
+          color: #e74c3c;
+          cursor: pointer;
+        }
       }
       .uUsersActive{
         width: 15%;
