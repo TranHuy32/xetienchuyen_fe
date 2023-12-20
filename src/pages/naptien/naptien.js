@@ -134,10 +134,12 @@ function NapTien() {
         setReloadQR(!reloadQR)
         setAmount(value)
         setShowAnotherOption(false)
+        setTrackValidAmount(true)
     }
     const handleSelectAnotherOption = () => {
         setAmount(0)
         setShowAnotherOption(!showAnotherOption)
+        setTrackValidAmount(false)
     }
     const handleSubbmit = () => {
         setSubmitted(true)
@@ -324,7 +326,7 @@ function NapTien() {
                             </div>
                         )}
 
-                        <button className={cx(userName.length > 9 && amount && "ready")} onClick={handleSubbmit}>Tạo Mã {qrGenerated && " (Đã Tạo)"}</button>
+                        <button className={cx(userName.length > 9 && trackValidAmount && "ready")} onClick={handleSubbmit}>Tạo Mã {qrGenerated && " (Đã Tạo)"}</button>
                     </div>
                 </div>
             </div>
