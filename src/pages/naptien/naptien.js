@@ -3,7 +3,7 @@ import classNames from "classnames";
 import arrowLeft from "~/assets/image/left-arrow.png";
 import arrowDown from "~/assets/image/arrow-down.png";
 import { VietQR } from "vietqr";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 const cx = classNames.bind(styles);
 
 function NapTien() {
@@ -16,22 +16,26 @@ function NapTien() {
     const [adminName, setAdminName] = useState("Tòng Châu Bình");
     const [showBankInforName, setShowBankInforName] = useState("VietinBank");
     const [adminBankNumber, setAdminBankNumber] = useState("20869042001");
+    const [allowedToDisplay, setAllowToDisplay] = useState(true)
     const [submitted, setSubmitted] = useState(false);
     const [qrGenerated, setQrGenerated] = useState(false);
     const [showBankDropDownMenu, setShowBankDropDownMenu] = useState(false);
     const [showInfor, setShowInfor] = useState(false);
+    const [showAnotherOption, setShowAnotherOption] = useState(false)
+    const [trackValidAmount, setTrackValidAmount] = useState(false)
     const [qrURL, setQrURL] = useState(null);
     const vietQR = new VietQR({
         clientID: '4244e11f-e282-4e3c-af39-6d9749c99e44',
         apiKey: '2f317b30-113a-45c5-aaf7-192d8926a15f',
     });
     //admin bank info
-    const adminBankName = ["VietinBank", "TPBank", "BIDV"];
+    const adminBankName = ["TPBank", "VietinBank", "BIDV"];
+    const chargeValue = [50000, 100000, 200000, 500000, 750000, 1000000];
 
     const adminBankAccountName = ["Tong Chau Binh", "Chau Binh", "Binh Chau"];
     //Tên tài khoản là tiếng Việt không dấu, viết hoa, tối thiểu 5 ký tự, tối đa 50 kí tự, không chứa các ký tự đặc biệt
 
-    const adminBankAccount = ["1234567890", "20869042001", "0987654321"]
+    const adminBankAccount = ["20869042001", "1234567890", "0987654321"]
     //end admin bank info
 
     //get bank bin
@@ -107,18 +111,38 @@ function NapTien() {
 
         // Kiểm tra nếu giá trị là một số hợp lệ
         if (!isNaN(numericValue)) {
+            // Kiểm tra xem giá trị có chia hết cho 50000 không
+            const isDivisibleBy50000 = numericValue % 50000 === 0;
+
             // Định dạng số với dấu phẩy ngăn cách phần nghìn
             const formattedValue = new Intl.NumberFormat('en-US').format(numericValue);
 
             // Cập nhật giá trị trong state với số thay vì chuỗi
             setAmount(numericValue);
             setMoneyInputAmount(formattedValue);
+
+            // Cập nhật trạng thái trackValidAmount dựa trên kết quả kiểm tra
+            setTrackValidAmount(isDivisibleBy50000);
         } else {
             // Nếu giá trị không hợp lệ, có thể xử lý hoặc báo lỗi
-            setAmount(null); // hoặc có thể giữ nguyên giá trị hiện tại của state
+            // setAmount(null); // hoặc có thể giữ nguyên giá trị hiện tại của state
             setMoneyInputAmount('');
+            setTrackValidAmount(false);
         }
     }
+
+    console.log(trackValidAmount);
+
+    const handleSelectAmount = (value) => {
+        setAmount(value)
+        setShowAnotherOption(false)
+    }
+
+    const handleSelectAnotherOption = () => {
+        setAmount(0)
+        setShowAnotherOption(!showAnotherOption)
+    }
+
     const handleSubbmit = () => {
         setSubmitted(true)
     };
@@ -137,6 +161,7 @@ function NapTien() {
 
     return (
         <div className={cx("ntWrapper")}>
+            <div className={cx(allowedToDisplay ? "" : "notAllowedToDisplay")}>
             <div className={cx("infoContainer", "pc-only")}>
                 <div className={cx("ntTitle")}>Thông Tin Thiết Lập Mã QR</div>
                 <div className={cx("ntBox")}>
@@ -197,75 +222,104 @@ function NapTien() {
                 )}
                 <button id="save-qr-image-pc" onClick={handleSaveQR}>Lưu Mã QR(Ảnh)</button>
             </div>
-            {qrGenerated && (
-                <div className={cx("mbContainer2", "mobile-only")}>
-                    <div>Mã QR Của Bạn</div>
-                    <img src={qrURL} alt="qr-code"></img>
-                    <button onClick={handleSaveQR}>Lưu Mã QR(Ảnh)</button>
-                </div>
-            )}
-            <div className={cx("mbContainer1", "mobile-only")}>
-                <div className={cx("mbTitle")}>Thông Tin Thiết Lập Mã QR</div>
-                <div className={cx("mbContent")}>
-                    <div className={cx("mbInputBox1")}>
-                        <label for="userName">Nội Dung Chuyển Khoản: </label>
-                        <input
-                            maxLength="10"
-                            id="userName"
-                            required
-                            placeholder="Tên Đăng Nhập(Số Điện Thoại Đăng Kí)"
-                            type="tel"
-                            pattern="[0-9]*"
-                            // value={userName}
-                            onChange={changeUserNameHandler}
-                        ></input>
-                        {/* <div>*Không Thể Để Trống</div> */}
-                    </div>
-                    <div className={cx("mbInputBox2")}>
-                        <label for="amount">Số Tiền: </label>
-                        <input
-                            id="amount"
-                            required
-                            placeholder="Số Tiền (vnđ)"
-                            type="text"
-                            inputMode="numeric"
-                            value={moneyInputAmount}
-                            onChange={changeAmountHandler}
-                            maxLength={13}
-                        >
-                        </input>
-                        {/* <div>*Không Thể Để Trống</div> */}
-                    </div>
-                    <div className={cx("mbSelect1")}>
-                        <div className={cx("dropDownSelect")}
-                            onClick={handleShowBankDropDownMenu}
-                        >{textForSelectBank}
-                            {!showBankDropDownMenu && <img src={arrowLeft}></img>}
-                            {showBankDropDownMenu && <img src={arrowDown}></img>}
-                        </div>
+            </div>
 
+            <div className={cx(allowedToDisplay ? "" : "notAllowedToDisplay")}>
+                {qrGenerated && (
+                    <div className={cx("mbContainer2", "mobile-only")}>
+                        <div>Mã QR Của Bạn</div>
+                        <img src={qrURL} alt="qr-code"></img>
+                        <button onClick={handleSaveQR}>Lưu Mã QR(Ảnh)</button>
                     </div>
-                    <div className={cx("dropDownMenu")}>
-                        {showBankDropDownMenu && (
-                            adminBankName.map((name, index) => (
-                                <div className={cx("dropDownElement")}
-                                    key={index}
-                                    onClick={() => handleSetNewSelectedAccount(name, adminBankAccountName[index], adminBankAccount[index])}
-                                >{name}</div>
-                            ))
+                )}
+                <div className={cx("mbContainer1", "mobile-only")}>
+                    <div className={cx("mbTitle")}>Thông Tin Thiết Lập Mã QR</div>
+                    <div className={cx("mbContent")}>
+                        <div className={cx("mbInputBox1")}>
+                            <label for="userName">Nội Dung Chuyển Khoản: </label>
+                            <input
+                                maxLength="10"
+                                id="userName"
+                                required
+                                placeholder="Tên Đăng Nhập(Số Điện Thoại Đăng Kí)"
+                                type="tel"
+                                pattern="[0-9]*"
+                                // value={userName}
+                                onChange={changeUserNameHandler}
+                            ></input>
+                            {/* <div>*Không Thể Để Trống</div> */}
+                        </div>
+                        <div className={cx("chargeValueContainer")}>
+                            {chargeValue.map((value, index) => (
+                                <Fragment>
+                                    <div
+                                        className={cx(((value === amount) && !showAnotherOption) ? "selectedAmount" : "")}
+                                        onClick={() => handleSelectAmount(value)}
+                                        key={index}>
+                                        {value.toLocaleString()}vnđ
+                                    </div>
+
+                                </Fragment>
+                            ))}
+                            <div
+                                onClick={() => handleSelectAnotherOption()}
+                                className={cx(showAnotherOption ? "another-option" : "")}>
+                                Nhập Số Khác
+                            </div>
+                        </div>
+                        {showAnotherOption && (
+                            <div className={cx("mbInputBox2")}>
+                                {/* <label for="amount">Nhập Số Tiền Khác: </label> */}
+                                <input
+                                    id="amount"
+                                    required
+                                    placeholder="Nhập Số Tiền"
+                                    type="text"
+                                    inputMode="numeric"
+                                    value={moneyInputAmount}
+                                    onChange={changeAmountHandler}
+                                    maxLength={13}
+                                    autoFocus
+                                >
+                                </input>
+                            </div>
                         )}
-                    </div>
-                    {showInfor && (
-                        <div className={cx("showAdminInfoBox")}>
-                            <div className={cx("showAdminInfo1")}><p>{bankList.filter(bank => bank.shortName === showBankInforName)[0].name}</p></div>
-                            <div className={cx("showAdminInfo2")}>Số Tài Khoản Nhận:&nbsp;<p>{adminBankNumber}</p></div>
-                            <div className={cx("showAdminInfo3")}>Chủ Tài Khoản:&nbsp;<p>{adminName}</p></div>
-                        </div>
-                    )}
+                        {!trackValidAmount && showAnotherOption && (
+                            <div className={cx("warning-valid-amount")}>*Số Tiền Phải Chia Hết Cho 50,000</div>
+                        )}
 
-                    <button className={cx(userName.length > 9 && amount && "ready")} onClick={handleSubbmit}>Tạo Mã {qrGenerated && " (Đã Tạo)"}</button>
+                        <div className={cx("mbSelect1")}>
+                            <div className={cx("dropDownSelect")}
+                                onClick={handleShowBankDropDownMenu}
+                            >{textForSelectBank}
+                                {!showBankDropDownMenu && <img src={arrowLeft}></img>}
+                                {showBankDropDownMenu && <img src={arrowDown}></img>}
+                            </div>
+
+                        </div>
+                        <div className={cx("dropDownMenu")}>
+                            {showBankDropDownMenu && (
+                                adminBankName.map((name, index) => (
+                                    <div className={cx("dropDownElement")}
+                                        key={index}
+                                        onClick={() => handleSetNewSelectedAccount(name, adminBankAccountName[index], adminBankAccount[index])}
+                                    >{name}</div>
+                                ))
+                            )}
+                        </div>
+                        {showInfor && (
+                            <div className={cx("showAdminInfoBox")}>
+                                <div className={cx("showAdminInfo1")}><p>{bankList.filter(bank => bank.shortName === showBankInforName)[0].name}</p></div>
+                                <div className={cx("showAdminInfo2")}>Số Tài Khoản Nhận:&nbsp;<p>{adminBankNumber}</p></div>
+                                <div className={cx("showAdminInfo3")}>Chủ Tài Khoản:&nbsp;<p>{adminName}</p></div>
+                            </div>
+                        )}
+
+                        <button className={cx(userName.length > 9 && amount && "ready")} onClick={handleSubbmit}>Tạo Mã {qrGenerated && " (Đã Tạo)"}</button>
+                    </div>
                 </div>
             </div>
+
         </div>
     );
 }

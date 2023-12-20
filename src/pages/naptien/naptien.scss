@@ -1,35 +1,42 @@
-
-.ntWrapper{
+.ntWrapper {
     height: 100vh;
     width: 100vw;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.infoContainer{
+.notAllowedToDisplay{
+    display: none;
+}
+
+.infoContainer {
     width: 30%;
     min-width: 415px;
     height: 500px;
     // background-color: ;
     margin-right: 40px;
     padding: 16px;
-    .ntTitle{
+
+    .ntTitle {
         font-size: 1.5rem;
         margin-bottom: 12px;
         font-weight: bold;
     }
-    .ntBox{
+
+    .ntBox {
         background-color: #fff;
         border: 1px solid #ddd;
         padding: 12px;
         border-radius: 20px;
-        .select1{
+
+        .select1 {
             // background-color: #ddd;
             min-height: 52px;
-            display:flex;
+            display: flex;
             // align-items: center;
             flex-direction: column;
-            .dropDownSelect{
+
+            .dropDownSelect {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
@@ -40,42 +47,54 @@
                 border: 1px solid #ddd;
                 border-top-right-radius: 8px;
                 border-top-left-radius: 8px;
-                img{
+
+                img {
                     height: 16px;
                     padding-right: 16px;
                 }
             }
-            .dropDownMenu{
+
+            .dropDownMenu {
                 position: absolute;
                 margin-top: 54px;
                 z-index: 10000;
                 background-color: #fff;
                 width: calc(30% - 24px);
-                div{
+
+                div {
                     border-bottom: #ddd 1px solid;
                     border-left: #ddd 1px solid;
-                    border-right: #ddd 1px solid;;
+                    border-right: #ddd 1px solid;
+                    ;
                     padding: 8px 16px;
                 }
             }
         }
-        .showAdminInfo1, .showAdminInfo2,.showAdminInfo3{
+
+        .showAdminInfo1,
+        .showAdminInfo2,
+        .showAdminInfo3 {
             padding: 16px;
         }
-        .inputBox1, .inputBox2{
+
+        .inputBox1,
+        .inputBox2 {
             padding: 16px;
             display: flex;
             align-items: center;
-            label{
+
+            label {
                 min-width: 132px;
             }
-            input{
+
+            input {
                 padding: 8px;
                 border-radius: 4px;
                 border: 1px solid #ddd;
             }
         }
-        button{
+
+        button {
             pointer-events: none;
             background-color: #00457d;
             color: #fff;
@@ -87,17 +106,18 @@
             margin-bottom: 16px;
             margin-left: calc(50% - 45px - 16px);
         }
-        .ready{
+
+        .ready {
             opacity: 1;
             pointer-events: visible;
             cursor: pointer;
-            &:hover{
 
-            }
+            &:hover {}
         }
     }
 }
-.qrContainer{
+
+.qrContainer {
     min-width: 480px;
     height: 480px;
     background-color: #ddd;
@@ -107,13 +127,15 @@
     flex-direction: column;
     // justify-content: space-around;
     align-items: center;
-    div{
+
+    div {
         font-size: 1.5rem;
         margin-bottom: 12px;
         font-weight: bold;
         height: 52px;
     }
-    img{
+
+    img {
         height: 80%;
         width: 80%;
         border-radius: 16px;
@@ -121,11 +143,11 @@
     }
 }
 
-.mobile-only{
+.mobile-only {
     display: none;
 }
 
-#save-qr-image-pc{
+#save-qr-image-pc {
     background-color: #FF6969;
     border: none;
     border-radius: 8px;
@@ -136,42 +158,96 @@
 
 /* Mobile-specific styles */
 @media only screen and (max-width: 767px) {
+
     /* Your mobile-specific styles go here */
-    .ntWrapper{
+    .ntWrapper {
         display: flex;
         flex-direction: column;
         height: max-content;
-        .mbContainer1{
+
+        .mbContainer1 {
             margin-bottom: 10vh;
             width: 90vw;
-            padding: 32px 16px; 
-            .mbTitle{
+            padding: 32px 16px;
+
+            .mbTitle {
                 font-size: 24px;
                 font-weight: bold;
                 margin: 16px 0;
             }
-            .mbContent{
+
+            .mbContent {
                 font-size: 16px;
                 width: 100%;
-                .mbInputBox1, .mbInputBox2{
+
+                .chargeValueContainer {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: space-between;
+
+                    .another-option{
+                        background-color: #FF6969;
+                        color: #fff;
+                        border: 1px solid #FF6969;
+                    }
+
+                    .selectedAmount {
+                        background-color: #FF6969;
+                        color: #fff;
+                        border: 1px solid #FF6969;
+                    }
+
+                    div {
+                        border: 1px solid black;
+                        margin-top: 16px;
+                        width: min-content;
+                        padding: 8px 16px;
+                        min-width: 120px;
+                        text-align: center;
+                        border-radius: 8px;
+                    }
+                }
+
+                .mbInputBox1 {
                     display: flex;
                     flex-direction: column;
                     width: 100%;
-                    label{
+
+                    label {
                         padding: 12px 0;
                     }
-                    input{
+
+                    input {
                         padding: 16px;
                         border-radius: 8px;
                         border: 1px solid #000;
                         background-color: #fff;
                     }
-                    div{
-                        color: #FF6969; 
-                        margin: 8px 0 0 8px;
+                }
+
+                .mbInputBox2 {
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+
+                    label {
+                        padding: 12px 0;
+                    }
+
+                    input {
+                        margin-top: 16px;
+                        padding: 16px;
+                        border-radius: 8px;
+                        border: 1px solid #000;
+                        background-color: #fff;
                     }
                 }
-                .mbSelect1{
+                .warning-valid-amount{
+                    padding-left: 16px;
+                    padding-top: 8px;
+                    color: #FF6969;
+                }
+                .mbSelect1 {
                     background-color: #fff;
                     border: 1px solid #ddd;
                     padding: 16px;
@@ -179,41 +255,50 @@
                     border-top-right-radius: 8px;
                     border-top-left-radius: 8px;
                     max-height: 18px;
-                    .dropDownSelect{
+
+                    .dropDownSelect {
                         display: flex;
                         justify-content: space-between;
                         align-items: center;
-                        img{
+
+                        img {
                             height: 18px;
                         }
                     }
                 }
-                .dropDownMenu{
+
+                .dropDownMenu {
                     position: absolute;
                     width: 90vw;
                     // margin-top: 16px;
                     z-index: 10000;
                     background-color: #fff;
-                    div{
+
+                    div {
                         border-bottom: #ddd 1px solid;
                         border-left: #ddd 1px solid;
-                        border-right: #ddd 1px solid;;
+                        border-right: #ddd 1px solid;
+                        ;
                         padding: 8px 16px;
                     }
                 }
-                .showAdminInfoBox{
+
+                .showAdminInfoBox {
                     margin-top: 16px;
-                    div{
+
+                    div {
                         padding: 8px 0;
                         display: flex;
                         align-items: center;
-                        p{
+
+                        p {
                             // font-size: 18px;
                             font-weight: bold;
                         }
                     }
                 }
-                button{
+
+                button {
                     width: 100%;
                     padding: 16px 32px;
                     background-color: #00457d;
@@ -224,27 +309,32 @@
                     margin-top: 32px;
                     pointer-events: none;
                 }
-                .ready{
+
+                .ready {
                     pointer-events: all;
                     opacity: 1;
                 }
             }
         }
-        .mbContainer2{
+
+        .mbContainer2 {
             display: flex;
             flex-direction: column;
             margin-top: 10vh;
-            div{
+
+            div {
                 font-size: 24px;
                 text-align: center;
                 font-weight: bold;
                 margin-bottom: 16px;
             }
-            img{
+
+            img {
                 width: calc(100vw - 32px);
                 border-radius: 8px;
             }
-            button{
+
+            button {
                 margin: 16px 0;
                 background-color: #fff;
                 padding: 16px 32px;
@@ -254,11 +344,12 @@
             }
         }
     }
-    .mobile-only{
+
+    .mobile-only {
         display: block;
     }
-    .pc-only{
+
+    .pc-only {
         display: none;
     }
-  }
-  
+}
