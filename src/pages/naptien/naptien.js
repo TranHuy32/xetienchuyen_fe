@@ -205,14 +205,20 @@ function NapTien() {
                             <input
                                 id="amount"
                                 required
-                                placeholder="Số Tiền (vnđ)"
-                                type="number"
-                                // value={amount}
+                                placeholder="Nhập Số Tiền"
+                                type="text"
+                                inputMode="numeric"
+                                value={moneyInputAmount}
                                 onChange={changeAmountHandler}
+                                maxLength={13}
+                                autoFocus
                             >
                             </input>
                         </div>
-                        <button className={cx(userName.length > 9 && amount && "ready")} onClick={handleSubbmit}>Tạo Mã</button>
+                        {!trackValidAmount && (
+                            <div className={cx("warning-valid-amount-pc")}>*Số Tiền Phải Chia Hết Cho 50,000</div>
+                        )}
+                        <button className={cx(userName.length > 9 && trackValidAmount && "ready")} onClick={handleSubbmit}>Tạo Mã</button>
                     </div>
 
                 </div>
