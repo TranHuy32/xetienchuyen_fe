@@ -130,23 +130,17 @@ function NapTien() {
             setTrackValidAmount(false);
         }
     }
-
-    console.log(trackValidAmount);
-
     const handleSelectAmount = (value) => {
         setAmount(value)
         setShowAnotherOption(false)
     }
-
     const handleSelectAnotherOption = () => {
         setAmount(0)
         setShowAnotherOption(!showAnotherOption)
     }
-
     const handleSubbmit = () => {
         setSubmitted(true)
     };
-
     const handleShowBankDropDownMenu = () => {
         setShowBankDropDownMenu(!showBankDropDownMenu)
     }
@@ -161,67 +155,74 @@ function NapTien() {
 
     return (
         <div className={cx("ntWrapper")}>
-            <div className={cx(allowedToDisplay ? "" : "notAllowedToDisplay")}>
-            <div className={cx("infoContainer", "pc-only")}>
-                <div className={cx("ntTitle")}>Thông Tin Thiết Lập Mã QR</div>
-                <div className={cx("ntBox")}>
-                    <div className={cx("select1")}>
-                        <div className={cx("dropDownSelect")}
-                            onClick={handleShowBankDropDownMenu}
-                        >{textForSelectBank}
-                            {!showBankDropDownMenu && <img src={arrowLeft}></img>}
-                            {showBankDropDownMenu && <img src={arrowDown}></img>}
+            <div className={cx(allowedToDisplay ? "" : "notAllowedToDisplay")}
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                <div className={cx("infoContainer", "pc-only")}>
+                    <div className={cx("ntTitle")}>Thông Tin Thiết Lập Mã QR</div>
+                    <div className={cx("ntBox")}>
+                        <div className={cx("select1")}>
+                            <div className={cx("dropDownSelect")}
+                                onClick={handleShowBankDropDownMenu}
+                            >{textForSelectBank}
+                                {!showBankDropDownMenu && <img src={arrowLeft}></img>}
+                                {showBankDropDownMenu && <img src={arrowDown}></img>}
+                            </div>
+                            <div className={cx("dropDownMenu")}>
+                                {showBankDropDownMenu && (
+                                    adminBankName.map((name, index) => (
+                                        <div className={cx("dropDownElement")}
+                                            key={index}
+                                            onClick={() => handleSetNewSelectedAccount(name, adminBankAccountName[index], adminBankAccount[index])}
+                                        >{name}</div>
+                                    ))
+                                )}
+                            </div>
                         </div>
-                        <div className={cx("dropDownMenu")}>
-                            {showBankDropDownMenu && (
-                                adminBankName.map((name, index) => (
-                                    <div className={cx("dropDownElement")}
-                                        key={index}
-                                        onClick={() => handleSetNewSelectedAccount(name, adminBankAccountName[index], adminBankAccount[index])}
-                                    >{name}</div>
-                                ))
-                            )}
+                        <div className={cx("showAdminInfo1")}>Ngân Hàng: {showBankInforName}</div>
+                        <div className={cx("showAdminInfo2")}>Số Tài Khoản Nhận: {adminBankNumber}</div>
+                        <div className={cx("showAdminInfo3")}>Chủ Tài Khoản: {adminName}</div>
+                        <div className={cx("inputBox1")}>
+                            <label for="userName">Tên Tài Khoản: </label>
+                            <input
+                                maxLength="10"
+                                id="userName"
+                                required
+                                placeholder="Tài Khoản Đăng Nhập"
+                                type="tel"
+                                pattern="[0-9]*"
+                                // value={userName}
+                                onChange={changeUserNameHandler}
+                            ></input>
                         </div>
+                        <div className={cx("inputBox2")}>
+                            <label for="amount">Số Tiền: </label>
+                            <input
+                                id="amount"
+                                required
+                                placeholder="Số Tiền (vnđ)"
+                                type="number"
+                                // value={amount}
+                                onChange={changeAmountHandler}
+                            >
+                            </input>
+                        </div>
+                        <button className={cx(userName.length > 9 && amount && "ready")} onClick={handleSubbmit}>Tạo Mã</button>
                     </div>
-                    <div className={cx("showAdminInfo1")}>Ngân Hàng: {showBankInforName}</div>
-                    <div className={cx("showAdminInfo2")}>Số Tài Khoản Nhận: {adminBankNumber}</div>
-                    <div className={cx("showAdminInfo3")}>Chủ Tài Khoản: {adminName}</div>
-                    <div className={cx("inputBox1")}>
-                        <label for="userName">Tên Tài Khoản: </label>
-                        <input
-                            maxLength="10"
-                            id="userName"
-                            required
-                            placeholder="Tài Khoản Đăng Nhập"
-                            type="tel"
-                            pattern="[0-9]*"
-                            // value={userName}
-                            onChange={changeUserNameHandler}
-                        ></input>
-                    </div>
-                    <div className={cx("inputBox2")}>
-                        <label for="amount">Số Tiền: </label>
-                        <input
-                            id="amount"
-                            required
-                            placeholder="Số Tiền (vnđ)"
-                            type="number"
-                            // value={amount}
-                            onChange={changeAmountHandler}
-                        >
-                        </input>
-                    </div>
-                    <button className={cx(userName.length > 9 && amount && "ready")} onClick={handleSubbmit}>Tạo Mã</button>
-                </div>
 
-            </div>
-            <div className={cx("qrContainer", "pc-only")}>
-                <div>Mã QR Của Bạn</div>
-                {submitted && (
-                    <img src={qrURL} alt="qr-code"></img>
-                )}
-                <button id="save-qr-image-pc" onClick={handleSaveQR}>Lưu Mã QR(Ảnh)</button>
-            </div>
+                </div>
+                <div className={cx("qrContainer", "pc-only")}>
+                    <div>Mã QR Của Bạn</div>
+                    {submitted && (
+                        <Fragment>
+                            <img src={qrURL} alt="qr-code"></img>
+                            <button id="save-qr-image-pc" onClick={handleSaveQR}>Lưu Mã QR(Ảnh)</button>
+                        </Fragment>
+                    )}
+                </div>
             </div>
 
             <div className={cx(allowedToDisplay ? "" : "notAllowedToDisplay")}>
