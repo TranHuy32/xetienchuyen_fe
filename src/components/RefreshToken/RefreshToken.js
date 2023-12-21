@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createRefresh } from 'react-auth-kit';
 const beURL = process.env.REACT_APP_BE_URL;
 const refreshApi = createRefresh({
-    interval: 30,
+    interval: 10,
     refreshApiCallback: async ({
         authToken,
         authTokenExpireAt,
@@ -13,7 +13,7 @@ const refreshApi = createRefresh({
         try {
             const response = await axios.post(
                 `${beURL}/owner-auth/refresh`,
-                { 'refreshToken': refreshToken },
+                { 'refresh': refreshToken },
                 {
                     headers: { Authorization: `Bearer ${authToken}` },
                 },
