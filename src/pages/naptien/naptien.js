@@ -16,7 +16,7 @@ function NapTien() {
     const [bankBin, setBankBin] = useState("");
     const [amount, setAmount] = useState(0);
     const [moneyInputAmount, setMoneyInputAmount] = useState('');
-    const [bankList, setBankList] = useState();
+    const [bankList, setBankList] = useState([]);
     const [adminName, setAdminName] = useState("Tong Chau Binh");
     const [showBankInforName, setShowBankInforName] = useState("TPBank");
     const [adminBankNumber, setAdminBankNumber] = useState("20869042001");
@@ -342,15 +342,19 @@ function NapTien() {
                                 ))
                             )}
                         </div>
-                        {(showInfor || textForSelectBank === "TPBank") && (
+                        {bankList !== [] && (
                             <div className={cx("showAdminInfoBox")}>
-                                <div className={cx("showAdminInfo1")}><strong>{bankList.filter(bank => bank.shortName === showBankInforName)[0].name}</strong></div>
+                                <div className={cx("showAdminInfo1")}>
+                                    <strong>{bankList.filter(bank => bank.shortName === showBankInforName)[0].name}</strong>
+                                </div>
                                 <div className={cx("showAdminInfo2")}>
                                     Số Tài Khoản Nhận:
                                     &nbsp;<strong>{adminBankNumber}</strong>
                                     <img id="copy-icon" src={copyIcon} alt="copy" onClick={() => handleCopyInfo(adminBankNumber)}></img>
                                 </div>
-                                <div className={cx("showAdminInfo3")}>Chủ Tài Khoản:&nbsp;<strong>{adminName}</strong></div>
+                                <div className={cx("showAdminInfo3")}>
+                                    Chủ Tài Khoản:&nbsp;<strong>{adminName}</strong>
+                                </div>
                             </div>
                         )}
 
