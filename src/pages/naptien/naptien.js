@@ -4,11 +4,15 @@ import arrowLeft from "~/assets/image/left-arrow.png";
 import arrowDown from "~/assets/image/arrow-down.png";
 import { VietQR } from "vietqr";
 import { Fragment, useEffect, useState } from "react";
+import { useParams } from 'react-router-dom';
+
+import copyIcon from "~/assets/image/copy.png"
 const cx = classNames.bind(styles);
 
 function NapTien() {
+    let { paramId } = useParams();
     const [userName, setUserName] = useState("");
-    const [textForSelectBank, setTextForSelectBank] = useState("Chọn Ngân Hàng Nhận");
+    const [textForSelectBank, setTextForSelectBank] = useState("TPBank");
     const [bankBin, setBankBin] = useState("");
     const [amount, setAmount] = useState(0);
     const [moneyInputAmount, setMoneyInputAmount] = useState('');
@@ -157,6 +161,22 @@ function NapTien() {
         setTextForSelectBank(bankName)
     }
 
+    const handleCopyInfo = (info) => {
+        try {
+            // Tạo một đối tượng ClipboardItem với một đối tượng { 'text/plain': info }
+            const item = new ClipboardItem({ 'text/plain': new Blob([info], { type: 'text/plain' }) });
+
+            // Sử dụng Clipboard API để sao chép nội dung vào clipboard
+            navigator.clipboard.write([item]);
+
+            console.log('Đã sao chép thành công!');
+        } catch (error) {
+            console.error('Không thể sao chép vào clipboard:', error);
+        }
+    };
+
+    console.log(paramId);
+
     return (
         <div className={cx("ntWrapper")}>
             <div className={cx(allowedToDisplay ? "" : "notAllowedToDisplay")}
@@ -247,17 +267,21 @@ function NapTien() {
                     <div className={cx("mbTitle")}>Thông Tin Thiết Lập Mã QR</div>
                     <div className={cx("mbContent")}>
                         <div className={cx("mbInputBox1")}>
-                            <label for="userName">Nội Dung Chuyển Khoản: </label>
-                            <input
+                            <label for="userName">
+                                Nội Dung Chuyển Khoản:
+                                <strong>&nbsp;{paramId}</strong>
+                                <img id="copy-icon" src={copyIcon} alt="copy" onClick={() => handleCopyInfo(paramId)}></img>
+                            </label>
+                            {/* <input
                                 maxLength="10"
                                 id="userName"
                                 required
                                 placeholder="Tên Đăng Nhập(Số Điện Thoại Đăng Kí)"
                                 type="tel"
                                 pattern="[0-9]*"
-                                // value={userName}
+                                value={paramId}
                                 onChange={changeUserNameHandler}
-                            ></input>
+                            ></input> */}
                             {/* <div>*Không Thể Để Trống</div> */}
                         </div>
                         <div className={cx("chargeValueContainer")}>
@@ -318,11 +342,15 @@ function NapTien() {
                                 ))
                             )}
                         </div>
-                        {showInfor && (
+                        {(showInfor || textForSelectBank === "TPBank") && (
                             <div className={cx("showAdminInfoBox")}>
-                                <div className={cx("showAdminInfo1")}><p>{bankList.filter(bank => bank.shortName === showBankInforName)[0].name}</p></div>
-                                <div className={cx("showAdminInfo2")}>Số Tài Khoản Nhận:&nbsp;<p>{adminBankNumber}</p></div>
-                                <div className={cx("showAdminInfo3")}>Chủ Tài Khoản:&nbsp;<p>{adminName}</p></div>
+                                <div className={cx("showAdminInfo1")}><strong>{bankList.filter(bank => bank.shortName === showBankInforName)[0].name}</strong></div>
+                                <div className={cx("showAdminInfo2")}>
+                                    Số Tài Khoản Nhận:
+                                    &nbsp;<strong>{adminBankNumber}</strong>
+                                    <img id="copy-icon" src={copyIcon} alt="copy" onClick={() => handleCopyInfo(adminBankNumber)}></img>
+                                </div>
+                                <div className={cx("showAdminInfo3")}>Chủ Tài Khoản:&nbsp;<strong>{adminName}</strong></div>
                             </div>
                         )}
 

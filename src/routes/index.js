@@ -10,6 +10,7 @@ import CreateUser from "~/pages/CreateUser";
 import Transaction from "~/pages/Transaction";
 import DetailUser from "~/pages/DetailUser";
 import Recharge from "~/pages/Recharge";
+
 import NapTien from "~/pages/naptien/naptien";
 
 import AdminDefaultLayout from "~/components/Layout/AdminDefaultLayout/AdminDefaultLayout";
@@ -31,6 +32,7 @@ const MainRoutes = () => {
 
         <Route path={"/adminlogin/adminownermanager"} element={<RequireAuth loginPath={"/adminlogin"}><AdminDefaultLayout><AdminOwner /></AdminDefaultLayout></RequireAuth>} exact />
         {/* user ROUTES */}
+        <Route path={"/naptien/:paramId"} element={<NapTien />} exact />
         <Route path={"/naptien"} element={<NapTien />} exact />
         <Route path={"/"} element={<Login />} exact />
 
