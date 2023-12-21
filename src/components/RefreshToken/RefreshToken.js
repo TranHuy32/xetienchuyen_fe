@@ -12,8 +12,8 @@ const refreshApi = createRefresh({
     }) => {
         try {
             const response = await axios.post(
-                `${beURL}/user-auth/refresh`,
-                { 'refresh': refreshToken },
+                `${beURL}/users-auth/refresh`,
+                { 'refreshToken': refreshToken },
                 {
                     headers: { Authorization: `Bearer ${authToken}` },
                 },
