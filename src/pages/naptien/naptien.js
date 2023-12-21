@@ -17,8 +17,8 @@ function NapTien() {
     const [amount, setAmount] = useState(0);
     const [moneyInputAmount, setMoneyInputAmount] = useState('');
     const [bankList, setBankList] = useState();
-    const [adminName, setAdminName] = useState("Tòng Châu Bình");
-    const [showBankInforName, setShowBankInforName] = useState("VietinBank");
+    const [adminName, setAdminName] = useState("Tong Chau Binh");
+    const [showBankInforName, setShowBankInforName] = useState("TPBank");
     const [adminBankNumber, setAdminBankNumber] = useState("20869042001");
     const [allowedToDisplay, setAllowToDisplay] = useState(true)
     const [submitted, setSubmitted] = useState(false);
@@ -42,6 +42,8 @@ function NapTien() {
 
     const adminBankAccount = ["20869042001", "1234567890", "0987654321"]
     //end admin bank info
+
+    console.log(showBankInforName);
 
     //get bank bin
     useEffect(() => {
@@ -174,8 +176,6 @@ function NapTien() {
             console.error('Không thể sao chép vào clipboard:', error);
         }
     };
-
-    console.log(paramId);
 
     return (
         <div className={cx("ntWrapper")}>
@@ -354,7 +354,7 @@ function NapTien() {
                             </div>
                         )}
 
-                        <button className={cx(userName.length > 9 && trackValidAmount && "ready")} onClick={handleSubbmit}>Tạo Mã {qrGenerated && " (Đã Tạo)"}</button>
+                        <button className={cx(paramId && trackValidAmount && "ready")} onClick={handleSubbmit}>Tạo Mã {qrGenerated && " (Đã Tạo)"}</button>
                     </div>
                 </div>
             </div>
