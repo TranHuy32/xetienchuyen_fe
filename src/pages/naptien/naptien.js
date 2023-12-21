@@ -55,6 +55,7 @@ function NapTien() {
                     let filtedBank = banks.data.filter(bank => bank.shortName === showBankInforName);
                     if (filtedBank.length > 0) {
                         setBankBin(filtedBank[0].bin)
+                        setShowInfor(true)
                     } else {
                         alert('Bank not found:', showBankInforName);
                     }
@@ -342,7 +343,7 @@ function NapTien() {
                                 ))
                             )}
                         </div>
-                        {bankList !== [] && (
+                        {showInfor && (
                             <div className={cx("showAdminInfoBox")}>
                                 <div className={cx("showAdminInfo1")}>
                                     <strong>{bankList.filter(bank => bank.shortName === showBankInforName)[0].name}</strong>
