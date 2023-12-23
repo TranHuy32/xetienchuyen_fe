@@ -10,6 +10,7 @@ const beURL = process.env.REACT_APP_BE_URL;
 function AdminHome() {
     const [groupList, setGroupList] = useState([]);
     const [inputValue, setInputValue] = useState('');
+    const [newAppFee, setNewAppFee] = useState(1);
     const [changeNameValue, setChangeNameValue] = useState('');
     const [reloadList, setReloadList] = useState(false);
     const [changeNameState, setChangeNameState] = useState("");
@@ -34,7 +35,6 @@ function AdminHome() {
             .then((response) => {
                 const data = response.data;
                 setGroupList(data);
-                console.log(data);
             })
             .catch((error) => {
                 console.log(error);
@@ -123,19 +123,26 @@ function AdminHome() {
         setSelectedGroupToSetAppFee(option);
     };
 
+    const handleGetAppFee = (name) => {
+        const pickedGroup = groupList.find((option) => option.name === name);
+        setNewAppFee(pickedGroup.appFee)
+    }
+
     return (
         <Fragment>
             {showAppfeeSetting && (
                 <Fragment>
                     <div className={cx("overlay")} onClick={handleCancel}></div>
-                    <div className={cx("settingAppFeeBox")}>
-                        <div>
+                    <div className={cx("settingAppFeeContainer")}>
+                        <h1>Cài Đặt App Fee</h1>
+                        <div className={cx("selectBox")}>
                             <select
                                 value={(selectedGroupToSetAppFee !== "") ? selectedGroupToSetAppFee : ''}
                                 onChange={(e) => {
                                     const selectedValue = e.target.value;
-                                    const selectedOption = groupList.find((option) => option.value === selectedValue);
+                                    const selectedOption = groupList.find((option) => option.name === selectedValue);
                                     handleSelectGroupToSetAppFee(selectedOption);
+                                    handleGetAppFee(selectedValue)
                                 }}
                             >
                                 <option value="" disabled>
@@ -149,6 +156,18 @@ function AdminHome() {
                             </select>
                             {/* <p>Selected option: {selectedGroupToSetAppFee ? selectedGroupToSetAppFee.label : 'None'}</p> */}
                         </div>
+                        <div className={cx("inputBox")}>
+                            <label for="newFee">AppFee Mới (Phần Trăm %): </label>
+                            <input
+                                id="newFee"
+                                placeholder=" app phí"
+                                required
+                                type="number"
+                                value={newAppFee}
+                                onChange={(e) => setNewAppFee(e.target.value)}
+                            ></input>
+                        </div>
+                        <button>Xác Nhận</button>
                     </div>
                 </Fragment>
             )}
