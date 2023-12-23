@@ -1,6 +1,16 @@
 .bWrapper{
     height: max-content;
 }
+.settingAppFeeBox{
+    position: fixed;
+    width: 50%;
+    height: 50%;
+    left: 25%;
+    min-width: 480px;
+    top: 20%;
+    background-color: #fff;
+    z-index: 20000;
+}
 .createGroupBox {
     width: 80%;
     max-width: 1200px;

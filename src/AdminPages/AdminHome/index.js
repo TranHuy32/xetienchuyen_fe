@@ -13,6 +13,8 @@ function AdminHome() {
     const [changeNameValue, setChangeNameValue] = useState('');
     const [reloadList, setReloadList] = useState(false);
     const [changeNameState, setChangeNameState] = useState("");
+    const [showAppfeeSetting, setShowAppfeeSetting] = useState(false)
+    const [selectedGroupToSetAppFee, setSelectedGroupToSetAppFee] = useState("")
     const [formGroupData, setFormGroupData] = useState({
         name: "",
     });
@@ -112,8 +114,44 @@ function AdminHome() {
         setInputValue('');
     };
 
+    const handleCancel = () => {
+        setShowAppfeeSetting(false)
+        setSelectedGroupToSetAppFee("")
+    }
+
+    const handleSelectGroupToSetAppFee = (option) => {
+        setSelectedGroupToSetAppFee(option);
+    };
+
     return (
         <Fragment>
+            {showAppfeeSetting && (
+                <Fragment>
+                    <div className={cx("overlay")} onClick={handleCancel}></div>
+                    <div className={cx("settingAppFeeBox")}>
+                        <div>
+                            <select
+                                value={(selectedGroupToSetAppFee !== "") ? selectedGroupToSetAppFee : ''}
+                                onChange={(e) => {
+                                    const selectedValue = e.target.value;
+                                    const selectedOption = groupList.find((option) => option.value === selectedValue);
+                                    handleSelectGroupToSetAppFee(selectedOption);
+                                }}
+                            >
+                                <option value="" disabled>
+                                    Chọn Group
+                                </option>
+                                {groupList.map((owner) => (
+                                    <option key={owner.value} value={owner.value}>
+                                        {owner.name}
+                                    </option>
+                                ))}
+                            </select>
+                            {/* <p>Selected option: {selectedGroupToSetAppFee ? selectedGroupToSetAppFee.label : 'None'}</p> */}
+                        </div>
+                    </div>
+                </Fragment>
+            )}
             <div className={cx("createGroupBox")}>
                 <label>Tạo Group Mới: </label>
                 <input
@@ -125,6 +163,7 @@ function AdminHome() {
                 <button onClick={() => handleCreateNewGroup()}>
                     Tạo Group
                 </button>
+                <button onClick={() => setShowAppfeeSetting(true)}>Cài Đặt App Fee</button>
             </div>
             <div className={cx("adListGroup")}>
                 <table>
