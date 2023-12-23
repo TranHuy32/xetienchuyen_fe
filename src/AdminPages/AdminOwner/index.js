@@ -14,7 +14,9 @@ function AdminOwner() {
     const [pageSize, setPageSize] = useState(10);
     const [totalPages, setTotalPages] = useState(0);
     const [showAddGmail, setShowAddGmail] = useState(false)
-    const [gmail, setGmail] = useState("")
+    const [gmail, setGmail] = useState({
+        gmail: ""
+    })
     const [selectedId, setSelectedId] = useState("")
     const [selectedGroupId, setSelectedGroupId] = useState("")
     const [selectedGroupName, setSelectedGroupName] = useState("")
@@ -42,7 +44,6 @@ function AdminOwner() {
         headers: { Authorization: `Bearer ${token}` },
     };
 
-    console.log(selectedGroupName);
     //get group list
     useEffect(() => {
         axios
@@ -117,8 +118,9 @@ function AdminOwner() {
             alert("Hãy Tắt Bảo Mật 2FA Trước")
             handleCancel()
         }
-
     }
+
+    console.log(gmail);
 
     const handleCancel = () => {
         setSelectedGroupName("")
@@ -195,14 +197,14 @@ function AdminOwner() {
 
     const handleTurnOn2FA = () => {
         axios
-            .post(`${beURL}/users-auth/2fa/turn-on`, formTurnOn2Fa ,config)
+            .post(`${beURL}/users-auth/2fa/turn-on`, formTurnOn2Fa, config)
             .then((response) => {
                 const data = response.data;
                 console.log(data);
-                if(data){
+                if (data) {
                     setReloadList(!reloadList)
                     handleCancel()
-                }else{
+                } else {
                     alert("Thất Bại")
                 }
             })
@@ -210,6 +212,8 @@ function AdminOwner() {
                 console.log(error);
             });
     }
+
+    console.log(ownerList);
 
     return (
         <Fragment>
@@ -308,7 +312,7 @@ function AdminOwner() {
                             <div className={cx("selectTitle")} onClick={() => setShowGroupList(!showGroupList)}>
                                 {selectedGroupName !== "" && selectedGroupName}
                                 {selectedGroupName === "" && "Chọn Group"}
-                                </div>
+                            </div>
                             {showGroupList && (
                                 <div className={cx("selectGroupDropMenu")}>
                                     {groupList.map((group, index) => (
@@ -333,9 +337,12 @@ function AdminOwner() {
                             <input
                                 required
                                 id="gmail"
-                                value={gmail}
+                                value={gmail.gmail}
                                 type="email"
-                                onChange={(e) => setGmail(e.target.value)}
+                                onChange={(e) => setGmail({
+                                    ...gmail,
+                                    gmail: e.target.value
+                                })}
                                 placeholder="Nhập Gmail..."
                             />
 
