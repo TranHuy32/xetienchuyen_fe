@@ -3,6 +3,11 @@ import styles from "./DetailUser.scss";
 import { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { format } from 'date-fns';
+
 import searchIcon from "~/components/Image/search-icon.png";
 import { type } from "@testing-library/user-event/dist/type";
 import { act } from "react-dom/test-utils";
@@ -35,6 +40,9 @@ export default function DetailUser() {
   const [showCreatedDetail, setShowCreatedDetail] = useState(false);
   const [showFixInfoWindow, setShowFixInfoWindow] = useState(false);
   const [reload, setReload] = useState(false);
+  const [reloadRides, setReloadRides] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(null);
+
   const token = localStorage.getItem("token") || [];
 
   const config = {
@@ -73,21 +81,40 @@ export default function DetailUser() {
 
   useEffect(() => {
     //get lịch sử đã nhận
-    axios
-      .get(
-        // `${beURL}/ride/historyReceivedByOwner/${user_id}?page=${currentRidesPage}&pageSize=${pageSize}&date=${formattedDate}`,
-        `${beURL}/ride/historyReceivedByOwner/${user_id}?page=${currentRidesPage}&pageSize=${pageSize}`,
-        config
-      )
-      .then((response) => {
-        const data = response.data;
-        setRides(data.rides);
-        setTotalRidesPages(Math.ceil(data.totalCount / pageSize));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [token, user_id, pageSize, currentRidesPage]);
+    if (selectedDate === null) {
+      axios
+        .get(
+          `${beURL}/ride/historyReceivedByOwner/${user_id}?page=${currentRidesPage}&pageSize=${pageSize}&date=${formattedDate}`,
+          // `${beURL}/ride/historyReceivedByOwner/${user_id}?page=${currentRidesPage}&pageSize=${pageSize}`,
+          config
+        )
+        .then((response) => {
+          const data = response.data;
+          setRides(data.rides);
+          setTotalRidesPages(Math.ceil(data.totalCount / pageSize));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else if (selectedDate !== null) {
+      const newDate = format(selectedDate, 'dd/MM/yyyy')
+      axios
+        .get(
+          `${beURL}/ride/historyReceivedByOwner/${user_id}?page=${currentRidesPage}&pageSize=${pageSize}&date=${newDate}`,
+          // `${beURL}/ride/historyReceivedByOwner/${user_id}?page=${currentRidesPage}&pageSize=${pageSize}`,
+          config
+        )
+        .then((response) => {
+          const data = response.data;
+          setRides(data.rides);
+          setTotalRidesPages(Math.ceil(data.totalCount / pageSize));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+  }, [token, user_id, pageSize, currentRidesPage, selectedDate]);
 
   useEffect(() => {
     //get lịch sử đã tạo
@@ -313,8 +340,6 @@ export default function DetailUser() {
 
   const { licensePlate, carType } = state;
 
-  console.log(rides);
-
   if (user) {
     return (
       <div>
@@ -333,7 +358,7 @@ export default function DetailUser() {
                   id="seat"
                   type="number"
                   value={carType}
-                  placeholder={user.carType !== 0 && (user.carType || "Số Chỗ Ngồi")} 
+                  placeholder={user.carType !== 0 && (user.carType || "Số Chỗ Ngồi")}
                 ></input>
               </div>
               <div className={cx("fixBox2")}>
@@ -346,7 +371,7 @@ export default function DetailUser() {
                   id="carplate"
                   type="text"
                   value={licensePlate}
-                  placeholder={user.licensePlate !== null && (user.licensePlate || "Biển Số Xe")} 
+                  placeholder={user.licensePlate !== null && (user.licensePlate || "Biển Số Xe")}
 
                 ></input>
               </div>
@@ -724,6 +749,19 @@ export default function DetailUser() {
               {!showRidesList && "Chuyến xe đã nhận"}
               {showRidesList && "Ẩn Danh Sách Chuyến xe đã Nhận"}
             </div>
+            {showRidesList && (
+              <div className={cx("datePicker")}>
+                <h4>Lọc Theo Ngày: </h4>
+                <DatePicker
+                  selected={selectedDate}
+                  onChange={(date) => setSelectedDate(date)}
+                  placeholderText="Chọn Ngày"
+                />
+                {selectedDate !== null && (
+                  <h5 onClick={() => setSelectedDate(null)} >Huỷ</h5>
+                )}
+              </div>
+            )}
             {rides.length !== 0 && showRidesList && (
               <div className={cx("bottomBox2")}>
                 <div className={cx("duRidesList")}>
