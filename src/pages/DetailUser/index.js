@@ -42,6 +42,7 @@ export default function DetailUser() {
   const [reload, setReload] = useState(false);
   const [reloadRides, setReloadRides] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedCreatedDate, setSelectedCreatedDate] = useState(null);
 
   const token = localStorage.getItem("token") || [];
 
@@ -79,8 +80,8 @@ export default function DetailUser() {
 
   }, [token, user_id, reload]);
 
+  //get lịch sử đã nhận
   useEffect(() => {
-    //get lịch sử đã nhận
     if (selectedDate === null) {
       axios
         .get(
@@ -116,22 +117,40 @@ export default function DetailUser() {
 
   }, [token, user_id, pageSize, currentRidesPage, selectedDate]);
 
+  //get lịch sử đã tạo
   useEffect(() => {
-    //get lịch sử đã tạo
-    axios
-      .get(
-        `${beURL}/ride/historyCreatedByOwner/${user_id}?page=${currentCreatedPage}&pageSize=${pageSize}`,
-        config
-      )
-      .then((response) => {
-        const data = response.data;
-        setCreatedList(data.rides);
-        setTotalCreatedPages(Math.ceil(data.totalCount / pageSize));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [token, user_id, pageSize, currentCreatedPage]);
+    if (selectedCreatedDate === null) {
+      axios
+        .get(
+          `${beURL}/ride/historyCreatedByOwner/${user_id}?page=${currentRidesPage}&pageSize=${pageSize}&date=${formattedDate}`,
+          config
+        )
+        .then((response) => {
+          const data = response.data;
+          setCreatedList(data.rides);
+          setTotalCreatedPages(Math.ceil(data.totalCount / pageSize));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else if (selectedCreatedDate !== null) {
+      const newDate = format(selectedCreatedDate, 'dd/MM/yyyy')
+      axios
+        .get(
+          `${beURL}/ride/historyCreatedByOwner/${user_id}?page=${currentRidesPage}&pageSize=${pageSize}&date=${newDate}`,
+          config
+        )
+        .then((response) => {
+          const data = response.data;
+          setCreatedList(data.rides);
+          setTotalCreatedPages(Math.ceil(data.totalCount / pageSize));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+  }, [token, user_id, pageSize, currentCreatedPage, selectedCreatedDate]);
 
   const handleRidesPageChange = (newPage) => {
     setCurrentRidesPage(newPage);
@@ -864,6 +883,19 @@ export default function DetailUser() {
               {!showCreatedList && "Chuyến xe đã tạo"}
               {showCreatedList && "Ẩn Danh Sách Chuyến xe đã tạo"}
             </div>
+            {showCreatedList && (
+              <div className={cx("datePicker")}>
+                <h4>Lọc Theo Ngày: </h4>
+                <DatePicker
+                  selected={selectedCreatedDate}
+                  onChange={(date) => setSelectedCreatedDate(date)}
+                  placeholderText="Chọn Ngày"
+                />
+                {selectedCreatedDate !== null && (
+                  <h5 onClick={() => setSelectedCreatedDate(null)} >Huỷ</h5>
+                )}
+              </div>
+            )}
             {createdList.length !== 0 && showCreatedList && (
               <div className={cx("bottomBox3")}>
                 <div className={cx("duCreatedList")}>
