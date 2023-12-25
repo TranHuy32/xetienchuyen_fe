@@ -193,8 +193,8 @@ function NapTien() {
                             <div className={cx("dropDownSelect")}
                                 onClick={handleShowBankDropDownMenu}
                             >{textForSelectBank}
-                                {!showBankDropDownMenu && <img src={arrowLeft}></img>}
-                                {showBankDropDownMenu && <img src={arrowDown}></img>}
+                                {!showBankDropDownMenu && <img src={arrowLeft} alt="arrow"></img>}
+                                {showBankDropDownMenu && <img src={arrowDown} alt="arrow"></img>}
                             </div>
                             <div className={cx("dropDownMenu")}>
                                 {showBankDropDownMenu && (
