@@ -32,17 +32,25 @@
         margin-right: 2%;
         display: flex;
         #changeDepositStatusBox{
-          background-color: #FF6464;
+          background-color: #FFf;
+          border: 1px solid #FF6464;
           display: flex;
           justify-content: center;
-          color: #fff;
+          // color: #fff;
           padding: 8px 16px;
           margin-right: 8px;
           border-radius: 8px;
           cursor: pointer;
           strong{
+            // color: #fff;
+            padding-left: 4px;
+          }
+          &:hover, :active{
+            background-color: #FF6464;
             color: #fff;
-            padding-left: 8px;
+            strong{
+              color: #fff;
+            }
           }
         }
         p {
