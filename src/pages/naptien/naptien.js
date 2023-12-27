@@ -5,10 +5,10 @@ import arrowDown from "~/assets/image/arrow-down.png";
 import { VietQR } from "vietqr";
 import { Fragment, useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
-
+import axios from "axios";
 import copyIcon from "~/assets/image/copy.png"
 const cx = classNames.bind(styles);
-
+const beURL = process.env.REACT_APP_BE_URL;
 function NapTien() {
     let { paramId } = useParams();
     const [userName, setUserName] = useState("");
@@ -43,7 +43,23 @@ function NapTien() {
     const adminBankAccount = ["20869042001", "1234567890", "0987654321"]
     //end admin bank info
 
-    console.log(showBankInforName);
+    //display naptien screen
+    useEffect(() => {
+        axios
+            .get(`${beURL}/users/depositStatus`)
+            .then((response) => {
+                const data = response.data;
+                if(data.success === 1){
+                    setAllowToDisplay(true)
+                    // setAllowToDisplay(false)
+                }else{
+                    setAllowToDisplay(false)
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [])
 
     //get bank bin
     useEffect(() => {
