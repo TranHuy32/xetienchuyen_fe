@@ -10,7 +10,7 @@ const beURL = process.env.REACT_APP_BE_URL;
 function AdminHome() {
     const [groupList, setGroupList] = useState([]);
     const [inputValue, setInputValue] = useState('');
-    const [newAppFee, setNewAppFee] = useState(1);
+    const [newAppFee, setNewAppFee] = useState(100);
     const [changeNameValue, setChangeNameValue] = useState('');
     const [reloadList, setReloadList] = useState(false);
     const [changeNameState, setChangeNameState] = useState("");
@@ -117,15 +117,47 @@ function AdminHome() {
     const handleCancel = () => {
         setShowAppfeeSetting(false)
         setSelectedGroupToSetAppFee("")
+        setNewAppFee(100)
     }
 
     const handleSelectGroupToSetAppFee = (option) => {
         setSelectedGroupToSetAppFee(option);
+        if(option.appFee !== 0){
+            alert(`Group ${option.name} Đã Có AppFee Là ${option.appFee}. Tiếp Tục Sẽ Làm Thay Đổi AppFee Hiện Tại.`)
+        }
     };
 
     const handleGetAppFee = (name) => {
         const pickedGroup = groupList.find((option) => option.name === name);
         setNewAppFee(pickedGroup.appFee)
+    }
+
+    const handleSetNewAppFee = () => {
+        if (selectedGroupToSetAppFee === "") {
+            alert("Chọn Group Để Cài Đặt AppFee.")
+            return
+        } 
+        else if (selectedGroupToSetAppFee.appFee === newAppFee) {
+            alert(`Hãy Nhập Giá Trị AppFee Mới!`)
+            return
+        }
+        axios
+            .put(`${beURL}/group/update/${selectedGroupToSetAppFee._id}`,
+                { appFee: newAppFee }
+                , config)
+            .then((response) => {
+                const data = response.data;
+                if(data.appFee){
+                    alert("Cài Đặt AppFee Mới Thành Công.")
+                    handleCancel()
+                    setReloadList(!reloadList)
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+
     }
 
     return (
@@ -167,7 +199,7 @@ function AdminHome() {
                                 onChange={(e) => setNewAppFee(e.target.value)}
                             ></input>
                         </div>
-                        <button>Xác Nhận</button>
+                        <button onClick={() => handleSetNewAppFee()}>Xác Nhận</button>
                     </div>
                 </Fragment>
             )}
