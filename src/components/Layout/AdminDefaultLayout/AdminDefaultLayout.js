@@ -4,8 +4,6 @@ import { memo, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSignOut } from "react-auth-kit";
 import axios from "axios";
-import { da } from "date-fns/locale";
-import { config } from "npm";
 const cx = classNames.bind(styles);
 const beURL = process.env.REACT_APP_BE_URL;
 function AdminDefaultLayout({ children }) {
@@ -17,6 +15,12 @@ function AdminDefaultLayout({ children }) {
     singOut();
     navigate("/adminlogin");
   };
+
+  const token = localStorage.getItem("token") || [];
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+
   const owner = JSON.parse(localStorage.getItem("token_state")) || [];
 
   useEffect(() => {
@@ -32,7 +36,19 @@ function AdminDefaultLayout({ children }) {
   }, [reloadStatus])
 
   const handleChangeDepositStatus = (currentStat) => {
-
+    const newStat = !currentStat;
+    axios
+      .put(`${beURL}/users/turnDeposit`,{status: newStat}, config)
+      .then((response) => {
+        const data = response.data;
+        console.log(data);
+        if(data.success === 1){
+          setReloadStatus(!reloadStatus)
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
 
@@ -50,7 +66,7 @@ function AdminDefaultLayout({ children }) {
             <p>Admin</p>
             <div id="changeDepositStatusBox"
               onClick={() => handleChangeDepositStatus(depositStatus)}
-            >Nạp Tiền: {depositStatus ? "Đang Bật" : "Đang Tắt"}</div>
+            >Nạp Tiền: <strong>{depositStatus ? "Đang Bật" : "Đang Tắt"}</strong></div>
             <a className={cx("adhLogout")}
               onClick={() => logout()}
             >

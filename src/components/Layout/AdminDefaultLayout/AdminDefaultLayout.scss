@@ -31,7 +31,20 @@
       .adhUserBox {
         margin-right: 2%;
         display: flex;
-  
+        #changeDepositStatusBox{
+          background-color: #FF6464;
+          display: flex;
+          justify-content: center;
+          color: #fff;
+          padding: 8px 16px;
+          margin-right: 8px;
+          border-radius: 8px;
+          cursor: pointer;
+          strong{
+            color: #fff;
+            padding-left: 8px;
+          }
+        }
         p {
           align-self: center;
           margin-right: 20px;
@@ -42,7 +55,7 @@
         }
   
         .adhLogout {
-          padding: 10px;
+          padding: 8px 16px;
           background-color: #FF6464;
           border-radius: 10px;
           color: #fff;
