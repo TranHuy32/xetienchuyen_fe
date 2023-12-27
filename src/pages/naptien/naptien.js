@@ -59,7 +59,7 @@ function NapTien() {
             .catch((error) => {
                 console.log(error);
             });
-    }, [])
+    }, []);
 
     //get bank bin
     useEffect(() => {

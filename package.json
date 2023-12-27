@@ -17,6 +17,7 @@
     "install": "^0.13.0",
     "moment": "^2.29.4",
     "npm": "^10.2.5",
+    "path-browserify": "^1.0.1",
     "react": "^18.2.0",
     "react-auth-kit": "^2.12.6",
     "react-datepicker": "^4.25.0",
