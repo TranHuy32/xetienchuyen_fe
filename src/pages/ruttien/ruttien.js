@@ -7,7 +7,7 @@ const cx = classNames.bind(styles);
 const beURL = process.env.REACT_APP_BE_URL;
 function RutTien() {
     return (
-        <div>Rút Tiền</div>
+        <div className={cx("mobile-only")}>Rút Tiền</div>
     );
 }
 

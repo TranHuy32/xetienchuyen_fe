@@ -10,7 +10,6 @@ const cx = classNames.bind(styles);
 const beURL = process.env.REACT_APP_BE_URL;
 function NapTien() {
     const [paramId, setParamId] = useState("")
-    const [userName, setUserName] = useState("");
     const [textForSelectBank, setTextForSelectBank] = useState("TPBank");
     const [bankBin, setBankBin] = useState("");
     const [amount, setAmount] = useState(0);
@@ -28,13 +27,15 @@ function NapTien() {
     const [trackValidAmount, setTrackValidAmount] = useState(false)
     const [reloadQR, setReloadQR] = useState(false)
     const [qrURL, setQrURL] = useState(null);
+
     const vietQR = new VietQR({
         clientID: '4244e11f-e282-4e3c-af39-6d9749c99e44',
         apiKey: '2f317b30-113a-45c5-aaf7-192d8926a15f',
     });
+
+    const chargeValue = [50000, 100000, 200000, 500000, 750000, 1000000];
     //admin bank info
     const adminBankName = ["TPBank", "VietinBank", "BIDV"];
-    const chargeValue = [50000, 100000, 200000, 500000, 750000, 1000000];
 
     const adminBankAccountName = ["Tong Chau Binh", "Chau Binh", "Binh Chau"];
     //Tên tài khoản là tiếng Việt không dấu, viết hoa, tối thiểu 5 ký tự, tối đa 50 kí tự, không chứa các ký tự đặc biệt
@@ -42,6 +43,7 @@ function NapTien() {
     const adminBankAccount = ["20869042001", "1234567890", "0987654321"]
     //end admin bank info
 
+    //get info from url
     useEffect(() => {
         // Lấy URL hiện tại
         const currentUrl = window.location.href;
@@ -61,7 +63,7 @@ function NapTien() {
         // console.log(Token.length);
         console.log(Name.length);
         //Thông báo thiếu thông tin
-        if(Name.length < 10){
+        if (Name.length < 10) {
             alert("Thông Tin Bị Thiếu! Hãy Mở Lại Trang Web Này Từ Ứng Dụng Của Bạn.")
             return
         }
@@ -116,8 +118,8 @@ function NapTien() {
                     "accountName": adminName,
                     "bank": bankBin,
                     "amount": amount,
-                    "memo": userName,
-                    "format": "text",
+                    "memo": paramId,
+                    // "format": "text",
                     "template": "print"
                     //compact2 có thêm thông tin người nhận và số tiền trên ảnh
                     //compact thì không có 
@@ -135,7 +137,6 @@ function NapTien() {
                 });
         };
     }, [bankBin, submitted, reloadQR]);
-
     //lưu mã qr
     const handleSaveQR = () => {
         // Tạo một đối tượng <a> để tạo liên kết tải ảnh
@@ -145,9 +146,9 @@ function NapTien() {
 
         a.click();
     };
-    const changeUserNameHandler = (e) => {
-        setUserName(e.target.value)
-    };
+    // const changeUserNameHandler = (e) => {
+    //     setUserName(e.target.value)
+    // };
     const changeAmountHandler = (e) => {
         let inputValue = e.target.value;
 
@@ -226,7 +227,7 @@ function NapTien() {
                     justifyContent: 'center',
                     alignItems: 'center'
                 }}>
-                <div className={cx("infoContainer", "pc-only")}>
+                {/* <div className={cx("infoContainer", "pc-only")}>
                     <div className={cx("ntTitle")}>Thông Tin Thiết Lập Mã QR</div>
                     <div className={cx("ntBox")}>
                         <div className={cx("select1")}>
@@ -281,7 +282,7 @@ function NapTien() {
                         {!trackValidAmount && (
                             <div className={cx("warning-valid-amount-pc")}>*Số Tiền Phải Chia Hết Cho 50,000</div>
                         )}
-                        <button className={cx(userName.length > 9 && trackValidAmount && "ready")} onClick={handleSubbmit}>Tạo Mã</button>
+                        <button className={cx(trackValidAmount && "ready")} onClick={handleSubbmit}>Tạo Mã</button>
                     </div>
 
                 </div>
@@ -293,7 +294,7 @@ function NapTien() {
                             <button id="save-qr-image-pc" onClick={handleSaveQR}>Lưu Mã QR(Ảnh)</button>
                         </Fragment>
                     )}
-                </div>
+                </div> */}
             </div>
 
             <div className={cx(allowedToDisplay ? "" : "notAllowedToDisplay")}>
