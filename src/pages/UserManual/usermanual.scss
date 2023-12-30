@@ -1,0 +1,34 @@
+
+.manualWrapper {
+    .buttonContainer {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 32px;
+        button {
+            padding: 16px 32px;
+            // width: min-content;
+            min-width: 80%;
+            border-radius: 8px;
+            border: 1px solid black;
+            font-size: large;
+            font-weight: bold;
+        }
+        #naptien{
+            background-color: #2b90ed;
+            border-color: #2b90ed;
+            color: #fff;
+            margin-bottom: 16px;
+        }
+        #ruttien{
+            background-color: #fff;
+            color: #f26749;
+            border-color: #f26749;
+        }
+    }
+}
+
+.notAllowedToDisplay{
+    display: none;
+}
