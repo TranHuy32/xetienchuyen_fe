@@ -4,13 +4,12 @@ import arrowLeft from "~/assets/image/left-arrow.png";
 import arrowDown from "~/assets/image/arrow-down.png";
 import { VietQR } from "vietqr";
 import { Fragment, useEffect, useState } from "react";
-import { useParams } from 'react-router-dom';
 import axios from "axios";
 import copyIcon from "~/assets/image/copy.png"
 const cx = classNames.bind(styles);
 const beURL = process.env.REACT_APP_BE_URL;
 function NapTien() {
-    let { paramId } = useParams();
+    const [paramId, setParamId] = useState("")
     const [userName, setUserName] = useState("");
     const [textForSelectBank, setTextForSelectBank] = useState("TPBank");
     const [bankBin, setBankBin] = useState("");
@@ -43,16 +42,41 @@ function NapTien() {
     const adminBankAccount = ["20869042001", "1234567890", "0987654321"]
     //end admin bank info
 
+    useEffect(() => {
+        // Lấy URL hiện tại
+        const currentUrl = window.location.href;
+
+        // Phân tích đường link
+        const url = new URL(currentUrl);
+
+        // Lấy giá trị của tham số wdToken
+        const Token = url.searchParams.get('wdToken');
+
+        // Lấy giá trị của tham số userName
+        const Name = url.searchParams.get('userName');
+
+        // Sử dụng giá trị của các tham số tại đây
+        // setWdToken(Token)
+        setParamId(Name)
+        // console.log(Token.length);
+        console.log(Name.length);
+        //Thông báo thiếu thông tin
+        if(Name.length < 10){
+            alert("Thông Tin Bị Thiếu! Hãy Mở Lại Trang Web Này Từ Ứng Dụng Của Bạn.")
+            return
+        }
+    }, []);
+
     //display naptien screen
     useEffect(() => {
         axios
             .get(`${beURL}/users/depositStatus`)
             .then((response) => {
                 const data = response.data;
-                if(data.success === 1){
+                if (data.success === 1) {
                     setAllowToDisplay(true)
                     // setAllowToDisplay(false)
-                }else{
+                } else {
                     setAllowToDisplay(false)
                 }
             })

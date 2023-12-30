@@ -62,7 +62,7 @@ function UsersManual() {
     return (
         <div className={cx("manualWrapper", allowedToDisplay ? "" : "notAllowedToDisplay")}>
             <div className={cx("buttonContainer")}>
-                <button id="naptien" onClick={() => navigate(`/naptien?wdToken=${wdToken}&userName=${userName}`)}>Nạp Tiền</button>
+                <button id="naptien" onClick={() => navigate(`/naptien?userName=${userName}`)}>Nạp Tiền</button>
                 <button id="ruttien" onClick={() => navigate(`/ruttien?wdToken=${wdToken}&userName=${userName}`)}>Rút Tiền</button>
             </div>
             <div className={cx("userManualContainer")}></div>
