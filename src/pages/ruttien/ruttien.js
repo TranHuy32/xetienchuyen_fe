@@ -172,7 +172,8 @@ function RutTien() {
             <button
                 className={(amount === null || bankName === null || bankOwner === null || bankNumber === null) ? 'disableButton' : ''}
                 onClick={() => handleSendWdRequest(userName, amount, wdToken)}>
-                Gửi Yêu Cầu
+                {(amount === null || bankName === null || bankOwner === null || bankNumber === null) && ("Hãy Điền Đủ Thông Tin")}
+                {!(amount === null || bankName === null || bankOwner === null || bankNumber === null) && ("Gửi Yêu Cầu")}
             </button>
         </div>
     );
