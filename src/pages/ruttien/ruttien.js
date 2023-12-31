@@ -86,12 +86,37 @@ function RutTien() {
                 "userName": name
             })
             .then((response) => {
-                console.log(response);
+                const data = response.data
+                console.log(data);
+                if (data.code === 101) {
+                    alert(`Không Tìm Thây Tài Khoản ${userName}. Vui Lòng Tắt Và Mở Lại Trình Duyệt Trong Ứng Dụng Của Bạn.`)
+                    return
+                } else if (data.code === 109) {
+                    alert("Thiếu Thông Tin Cần Thiết. Vui Lòng Tắt Và Mở Lại Trình Duyệt Trong Ứng Dụng Của Bạn.")
+                    return
+                } else if (data.code === 110) {
+                    alert("Mã Bảo Mật Sai. Vui Lòng Tắt Và Mở Lại Trình Duyệt Trong Ứng Dụng Của Bạn.")
+                    return
+                } else if (data.code === 111) {
+                    alert("Tài Khoản Hiện Tại Không Đủ Tiền. Vui Lòng Kiểm Tra Lại.")
+                    return
+                } else if (response.data.success === 1) {
+                    alert("Đã Gửi Yêu Cầu Thành Công. Xin Chờ Hệ Thống Xử Lý.")
+                    // handleClearInfo()
+                    return
+                }else{
+                    alert("Yêu Cầu Rút Tiền Thất Bại.")
+                    return
+                }
             })
             .catch((error) => {
                 console.log(error);
             });
     }
+
+    // const handleClearInfo = () => {
+
+    // }
 
     return (
         <div className={cx("wdWrapper", "mobile-only")}>
@@ -117,6 +142,7 @@ function RutTien() {
             </div>
             <div className={cx("inputBankNumberBox")}>
                 <input
+                    className={bankNumber === null ? "active" : ""}
                     value={bankNumber}
                     placeholder="Nhập Số Tài Khoản"
                     onChange={(e) => setBankNumber(e.target.value)}
@@ -125,6 +151,7 @@ function RutTien() {
             </div>
             <div className={cx("inputBankOwnerBox")}>
                 <input
+                    className={bankOwner === null ? "active" : ""}
                     value={bankOwner}
                     placeholder="Tên Chủ Tài Khoản"
                     onChange={(e) => setBankOwner(e.target.value)}
@@ -133,13 +160,14 @@ function RutTien() {
             </div>
             <div className={cx("inputAmountBox")}>
                 <input
+                    className={amount === null? "active" : ""}
                     value={amount}
                     placeholder="Nhập Số Tiền Muốn Rút"
                     onChange={(e) => setAmount(e.target.value)}
                     type="number"
                 />
-                <p>*đơn vị là nghìn đồng(K)</p>
-                <p>VD: muốn rút 100.000đ thì nhập 100</p>
+                <p> *đơn vị là nghìn đồng(K)</p>
+                <p>VD: Rút 100.000đ thì nhập 100</p>
             </div>
             <button
                 className={(amount === null || bankName === null || bankOwner === null || bankNumber === null) ? 'disableButton' : ''}
