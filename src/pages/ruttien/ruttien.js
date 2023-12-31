@@ -5,8 +5,14 @@ import classNames from "classnames";
 import { VietQR } from "vietqr";
 const cx = classNames.bind(styles);
 const beURL = process.env.REACT_APP_BE_URL;
+const removeDiacritics = (str) => {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+};
 function RutTien() {
-    const [allowedToDisplay, setAllowToDisplay] = useState(true)
+    const [allowedToDisplay, setAllowToDisplay] = useState(false)
+    const [showConfirmInfo, setShowConfirmInfo] = useState(false)
+    const [showAlert, setShowAlert] = useState(false)
+    const [alertMsg, setAlertMsg] = useState("")
     const [wdToken, setWdToken] = useState(null)
     const [userName, setUserName] = useState(null)
     const [bankList, setBankList] = useState([]);
@@ -76,6 +82,19 @@ function RutTien() {
 
     const handleSendWdRequest = (name, money, token) => {
         const amountNumber = parseInt(money, 10);
+        if (amountNumber.toString().length > 2 && (amountNumber * 10) % 10 !== 0) {
+            setShowConfirmInfo(false);
+            setShowAlert(true);
+            setAlertMsg("Số tiền phải chia hết cho 10");
+            return;
+        } else if (amountNumber.toString().length <= 2 && amountNumber % 10 !== 0) {
+            setShowConfirmInfo(false);
+            setShowAlert(true);
+            setAlertMsg("Số tiền phải chia hết cho 10");
+            return;
+        }
+
+        setShowConfirmInfo(false)
         axios
             .post(`${beURL}/payment/createWithdraw`, {
                 "amount": amountNumber,
@@ -89,23 +108,39 @@ function RutTien() {
                 const data = response.data
                 console.log(data);
                 if (data.code === 101) {
-                    alert(`Không Tìm Thây Tài Khoản ${userName}. Vui Lòng Tắt Và Mở Lại Trình Duyệt Trong Ứng Dụng Của Bạn.`)
+                    setShowAlert(true)
+                    setAlertMsg(
+                        `Không Tìm Thây Tài Khoản ${userName}. Vui Lòng Tắt Và Mở Lại Trình Duyệt Trong Ứng Dụng Của Bạn.`
+                    )
                     return
                 } else if (data.code === 109) {
-                    alert("Thiếu Thông Tin Cần Thiết. Vui Lòng Tắt Và Mở Lại Trình Duyệt Trong Ứng Dụng Của Bạn.")
+                    setShowAlert(true)
+                    setAlertMsg(
+                        `Thiếu Thông Tin Cần Thiết. Vui Lòng Tắt Và Mở Lại Trình Duyệt Trong Ứng Dụng Của Bạn.`
+                    )
                     return
                 } else if (data.code === 110) {
-                    alert("Mã Bảo Mật Sai. Vui Lòng Tắt Và Mở Lại Trình Duyệt Trong Ứng Dụng Của Bạn.")
+                    setShowAlert(true)
+                    setAlertMsg(
+                        `Mã Bảo Mật Sai. Vui Lòng Tắt Và Mở Lại Trình Duyệt Trong Ứng Dụng Của Bạn.`
+                    )
                     return
                 } else if (data.code === 111) {
-                    alert("Tài Khoản Hiện Tại Không Đủ Tiền. Vui Lòng Kiểm Tra Lại.")
+                    setShowAlert(true)
+                    setAlertMsg(
+                        `Tài Khoản Hiện Tại Không Đủ Tiền. Vui Lòng Kiểm Tra Lại.`
+                    )
                     return
                 } else if (response.data.success === 1) {
-                    alert("Đã Gửi Yêu Cầu Thành Công. Xin Chờ Hệ Thống Xử Lý.")
+                    setShowAlert(true)
+                    setAlertMsg(
+                        `Đã Gửi Yêu Cầu Thành Công. Xin Chờ Hệ Thống Xử Lý.`
+                    );
                     // handleClearInfo()
                     return
-                }else{
-                    alert("Yêu Cầu Rút Tiền Thất Bại.")
+                } else {
+                    setShowAlert(true)
+                    setAlertMsg("Yêu Cầu Rút Tiền Thất Bại.")
                     return
                 }
             })
@@ -118,8 +153,40 @@ function RutTien() {
 
     // }
 
+    const handleCancelOverlay = () => {
+        setShowConfirmInfo(false)
+        setShowAlert(false)
+        setAlertMsg("")
+    }
+
+    const handleInputOwnerNameChange = (e) => {
+        const inputValue = e.target.value;
+        const sanitizedValue = removeDiacritics(inputValue).toUpperCase();
+        setBankOwner(sanitizedValue);
+    };
+
     return (
         <div className={cx("wdWrapper", "mobile-only")}>
+            {showAlert && (
+                <Fragment>
+                    <div className={cx("overlay")} onClick={() => handleCancelOverlay()}></div>
+                    <div className={cx("alertMessage", "popup-box")}>{alertMsg}</div>
+                </Fragment>
+            )}
+            {showConfirmInfo && (
+                <Fragment>
+                    <div className={cx("overlay")} onClick={() => handleCancelOverlay()}></div>
+                    <div className={cx("popup-box", "showInfoRequestBox")}>
+                        <div className={cx("rqAmount")}>Số Tiền Muốn Rút: {amount}.000đ</div>
+                        <div className={cx("rqBankName")}>Ngân Hàng: {bankName}</div>
+                        <div className={cx("rqBankNumber")}>STK Nhận: {bankNumber}</div>
+                        <p>*Xin Hãy Kiểm Tra Lại Thông Tin.</p>
+                        <button
+                            onClick={() => handleSendWdRequest(userName, amount, wdToken)}
+                        >Xác Nhận</button>
+                    </div>
+                </Fragment>
+            )}
             <h2>Thông Tin Tài Khoản Nhận</h2>
             <div className={cx("loginName")}>Tên Đăng Nhập: <strong>{userName}</strong> </div>
             <div className={cx("selectBankShortNameBox")}>
@@ -154,24 +221,27 @@ function RutTien() {
                     className={bankOwner === null ? "active" : ""}
                     value={bankOwner}
                     placeholder="Tên Chủ Tài Khoản"
-                    onChange={(e) => setBankOwner(e.target.value)}
+                    onChange={handleInputOwnerNameChange}
                     type="text"
                 />
             </div>
             <div className={cx("inputAmountBox")}>
                 <input
-                    className={amount === null? "active" : ""}
+                    className={amount === null ? "active" : ""}
                     value={amount}
                     placeholder="Nhập Số Tiền Muốn Rút"
                     onChange={(e) => setAmount(e.target.value)}
                     type="number"
                 />
                 <p> *đơn vị là nghìn đồng(K)</p>
-                <p>VD: Rút 100.000đ thì nhập 100</p>
+                <p> *số tiền phải chia hết cho 10</p>
+                <p>VD: Rút 100.000đ Thì Nhập 100</p>
             </div>
             <button
                 className={(amount === null || bankName === null || bankOwner === null || bankNumber === null) ? 'disableButton' : ''}
-                onClick={() => handleSendWdRequest(userName, amount, wdToken)}>
+                // onClick={() => handleSendWdRequest(userName, amount, wdToken)}
+                onClick={() => setShowConfirmInfo(true)}
+            >
                 {(amount === null || bankName === null || bankOwner === null || bankNumber === null) && ("Hãy Điền Đủ Thông Tin")}
                 {!(amount === null || bankName === null || bankOwner === null || bankNumber === null) && ("Gửi Yêu Cầu")}
             </button>
