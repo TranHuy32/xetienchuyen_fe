@@ -16,7 +16,7 @@ export default function Users() {
   const [show2FAInput, setShow2FAInput] = useState(false);
   const [selectedPaymentId, setSelectedPaymentId] = useState("");
   const [refreshList, setRefreshList] = useState(false);
-
+  const [typeOfList, setTypeOfList] = useState("WITHDRAW")
   const token = localStorage.getItem("token") || [];
   const config = {
     headers: { Authorization: `Bearer ${token}` },
@@ -26,6 +26,7 @@ export default function Users() {
   useEffect(() => {
     axios
       .get(`${beURL}/payment/allByOwner?page=${currentPage}&pageSize=${pageSize}`, config)
+      // `${beURL}/payment/allByOwner?type=${typeOfList}page=${currentPage}&pageSize=${pageSize}`
       .then((response) => {
         const data = response.data;
         setPaymentList(data.payments);
@@ -110,7 +111,20 @@ export default function Users() {
           </div>
         </Fragment>
       )}
-      <h2 className={cx("rcTitle")}>Xác Thực Nạp Tiền</h2>
+      <div className={cx("rcTitleBox")}>
+        <h3 className={cx("rcTitleFirst", typeOfList === "RECHARGE" ? "activeTitle" : "")}
+          onClick={() => setTypeOfList("RECHARGE")}
+        >
+          Xác Thực Nạp Tiền
+          <p>99</p>
+        </h3>
+        <h3 className={cx("rcTitleSecond", typeOfList === "WITHDRAW" ? "activeTitle" : "")}
+          onClick={() => setTypeOfList("WITHDRAW")}>
+          Xác Thực Rút Tiền
+          <p>99</p>
+        </h3>
+      </div>
+
       <table>
         <thead>
           <tr>

@@ -63,12 +63,14 @@ function DefaultLayout({ children }) {
             >
               Giao dịch
             </li> */}
-            <li
+            <li 
+              id="requestMoney"
               onClick={() => {
                 navigate(`/recharge`);
               }}
             >
-              Nạp Tiền
+              Yêu Cầu
+              <p>99</p>
             </li>
           </ul>
         </div>

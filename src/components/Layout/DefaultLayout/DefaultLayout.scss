@@ -11,6 +11,7 @@
   position: fixed;
   background-color: #fff;
   z-index: 10000;
+
   .hContent {
     box-shadow: 0px 2px 5px #DDDDDD;
     display: flex;
@@ -20,6 +21,7 @@
     // max-width: 1200px;
     margin: auto;
     align-items: center;
+
     .hTextLogo {
       margin-left: 2%;
       font-weight: bold;
@@ -47,8 +49,9 @@
         border-radius: 10px;
         color: #fff;
         cursor: pointer;
-        transition: color 0.3s; 
+        transition: color 0.3s;
         text-transform: capitalize;
+
         &:hover {
           color: rgb(101, 136, 250);
         }
@@ -64,13 +67,17 @@
     display: flex;
     // justify-content: center;
     align-items: center;
+
     ul {
       min-width: 960px;
       max-width: 1200px;
       display: flex;
       margin-left: 1.8%;
-      li{
-        padding: 10px;
+
+      li {
+        display: flex;
+        align-items: center;
+        padding: 8px;
         background-color: #fff;
         margin-right: 10px;
         border-radius: 18px;
@@ -79,6 +86,21 @@
         background-color: #eeeeee;
         cursor: pointer;
         text-transform: capitalize;
+      }
+
+      #requestMoney {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        p {
+          background-color: #ff6969;
+          color: #fff;
+          width: min-content;
+          padding: 4px;
+          border-radius: 20px;
+          margin-left: 4px;
+          font-size: smaller;
+        }
       }
     }
   }
