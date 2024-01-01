@@ -54,6 +54,7 @@
     margin: auto;
     justify-content: space-around;
     margin-top: 16px;
+
     h3 {
       text-align: center;
       padding: 16px;
@@ -63,7 +64,8 @@
       align-items: center;
       justify-content: center;
     }
-    p{
+
+    p {
       background-color: #ff6969;
       color: #fff;
       width: min-content;
@@ -73,26 +75,30 @@
       min-width: 21px;
       min-height: 21px;
     }
-    .activeTitle{
+
+    .activeTitle {
       background-color: #ff6969;
       color: #fff;
-      p{
+
+      p {
         background-color: #fff;
         color: #ff6969;
       }
     }
-    .rcTitleFirst{
+
+    .rcTitleFirst {
       border-bottom-left-radius: 16px;
       border-top-left-radius: 16px;
     }
-    .rcTitleSecond{
+
+    .rcTitleSecond {
       border-top-right-radius: 16px;
       border-bottom-right-radius: 16px;
     }
   }
 
 
-  table {
+  #DEPOSITTABLE {
     width: 90%;
     margin-left: auto;
     margin-right: auto;
@@ -136,26 +142,65 @@
     }
   }
 
-  .rcPagination {
-    margin-top: 32px;
-    display: flex;
-    justify-content: center;
+  #WITHDRAWTABLE {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 16px;
+    // background-color: #ddd;
+    padding: 16px 0;
+    border-radius: 32px;
 
-    >button {
-      margin: 0 3px;
-      padding: 5px 10px;
-      text-align: center;
-      cursor: pointer;
-      font-weight: bold;
-      background-color: #fff;
-      border: 1px solid #e74c3c;
-      border-radius: 2px;
+    tr {
+      :last-child {
+        width: 10%;
+        min-width: 160px;
 
+        button {
+          padding: 8px 0;
+          // width: 80%;
+          color: #fff;
+          background-color: #ff6969;
+          border: none;
+          border-radius: 8px;
+          text-align: center;
+        }
+      }
     }
 
-    .active {
-      background-color: #e74c3c;
-      color: #fff;
+      th {
+        padding: 16px 0;
+        background-color: #ddd;
+      }
+
+      td {
+        background-color: #fff;
+        text-align: center;
+        padding: 16px 0;
+        border-bottom: 1px dashed #ddd;
+      }
+    }
+
+    .rcPagination {
+      margin-top: 32px;
+      display: flex;
+      justify-content: center;
+
+      >button {
+        margin: 0 3px;
+        padding: 5px 10px;
+        text-align: center;
+        cursor: pointer;
+        font-weight: bold;
+        background-color: #fff;
+        border: 1px solid #e74c3c;
+        border-radius: 2px;
+
+      }
+
+      .active {
+        background-color: #e74c3c;
+        color: #fff;
+      }
     }
   }
-}
