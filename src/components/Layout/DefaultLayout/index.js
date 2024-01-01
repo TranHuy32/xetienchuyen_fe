@@ -3,13 +3,42 @@ import classNames from "classnames";
 import { memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSignOut } from "react-auth-kit";
+import axios from "axios";
+import { Fragment, useEffect, useState } from "react";
 
 const cx = classNames.bind(styles);
+const beURL = process.env.REACT_APP_BE_URL;
 
 function DefaultLayout({ children }) {
   const singOut = useSignOut();
   const navigate = useNavigate();
+  const [totalNotice, setTotalNotice] = useState(0)
 
+  const token = localStorage.getItem("token") || [];
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+
+  //get payment list
+  useEffect(() => {
+    axios
+      .get(`${beURL}/payment/allByOwner`, config)
+      // `${beURL}/payment/allByOwner?type=${typeOfList}page=${currentPage}&pageSize=${pageSize}`
+      .then((response) => {
+        const data = response.data
+        if (data.payments.length > 0) {
+          const pendingPayments = data.payments.filter(payment => payment.status === "PENDING");
+          if (pendingPayments.length !== 0) {
+            setTotalNotice(pendingPayments.length)
+          } else {
+            setTotalNotice(0)
+          }
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   const logout = () => {
     singOut();
     navigate("/");
@@ -63,14 +92,17 @@ function DefaultLayout({ children }) {
             >
               Giao dịch
             </li> */}
-            <li 
+            <li
               id="requestMoney"
               onClick={() => {
                 navigate(`/recharge`);
               }}
             >
-              Yêu Cầu
-              <p>99</p>
+              Yêu Cầu Nạp/Rút Tiền
+              {totalNotice !== 0 && (
+                <p>{totalNotice < 99 ? totalNotice : "99+"}</p>
+              )}
+              
             </li>
           </ul>
         </div>

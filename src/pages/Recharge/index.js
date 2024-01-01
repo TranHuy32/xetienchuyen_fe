@@ -32,14 +32,22 @@ export default function Users() {
 
   //get payment DEPOSIT list
   useEffect(() => {
+    //get list to display
     axios
       .get(`${beURL}/payment/allByOwner?type=DEPOSIT&page=${currentPage}&pageSize=${pageSize}`, config)
-      // `${beURL}/payment/allByOwner?type=${typeOfList}page=${currentPage}&pageSize=${pageSize}`
       .then((response) => {
         const data = response.data;
-        console.log(data);
         setPaymentList(data.payments);
         setTotalPages(Math.ceil(data.totalCount / pageSize))
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    //get notice number
+    axios
+      .get(`${beURL}/payment/allByOwner?type=DEPOSIT`, config)
+      .then((response) => {
+        const data = response.data
         if (data.payments.length > 0) {
           const pendingPayments = data.payments.filter(payment => payment.status === "PENDING");
           if (pendingPayments.length !== 0) {
@@ -56,6 +64,7 @@ export default function Users() {
 
   //get payment WITHDRAW list
   useEffect(() => {
+    //get list to display
     axios
       .get(`${beURL}/payment/allByOwner?type=WITHDRAW&page=${currentWITHDRAWPage}&pageSize=${pageWITHDRAWSize}`, config)
       // `${beURL}/payment/allByOwner?type=${typeOfList}page=${currentPage}&pageSize=${pageSize}`
@@ -63,6 +72,17 @@ export default function Users() {
         const data = response.data;
         setPaymentWITHDRAWList(data.payments);
         setTotalWITHDRAWPages(Math.ceil(data.totalCount / pageSize))
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    //get notice number
+    axios
+      .get(`${beURL}/payment/allByOwner?type=WITHDRAW`, config)
+      // `${beURL}/payment/allByOwner?type=${typeOfList}page=${currentPage}&pageSize=${pageSize}`
+      .then((response) => {
+        const data = response.data
         if (data.payments.length > 0) {
           const pendingPayments = data.payments.filter(payment => payment.status === "PENDING");
           if (pendingPayments.length !== 0) {
@@ -113,7 +133,6 @@ export default function Users() {
         , config)
       .then((response) => {
         const data = response.data;
-        console.log(data);
         if (data.message === "SUCCESS") {
           alert("Thành Công")
           setShow2FAInput(false)
@@ -161,7 +180,7 @@ export default function Users() {
         >
           Xác Thực Nạp Tiền
           {depositNotice !== 0 && (
-            <p>{depositNotice < 8 ? depositNotice : "8+"}</p>
+            <p>{depositNotice < 99 ? depositNotice : "99+"}</p>
           )}
 
         </h3>
@@ -169,7 +188,7 @@ export default function Users() {
           onClick={() => setTypeOfList("WITHDRAW")}>
           Xác Thực Rút Tiền
           {withdrawNotice !== 0 && (
-            <p>{withdrawNotice < 8? withdrawNotice : "8+"}</p>
+            <p>{withdrawNotice < 99 ? withdrawNotice : "99+"}</p>
           )}
         </h3>
       </div>
@@ -293,7 +312,6 @@ export default function Users() {
             </thead>
 
             <tbody>
-              {console.log(paymentWITHDRAWList)}
               {paymentWITHDRAWList.map((draw, index) => {
                 // Chuỗi ngày đã cho
                 const dateString = draw.createdAt;
