@@ -76,8 +76,7 @@ function NapTien() {
             .then((response) => {
                 const data = response.data;
                 if (data.success === 1) {
-                    setAllowToDisplay(true)
-                    // setAllowToDisplay(false)
+                    setAllowToDisplay(data.data.depositStatus)
                 } else {
                     setAllowToDisplay(false)
                 }

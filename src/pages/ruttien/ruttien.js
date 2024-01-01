@@ -32,8 +32,7 @@ function RutTien() {
             .then((response) => {
                 const data = response.data;
                 if (data.success === 1) {
-                    setAllowToDisplay(true)
-                    // setAllowToDisplay(false)
+                    setAllowToDisplay(data.data.depositStatus)
                 } else {
                     setAllowToDisplay(false)
                 }
@@ -166,7 +165,7 @@ function RutTien() {
     };
 
     return (
-        <div className={cx("wdWrapper", "mobile-only")}>
+        <div className={cx("wdWrapper", allowedToDisplay ? "" : "notAllowedToDisplay")}>
             {showAlert && (
                 <Fragment>
                     <div className={cx("overlay")} onClick={() => handleCancelOverlay()}></div>

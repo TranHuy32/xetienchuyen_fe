@@ -9,7 +9,7 @@ const beURL = process.env.REACT_APP_BE_URL;
 function AdminDefaultLayout({ children }) {
   const singOut = useSignOut();
   const navigate = useNavigate();
-  const [depositStatus, setDepositStatus] = useState();
+  const [depositStatus, setDepositStatus] = useState(false);
   const [reloadStatus, setReloadStatus] = useState(false);
   const logout = () => {
     singOut();
@@ -28,7 +28,11 @@ function AdminDefaultLayout({ children }) {
       .get(`${beURL}/users/depositStatus`)
       .then((response) => {
         const data = response.data;
-        setDepositStatus(data.data.depositStatus)
+        if (data.success === 1) {
+          setDepositStatus(data.data.depositStatus)
+        }else{
+          setDepositStatus(false)
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -38,11 +42,11 @@ function AdminDefaultLayout({ children }) {
   const handleChangeDepositStatus = (currentStat) => {
     const newStat = !currentStat;
     axios
-      .put(`${beURL}/users/turnDeposit`,{status: newStat}, config)
+      .put(`${beURL}/users/turnDeposit`, { status: newStat }, config)
       .then((response) => {
         const data = response.data;
         console.log(data);
-        if(data.success === 1){
+        if (data.success === 1) {
           setReloadStatus(!reloadStatus)
         }
       })

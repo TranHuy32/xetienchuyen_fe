@@ -15,7 +15,6 @@
         box-shadow: 0 0 10px rgba(242, 78, 30, 0.6);
     }
 }
-
 .wdWrapper {
     display: flex;
     flex-direction: column;
@@ -130,4 +129,7 @@
         background-color: #2b90ed;
         pointer-events: none;
     }
+}
+.notAllowedToDisplay{
+    display: none;
 }
