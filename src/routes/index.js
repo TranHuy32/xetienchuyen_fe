@@ -20,7 +20,7 @@ import AdminLogin from "~/AdminPages/AdminLogin";
 import AdminHome from "~/AdminPages/AdminHome";
 import AdminAds from "~/AdminPages/AdminAds/index"
 import AdminOwner from "~/AdminPages/AdminOwner/index"
-
+import AdminPaymentManager from "~/AdminPages/AdminPaymentManager/index"
 const MainRoutes = () => {
   return (
     <BrowserRouter>
@@ -33,6 +33,8 @@ const MainRoutes = () => {
         <Route path={"/adminlogin/adminadsmanager"} element={<RequireAuth loginPath={"/adminlogin"}><AdminDefaultLayout><AdminAds /></AdminDefaultLayout></RequireAuth>} exact />
 
         <Route path={"/adminlogin/adminownermanager"} element={<RequireAuth loginPath={"/adminlogin"}><AdminDefaultLayout><AdminOwner /></AdminDefaultLayout></RequireAuth>} exact />
+
+        <Route path={"/adminlogin/adminpaymentmanager"} element={<RequireAuth loginPath={"/adminlogin"}><AdminDefaultLayout><AdminPaymentManager /></AdminDefaultLayout></RequireAuth>} exact />
         {/* user ROUTES */}
         {/* <Route path={"/naptien"} element={<NapTien />} exact /> */}
         <Route path={"/usermanual"} element={<UsersManual />} exact />

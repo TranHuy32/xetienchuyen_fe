@@ -102,6 +102,13 @@ function AdminDefaultLayout({ children }) {
             >
               Quản Lý Quảng Cáo
             </li>
+            <li
+              onClick={() => {
+                navigate("/adminlogin/adminpaymentmanager");
+              }}
+            >
+              Yêu Cầu Nạp Tiền/Rút Tiền
+            </li>
             {/* <li
             // onClick={() => {
             //   navigate(`/recharge`);
