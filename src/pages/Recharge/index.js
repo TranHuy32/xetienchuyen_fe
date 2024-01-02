@@ -153,7 +153,7 @@ export default function Users() {
       });
 
   }
-
+  console.log(paymentWITHDRAWList);
   return (
     <div className={cx("rcWrapper")}>
       {show2FAInput && (
@@ -217,7 +217,7 @@ export default function Users() {
                 return (
                   <tr key={index}>
                     <td>{formattedTime}</td>
-                    <td>{bill.user._id}</td>
+                    <td>{bill.user.name}</td>
                     <td>{bill.user.userName}</td>
                     <td>{bill.amount} k</td>
                     <td>
@@ -307,7 +307,8 @@ export default function Users() {
                 <th>Chủ Tài Khoản</th>
                 <th>SĐT Đăng Nhập</th>
                 <th>Số Tiền</th>
-                <th>Thao Tác</th>
+                <th>Chấp Thuận</th>
+                <th>Từ Chối</th>
               </tr>
             </thead>
 
@@ -324,13 +325,13 @@ export default function Users() {
                 return (
                   <tr key={index}>
                     <td>{formattedDate}</td>
-                    <td>{draw.user.userName}</td>
+                    <td>{draw.user.name}</td>
                     <td>{draw.bankName}</td>
                     <td>{draw.bankAccountNumber}</td>
                     <td>{draw.bankOwner}</td>
                     <td>{draw.user.userName}</td>
                     <td><strong>{draw.amount}</strong> K</td>
-                    <td>
+                    <td className={cx("actionColumn")}>
                       {draw.status === "PENDING" && (
                         <button>Duyệt</button>
                       )}
@@ -342,6 +343,11 @@ export default function Users() {
                         <strong>Đã Huỷ</strong>
                       )
                       }
+                    </td>
+                    <td className={cx("actionColumn")}>
+                      {draw.status === "PENDING" && (
+                        <button>Từ Chối</button>
+                      )}
                     </td>
                   </tr>
                 )
