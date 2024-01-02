@@ -145,9 +145,11 @@ function NapTien() {
 
         a.click();
     };
+
     // const changeUserNameHandler = (e) => {
     //     setUserName(e.target.value)
     // };
+    
     const changeAmountHandler = (e) => {
         let inputValue = e.target.value;
 
@@ -182,15 +184,17 @@ function NapTien() {
         setAmount(value)
         setShowAnotherOption(false)
         setTrackValidAmount(true)
+        setMoneyInputAmount('');
     }
     const handleSelectAnotherOption = () => {
         setAmount(0)
-        setShowAnotherOption(!showAnotherOption)
+        setShowAnotherOption(true)
         setTrackValidAmount(false)
     }
     const handleSubbmit = () => {
         setSubmitted(true)
         setReloadQR(!reloadQR)
+        setShowAnotherOption(false)
     };
     const handleShowBankDropDownMenu = () => {
         setShowBankDropDownMenu(!showBankDropDownMenu)
@@ -399,7 +403,7 @@ function NapTien() {
                             </div>
                         )}
 
-                        <button className={cx(paramId && trackValidAmount && "ready")} onClick={handleSubbmit}>
+                        <button className={cx(paramId && trackValidAmount && showAnotherOption && "ready")} onClick={handleSubbmit}>
                             Tạo Mã QR 
                             {(qrGenerated && !showAnotherOption) && " (Đã Tạo)"} 
                             {(showAnotherOption && qrGenerated) && " Mới"}
