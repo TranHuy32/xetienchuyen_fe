@@ -1,14 +1,32 @@
+@keyframes pulseButton {
+    0% {
+        border-color: rgba(43, 144, 237, 0.8);
+        box-shadow: 0 0 10px rgba(43, 144, 237, 0.6);
+    }
+
+    50% {
+        border-color: rgba(43, 144, 237, 0.4);
+        box-shadow: 0 0 10px rgba(43, 144, 237, 0.2);
+    }
+
+    100% {
+        border-color: rgba(43, 144, 237, 0.8);
+        box-shadow: 0 0 10px rgba(43, 144, 237, 0.6);
+    }
+}
+
 .ntWrapper {
     height: 100vh;
     width: 100vw;
-    display: flex ;
+    display: flex;
     justify-content: center;
 }
-.notAllowedToDisplay{
+
+.notAllowedToDisplay {
     display: none;
 }
 
-#copy-icon{
+#copy-icon {
     width: 24px;
     height: 24px;
     padding-left: 8px;
@@ -99,12 +117,13 @@
                 border: 1px solid #ddd;
             }
         }
-        .warning-valid-amount-pc{
+
+        .warning-valid-amount-pc {
             padding-left: 140px;
             font-size: 16px;
             color: #FF6969;
-        }                     
-                           
+        }
+
         button {
             pointer-events: none;
             background-color: #00457d;
@@ -197,7 +216,7 @@
                     flex-wrap: wrap;
                     justify-content: space-between;
 
-                    .another-option{
+                    .another-option {
                         background-color: #FF6969;
                         color: #fff;
                         border: 1px solid #FF6969;
@@ -256,11 +275,13 @@
                         background-color: #fff;
                     }
                 }
-                .warning-valid-amount{
+
+                .warning-valid-amount {
                     padding-left: 16px;
                     padding-top: 8px;
                     color: #FF6969;
                 }
+
                 .mbSelect1 {
                     background-color: #fff;
                     border: 1px solid #ddd;
@@ -299,6 +320,7 @@
 
                 .showAdminInfoBox {
                     margin-top: 16px;
+
                     div {
                         padding: 8px 0 8px 8px;
                         display: flex;
@@ -321,6 +343,12 @@
                 .ready {
                     pointer-events: all;
                     opacity: 1;
+                }
+
+                .readyToGenNewQR {
+                    background-color: #2b90ed;
+                    animation: pulseButton 2s infinite;
+                    color: #fff;
                 }
             }
         }
