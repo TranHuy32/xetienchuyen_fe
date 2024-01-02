@@ -399,7 +399,11 @@ function NapTien() {
                             </div>
                         )}
 
-                        <button className={cx(paramId && trackValidAmount && "ready")} onClick={handleSubbmit}>Tạo Mã {qrGenerated && " (Đã Tạo)"}</button>
+                        <button className={cx(paramId && trackValidAmount && "ready")} onClick={handleSubbmit}>
+                            Tạo Mã QR 
+                            {(qrGenerated && !showAnotherOption) && " (Đã Tạo)"} 
+                            {(showAnotherOption && qrGenerated) && " Mới"}
+                        </button>
                     </div>
                 </div>
             </div>
