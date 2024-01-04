@@ -1,12 +1,120 @@
-.adminlgLoginButtonBox{
+.adminlgLoginButtonBox {
     justify-content: center;
     display: flex;
-    button{
+
+    button {
         background-color: #ff6969;
         border: none;
         padding: 16px 32px;
         margin-top: 32px;
         border-radius: 8px;
         color: #fff;
+    }
+}
+
+#admin2FATextLine {
+    width: 70%;
+    margin: 2vh auto 0 auto;
+
+    strong {
+        text-decoration: underline;
+        cursor: pointer;
+
+        &:hover {
+            color: #2b90ed;
+        }
+    }
+}
+
+.add2faContainer {
+    position: fixed;
+    z-index: 20000;
+    background-color: #fff;
+    padding: 32px;
+    top: 25%;
+    max-width: 650px;
+    left: calc(50% - 325px);
+    border-radius: 32px;
+    .title {
+        text-align: center;
+        font-size: larger;
+        margin-bottom: 16px;
+    }
+
+    .content {
+        display: flex;
+
+        .leftContainer {
+            // background-color: #ff6969;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            margin-right: 8px;
+            .otpInputContainer{
+                display: flex;
+                flex-direction: column;
+                border: 1px solid black;
+                padding: 8px;
+                border-radius: 16px;
+                div{
+                    margin-bottom: 16px
+                }
+                input {
+                    width: 16px;
+                    height: 32px;
+                    padding: 8px;
+                    text-align: center;
+                    margin: 4px;
+                    border-radius: 8px;
+                    font-size: 1.4rem;
+                    border: 1px solid #ddd;
+                  }
+                  button{
+                    margin-top: 8px;
+                  }
+            }
+            .inputLoginName,
+            .inputPassword {
+                display: flex;
+                margin-bottom: 16px;
+
+                label {
+                    width: 50%;
+                    margin-right: 8px;
+                    align-self: center;
+                }
+
+                input {
+                    padding: 8px;
+                    border: 1px solid black;
+                    border-radius: 4px;
+                }
+            }
+
+            button {
+                margin-bottom: 16px;
+                padding: 16px 32px;
+                border: none;
+                background-color: #2b90ed;
+                border-radius: 8px;
+                align-self: center;
+                color: #fff;
+            }
+        }
+
+        .rightContainer {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            .rightTitle{    
+                text-align: center;
+                padding: 8px;
+            }
+            #img{
+                width: 300px;
+                height: 300px;
+                background-color: #2b90ed;
+            }
+        }
     }
 }

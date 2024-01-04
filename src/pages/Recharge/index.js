@@ -333,7 +333,9 @@ export default function Users() {
                     <td><strong>{draw.amount}</strong> K</td>
                     <td className={cx("actionColumn")}>
                       {draw.status === "PENDING" && (
-                        <button>Duyệt</button>
+                        <button
+                          // onClick={() => handle}
+                        >Duyệt</button>
                       )}
                       {draw.status === "COMPLETED" && (
                         <strong>Đã Duyệt</strong>
