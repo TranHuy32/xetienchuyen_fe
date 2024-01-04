@@ -107,15 +107,15 @@ function AdminDefaultLayout({ children }) {
                 navigate("/adminlogin/adminpaymentmanager");
               }}
             >
-              Yêu Cầu Nạp Tiền/Rút Tiền
+              Yêu Cầu Rút Tiền
             </li>
-            {/* <li
-            // onClick={() => {
-            //   navigate(`/recharge`);
-            // }}
+            <li
+              onClick={() => {
+                navigate("/adminlogin/adminwarningpayment");
+              }}
             >
-              
-            </li> */}
+              Yêu Cầu Sai Thông Tin
+            </li>
           </ul>
         </div>
       </div>
