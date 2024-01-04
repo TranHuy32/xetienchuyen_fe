@@ -1,0 +1,101 @@
+.apmWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    #apmWithDrawTable {
+        width: 90%;
+        margin: 32px auto;
+
+        thead {
+            background-color: #7da4e3;
+
+            tr {
+                th {
+                    padding: 16px 0;
+                }
+            }
+        }
+
+        tbody {
+            tr {
+
+                td {
+
+                    padding: 8px 16px;
+                    border-bottom: 1px dashed black;
+                }
+
+                .time,
+                .amount,
+                .done,
+                .cancel {
+                    text-align: center;
+                }
+
+                .userName,
+                .memo {
+                    min-width: calc(170px - 64px);
+                }
+
+                .done,
+                .cancel {
+                    width: 120px;
+
+                    button {
+                        width: 100%;
+                        padding: 8px;
+                        border: 1px solid #008FFF;
+                        border-radius: 4px;
+                        cursor: pointer;
+                    }
+                }
+
+                .done {
+                    button {
+
+                        background-color: rgba(0, 143, 255, 0.2);
+                        color: #008FFF;
+                        font-weight: bold;
+
+                        &:hover {
+                            background-color: #008FFF;
+                            color: #fff;
+                            transition: all 0.3s;
+                        }
+                    }
+                }
+
+                .cancel {
+                    button {
+                        background-color: #e23d4d;
+                        color: #fff;
+                        border-color: #e23d4d;
+                    }
+                }
+            }
+        }
+    }
+    .apmPagination {
+        margin-top: 32px;
+        display: flex;
+        justify-content: center;
+        align-self: center;
+        >button {
+          margin: 0 3px;
+          padding: 5px 10px;
+          text-align: center;
+          cursor: pointer;
+          font-weight: bold;
+          background-color: #fff;
+          border: 1px solid #e23d4d;
+          border-radius: 2px;
+    
+        }
+    
+        .active {
+          background-color: #e23d4d;
+          color: #fff;
+        }
+      }
+}

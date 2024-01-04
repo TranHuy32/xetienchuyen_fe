@@ -11,6 +11,8 @@ function AdminDefaultLayout({ children }) {
   const navigate = useNavigate();
   const [depositStatus, setDepositStatus] = useState(false);
   const [reloadStatus, setReloadStatus] = useState(false);
+  const [totalWithDraw, setTotalWithDraw] = useState(0)
+  const [totalWarning, setTotalWarning] = useState(0)
   const logout = () => {
     singOut();
     navigate("/adminlogin");
@@ -23,6 +25,28 @@ function AdminDefaultLayout({ children }) {
 
   const owner = JSON.parse(localStorage.getItem("token_state")) || [];
 
+  //get WithDraw List
+  useEffect(() => {
+    //get list to display
+    axios
+      .get(`${beURL}/payment/allByAdmin?type=WITHDRAW`, config)
+      .then((response) => {
+        const data = response.data;
+        if (data.payments.length > 0) {
+          const pendingPayments = data.payments.filter(payment => payment.status === "PENDING");
+          if (pendingPayments.length !== 0) {
+            setTotalWithDraw(pendingPayments.length)
+          } else {
+            setTotalWithDraw(0)
+          }
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  //get deposit status is ON/OFF
   useEffect(() => {
     axios
       .get(`${beURL}/users/depositStatus`)
@@ -30,7 +54,7 @@ function AdminDefaultLayout({ children }) {
         const data = response.data;
         if (data.success === 1) {
           setDepositStatus(data.data.depositStatus)
-        }else{
+        } else {
           setDepositStatus(false)
         }
       })
@@ -107,7 +131,10 @@ function AdminDefaultLayout({ children }) {
                 navigate("/adminlogin/adminpaymentmanager");
               }}
             >
-              Yêu Cầu Rút Tiền
+              Yêu Cầu Rút Tiền 
+              {totalWithDraw !== 0 && (
+                <div id="totalWithDraw">{totalWithDraw < 99 ? totalWithDraw : "99+"}</div>
+              )}
             </li>
             <li
               onClick={() => {
@@ -115,6 +142,9 @@ function AdminDefaultLayout({ children }) {
               }}
             >
               Yêu Cầu Sai Thông Tin
+              {totalWarning !== 0 && (
+                <div id="totalWarning">{totalWarning < 99 ? totalWarning : "99+"}</div>
+              )}
             </li>
           </ul>
         </div>

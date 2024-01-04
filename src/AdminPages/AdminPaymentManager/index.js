@@ -7,55 +7,61 @@ const cx = classNames.bind(styles);
 const beURL = process.env.REACT_APP_BE_URL;
 
 function PaymentManager() {
-    const [typeOfList, setTypeOfList] = useState("DEPOSIT")
+    const [typeOfList, setTypeOfList] = useState("WITHDRAW")
 
-    //deposit
-    const [depositList, setDepositList] = useState([])
-    const [currentDepositPage, setCurrentDepositPage]= useState(1);
-    const [pageSizeDeposit, setPageSizeDeposit] = useState(8);
-    const [totalDepositPage, setTotalDepositPages] = useState(0);
+    //WithDraw
+    const [WithDrawList, setWithDrawList] = useState([])
+    const [currentWithDrawPage, setCurrentWithDrawPage] = useState(1);
+    const [pageSizeWithDraw, setPageSizeWithDraw] = useState(8);
+    const [totalWithDrawPages, setTotalWithDrawPages] = useState(0);
+    const [refreshWithDrawList, setRefreshWithDrawList]= useState(false)
 
     const token = localStorage.getItem("token") || [];
     const config = {
         headers: { Authorization: `Bearer ${token}` },
     };
 
-    //get deposit List
+    //get WithDraw List
     useEffect(() => {
         //get list to display
         axios
-          .get(`${beURL}/payment/allByAdmin?type=DEPOSIT&page=${currentDepositPage}&pageSize=${pageSizeDeposit}`, config)
-          .then((response) => {
-            const data = response.data;
-            setDepositList(data.payments)
-            setTotalDepositPages(Math.ceil(data.totalCount / pageSizeDeposit))
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }, []);
+            .get(`${beURL}/payment/allByAdmin?type=WITHDRAW&page=${currentWithDrawPage}&pageSize=${pageSizeWithDraw}`, config)
+            .then((response) => {
+                const data = response.data;
+                // console.log(data.payments);
+                setWithDrawList(data.payments)
+                setTotalWithDrawPages(Math.ceil(data.totalCount / pageSizeWithDraw))
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [currentWithDrawPage, totalWithDrawPages, refreshWithDrawList]);
+
+    const handleWithDrawPageChange = (newPage) => {
+        setCurrentWithDrawPage(newPage)
+    }
 
     return (
         <div className={cx("apmWrapper")}>
-            <div className={cx("apmTypeSelectBox")}>
-                <div className={cx(typeOfList === "DEPOSIT" ? "acitve" : "")}>Rút Tiền</div>
-                <div className={cx(typeOfList === "WITHDRAW" ? "acitve" : "")}>Nạp Tiền</div>
-            </div>
-            {typeOfList === "DEPOSIT" && (
+            {typeOfList === "WITHDRAW" && (
                 <Fragment>
-                    <table id="apmDepositTable">
+                    <table id="apmWithDrawTable">
                         <thead>
                             <tr>
-                                {/* <th>Thời Gian</th>
-                                <th>Tên Tài Xế</th>
-                                <th>SĐT Đăng Nhập</th>
+                                <th>Thời Gian</th>
+                                <th>Tên Đăng Nhập</th>
+                                <th>Ngân Hàng</th>
+                                <th>Số Tài Khoản</th>
                                 <th>Số Tiền</th>
-                                <th>Thao Tác</th> */}
+                                <th>Nội Dung CK</th>
+                                <th>Chấp Nhận</th>
+                                <th>Huỷ Đơn</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            {/* {depositList.map((bill, index) => {
+
+                            {WithDrawList.map((bill, index) => {
                                 const dateString = bill.createdAt;
 
                                 // Chuyển đổi chuỗi thành đối tượng Date
@@ -65,21 +71,85 @@ function PaymentManager() {
                                 const formattedTime = format(dateObject, "dd/MM HH:mm");
                                 return (
                                     <tr key={index}>
-                                        <td>{formattedTime}</td>
-                                        <td>{bill.user.name}</td>
-                                        <td>{bill.user.userName}</td>
-                                        <td>{bill.amount} k</td>
-                                        <td>
-                                            <button >Xác Thực</button>
+                                        <td className={cx("time")}>{formattedTime}</td>
+                                        <td className={cx("userName")}>{bill.user.userName}</td>
+                                        <td className={cx("bankName")}>{bill.bankName}</td>
+                                        <td className={cx("bankAccount")}>{bill.bankAccountNumber}</td>
+                                        <td className={cx("amount")}><strong>{bill.amount}</strong> k</td>
+                                        <td className={cx("memo")}>{bill.ND} </td>
+                                        <td className={cx("done")}>
+                                            <button >Hoàn Thành</button>
+                                        </td>
+                                        <td className={cx("cancel")}>
+                                            <button >Từ Chối</button>
                                         </td>
                                     </tr>
                                 );
-                            })} */}
+                            })}
                         </tbody>
+
+
                     </table>
+
+                    {WithDrawList.length !== 0 && (
+                        <div className={cx("apmPagination")}>
+                            {currentWithDrawPage > 3 && (
+                                <button
+                                >
+                                    ...
+                                </button>
+                            )}
+
+                            {currentWithDrawPage > 2 && (
+                                <button
+                                    onClick={() => handleWithDrawPageChange(currentWithDrawPage - 2)}
+                                >
+                                    {currentWithDrawPage - 2}
+                                </button>
+                            )}
+                            {currentWithDrawPage > 1 && (
+                                <button
+                                    onClick={() => handleWithDrawPageChange(currentWithDrawPage - 1)}
+                                >
+                                    {currentWithDrawPage - 1}
+                                </button>
+                            )}
+
+                            <button
+                                onClick={() => handleWithDrawPageChange(currentWithDrawPage)}
+                                className={cx({ active: currentWithDrawPage })}
+                            >
+                                {currentWithDrawPage}
+                            </button>
+                            {currentWithDrawPage < totalWithDrawPages && (
+                                <button
+                                    onClick={() => handleWithDrawPageChange(currentWithDrawPage + 1)}
+                                    className={cx()}
+                                >
+                                    {currentWithDrawPage + 1}
+                                </button>
+                            )}
+                            {(currentWithDrawPage + 1) < totalWithDrawPages && (
+                                <button
+                                    onClick={() => handleWithDrawPageChange(currentWithDrawPage + 2)}
+                                    className={cx()}
+                                >
+                                    {currentWithDrawPage + 2}
+                                </button>
+                            )}
+                            {currentWithDrawPage < (totalWithDrawPages - 2) && (
+                                <button
+                                >
+                                    ...
+                                </button>
+                            )}
+
+                        </div>
+                    )}
                 </Fragment>
             )}
         </div>
+
     );
 }
 

@@ -74,8 +74,6 @@ function AdminLogin() {
 
   }
 
-  console.log(form2FAData);
-
   return (
     <div className={cx("lgWrapper")}>
       {showAdd2faPopup && (

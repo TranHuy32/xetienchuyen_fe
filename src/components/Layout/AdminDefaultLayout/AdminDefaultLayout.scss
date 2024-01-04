@@ -91,7 +91,7 @@
         display: flex;
         margin-left: 1.8%;
         li{
-          padding: 10px;
+          padding: 8px 16px;
           background-color: #fff;
           margin-right: 10px;
           border-radius: 18px;
@@ -100,6 +100,15 @@
           background-color: #eeeeee;
           cursor: pointer;
           text-transform: capitalize;
+          display: flex;
+          align-items: center;
+          #totalWithDraw, #totalWarning{
+            background-color: #e74c3c;
+            padding: 5px 4px 4px 4px;
+            border-radius: 24px;
+            color: #fff;
+            margin-left: 4px;
+          }
         }
       }
     }
