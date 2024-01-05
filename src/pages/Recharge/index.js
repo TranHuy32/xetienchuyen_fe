@@ -24,6 +24,7 @@ export default function Users() {
   const [refreshList, setRefreshList] = useState(false);
   const [refreshWITHDRAWList, setRefreshWITHDRAWList] = useState(false);
   const [typeOfList, setTypeOfList] = useState("DEPOSIT")
+  const [typeForOTP, setTypeForOTP] = useState("")
 
   const token = localStorage.getItem("token") || [];
   const config = {
@@ -108,52 +109,67 @@ export default function Users() {
   const handleCancel = () => {
     setShow2FAInput(false)
     setSelectedPaymentId("")
+    setTypeForOTP("")
+    setOTP2fa('')
   }
 
-  const handleOpenOTPInput = (paymentId) => {
+  const handleOpenOTPInput = (paymentId, type) => {
+    setTypeForOTP(type)
     setShow2FAInput(true)
     setSelectedPaymentId(paymentId)
   }
   //send otp to accept
-  const handleSubmit2FACode = () => {
-    // setShow2FAInput(false)
-    const otp = OTP2fa;
-    console.log({
-      "action": "ACEPT",
-      "twoFaCode": otp,
-      "paymentId": selectedPaymentId,
-    });
-    axios
-      .put(`${beURL}/payment/action`,
-        {
-          "action": "ACCEPT",
-          "twoFaCode": otp,
-          "paymentId": selectedPaymentId,
-        }
-        , config)
-      .then((response) => {
-        const data = response.data;
-        if (data.message === "SUCCESS") {
-          alert("Thành Công")
-          setShow2FAInput(false)
-          setSelectedPaymentId("")
-          setRefreshList(!refreshList)
-        } else if (data.message !== "SUCCESS") {
-          alert(data.message + ". Mã Lỗi: " + data.code)
-          setShow2FAInput(false)
-          setSelectedPaymentId("")
-          setRefreshList(!refreshList)
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        if (error.message === "Request failed with status code 401") {
-          alert("Hãy Kiểm Tra Lại Mã Xác Thực")
-        }
+  const handleSubmit2FACode = (type) => {
+    if (type === "DEPOSIT") {
+      const otp = OTP2fa;
+      console.log({
+        "action": "ACCEPT",
+        "twoFaCode": otp,
+        "paymentId": selectedPaymentId,
       });
+      axios
+        .put(`${beURL}/payment/action`,
+          {
+            "action": "ACCEPT",
+            "twoFaCode": otp,
+            "paymentId": selectedPaymentId,
+          }
+          , config)
+        .then((response) => {
+          const data = response.data;
+          if (data.message === "SUCCESS") {
+            alert("Thành Công")
+            setShow2FAInput(false)
+            setSelectedPaymentId("")
+            setTypeForOTP("")
+            setOTP2fa('')
+            setRefreshList(!refreshList)
+          } else if (data.message !== "SUCCESS") {
+            alert(data.message + ". Mã Lỗi: " + data.code)
+            setShow2FAInput(false)
+            setSelectedPaymentId("")
+            setTypeForOTP("")
+            setOTP2fa('')
+            setRefreshList(!refreshList)
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.message === "Request failed with status code 401") {
+            alert("Hãy Kiểm Tra Lại Mã Xác Thực")
+          }
+        });
+    }else if(type === "WITHDRAW"){
+      console.log("xử Lý Thêm api");
+      handleCancel()
+    }else if(type === "CANCELED"){
+      console.log("thêm api xử lý từ chối");
+      handleCancel()
+    }
+
 
   }
-  console.log(paymentWITHDRAWList);
+
   return (
     <div className={cx("rcWrapper")}>
       {show2FAInput && (
@@ -170,7 +186,7 @@ export default function Users() {
                 renderInput={(props) => <input {...props} />}
               />
             </div>
-            <button id="submit" onClick={() => handleSubmit2FACode()}>Xác Nhận</button>
+            <button id="submit" onClick={() => handleSubmit2FACode(typeForOTP)}>Xác Nhận</button>
           </div>
         </Fragment>
       )}
@@ -222,7 +238,7 @@ export default function Users() {
                     <td>{bill.amount} k</td>
                     <td>
                       {bill.status === "PENDING" && (
-                        <button onClick={() => handleOpenOTPInput(bill._id)}>Xác Thực</button>
+                        <button onClick={() => handleOpenOTPInput(bill._id, "DEPOSIT")}>Xác Thực</button>
                       )}
                       {bill.status === "COMPLETED" && (
                         <strong>Nạp Tiền Thành Công</strong>
@@ -334,21 +350,25 @@ export default function Users() {
                     <td className={cx("actionColumn")}>
                       {draw.status === "PENDING" && (
                         <button
-                          // onClick={() => handle}
+                          onClick={() => handleOpenOTPInput(draw._id, "WITHDRAW")}
                         >Duyệt</button>
                       )}
                       {draw.status === "COMPLETED" && (
-                        <strong>Đã Duyệt</strong>
+                        "Đã Hoàn Thành"
                       )
                       }
-                      {draw.status === "CANCEL" && (
-                        <strong>Đã Huỷ</strong>
+                      {draw.status === "CANCELED" && (
+                        "Đã Huỷ"
+                      )
+                      }
+                      {draw.status === "WAIT_ADMIN" && (
+                        "Chờ Admin Xử Lý"
                       )
                       }
                     </td>
                     <td className={cx("actionColumn")}>
                       {draw.status === "PENDING" && (
-                        <button>Từ Chối</button>
+                        <button onClick={() => handleOpenOTPInput(draw._id, "CANCELED")}>Từ Chối</button>
                       )}
                     </td>
                   </tr>
