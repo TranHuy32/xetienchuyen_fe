@@ -111,6 +111,7 @@ export default function Users() {
     setSelectedPaymentId("")
     setTypeForOTP("")
     setOTP2fa('')
+
   }
 
   const handleOpenOTPInput = (paymentId, type) => {
@@ -118,6 +119,7 @@ export default function Users() {
     setShow2FAInput(true)
     setSelectedPaymentId(paymentId)
   }
+
   //send otp to accept
   const handleSubmit2FACode = (type) => {
     if (type === "DEPOSIT") {
@@ -139,17 +141,11 @@ export default function Users() {
           const data = response.data;
           if (data.message === "SUCCESS") {
             alert("Thành Công")
-            setShow2FAInput(false)
-            setSelectedPaymentId("")
-            setTypeForOTP("")
-            setOTP2fa('')
+            handleCancel()
             setRefreshList(!refreshList)
           } else if (data.message !== "SUCCESS") {
             alert(data.message + ". Mã Lỗi: " + data.code)
-            setShow2FAInput(false)
-            setSelectedPaymentId("")
-            setTypeForOTP("")
-            setOTP2fa('')
+            handleCancel()
             setRefreshList(!refreshList)
           }
         })
@@ -159,10 +155,10 @@ export default function Users() {
             alert("Hãy Kiểm Tra Lại Mã Xác Thực")
           }
         });
-    }else if(type === "WITHDRAW"){
+    } else if (type === "WITHDRAW") {
       console.log("xử Lý Thêm api");
       handleCancel()
-    }else if(type === "CANCELED"){
+    } else if (type === "CANCELED") {
       console.log("thêm api xử lý từ chối");
       handleCancel()
     }
