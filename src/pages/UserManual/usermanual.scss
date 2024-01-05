@@ -1,11 +1,18 @@
-
 .manualWrapper {
+    min-height: 101svh;
+    h1 {
+        text-align: center;
+        margin-top: 32px;
+    }
+
     .buttonContainer {
         width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-top: 32px;
+        margin-top: 24px;
+        margin-bottom: 32px;
+
         button {
             padding: 16px 32px;
             // width: min-content;
@@ -15,20 +22,72 @@
             font-size: large;
             font-weight: bold;
         }
-        #naptien{
+
+        #naptien {
             background-color: #2b90ed;
             border-color: #2b90ed;
             color: #fff;
             margin-bottom: 16px;
         }
-        #ruttien{
+
+        #ruttien {
             background-color: #fff;
             color: #f26749;
             border-color: #f26749;
         }
     }
+
+    .userManualContainer {
+        margin-bottom: 20svh;
+        .manualContainer {
+            margin: 12px 5% 0 5%;
+
+            .mTitle {
+                padding: 8px 16px;
+                background-color: #fff;
+                border: 1px solid #2b90ed;
+                text-transform: capitalize;
+                border-radius: 4px;
+                display: flex;
+                justify-content: space-between;
+
+                img {
+                    height: 16px;
+                }
+            }
+
+            .mContent {
+                border: 1px solid #2b90ed;
+                border-top: none;
+
+                .stepBox {
+                    padding: 8px;
+                    text-transform: capitalize;
+
+                    .stepText {
+                        strong {
+                            text-decoration: underline;
+                        }
+
+                        line-height: 1.5;
+                    }
+
+                    .stepImageBox {
+                        .img {
+                            width: 100%;
+                            background-color: #f26749;
+                            height: 500px;
+                            margin-top: 8px;
+                            opacity: 0.5;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }
 
-.notAllowedToDisplay{
+.notAllowedToDisplay {
     display: none;
 }
