@@ -122,8 +122,8 @@ export default function Users() {
 
   //send otp to accept
   const handleSubmit2FACode = (type) => {
+    const otp = OTP2fa;
     if (type === "DEPOSIT") {
-      const otp = OTP2fa;
       console.log({
         "action": "ACCEPT",
         "twoFaCode": otp,
@@ -156,9 +156,19 @@ export default function Users() {
           }
         });
     } else if (type === "WITHDRAW") {
+      console.log({
+        "action": "ACCEPT WITHDRAW",
+        "twoFaCode": otp,
+        "paymentId": selectedPaymentId,
+      });
       console.log("xử Lý Thêm api");
       handleCancel()
     } else if (type === "CANCELED") {
+      console.log({
+        "action": "CANCEL WITHDRAW",
+        "twoFaCode": otp,
+        "paymentId": selectedPaymentId,
+      });
       console.log("thêm api xử lý từ chối");
       handleCancel()
     }
