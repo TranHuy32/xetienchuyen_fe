@@ -3,6 +3,8 @@ import styles from "./AdminPaymentManager.scss";
 import { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import { format, parse } from 'date-fns';
+import OtpInput from 'react-otp-input';
+
 const cx = classNames.bind(styles);
 const beURL = process.env.REACT_APP_BE_URL;
 
@@ -14,7 +16,12 @@ function PaymentManager() {
     const [currentWithDrawPage, setCurrentWithDrawPage] = useState(1);
     const [pageSizeWithDraw, setPageSizeWithDraw] = useState(8);
     const [totalWithDrawPages, setTotalWithDrawPages] = useState(0);
-    const [refreshWithDrawList, setRefreshWithDrawList]= useState(false)
+    const [refreshWithDrawList, setRefreshWithDrawList] = useState(false)
+
+    const [OTP2fa, setOTP2fa] = useState('');
+    const [selectedPaymentId, setSelectedPaymentId] = useState("");
+    const [show2FAInput, setShow2FAInput] = useState(false);
+    const [typeForOTP, setTypeForOTP] = useState("")
 
     const token = localStorage.getItem("token") || [];
     const config = {
@@ -28,7 +35,6 @@ function PaymentManager() {
             .get(`${beURL}/payment/allByAdmin?type=WITHDRAW&page=${currentWithDrawPage}&pageSize=${pageSizeWithDraw}`, config)
             .then((response) => {
                 const data = response.data;
-                // console.log(data.payments);
                 setWithDrawList(data.payments)
                 setTotalWithDrawPages(Math.ceil(data.totalCount / pageSizeWithDraw))
             })
@@ -41,8 +47,43 @@ function PaymentManager() {
         setCurrentWithDrawPage(newPage)
     }
 
+    const handleOpenOTPInput = (paymentId, type) => {
+        setTypeForOTP(type)
+        setShow2FAInput(true)
+        setSelectedPaymentId(paymentId)
+    }
+
+    const handleCancel = () => {
+        setShow2FAInput(false)
+        setSelectedPaymentId("")
+        setTypeForOTP("")
+        setOTP2fa('')
+    }
+
+    const handleSubmit2FACode = (type) => {
+
+    }
+
     return (
         <div className={cx("apmWrapper")}>
+            {show2FAInput && (
+                <Fragment>
+                    <div className={cx("overlay")} onClick={() => handleCancel()}></div>
+                    <div className={cx("adminFAContainer")}>
+                        <div className={cx("FATitle")}>Nhập Mã Xác Thực 2FA: </div>
+                        <div className={cx("inputContainer")}>
+                            <OtpInput
+                                value={OTP2fa}
+                                onChange={setOTP2fa}
+                                numInputs={6}
+                                renderSeparator={<span></span>}
+                                renderInput={(props) => <input {...props} />}
+                            />
+                        </div>
+                        <button id="submit" onClick={() => handleSubmit2FACode(typeForOTP)}>Xác Nhận</button>
+                    </div>
+                </Fragment>
+            )}
             {typeOfList === "WITHDRAW" && (
                 <Fragment>
                     <table id="apmWithDrawTable">
@@ -78,10 +119,25 @@ function PaymentManager() {
                                         <td className={cx("amount")}><strong>{bill.amount}</strong> k</td>
                                         <td className={cx("memo")}>{bill.ND} </td>
                                         <td className={cx("done")}>
-                                            <button >Hoàn Thành</button>
+                                            {bill.status === "WAIT_ADMIN" && (
+                                                <button onClick={() => handleOpenOTPInput(bill._id, "COMPLETED")}>Hoàn Thành</button>
+                                            )}
+                                            <strong>
+                                                {/* {bill.status === "CANCELED" && "Đã Huỷ"} */}
+                                                {bill.status === "COMPLETED" && "Đã Hoàn Thành"}
+                                                {bill.status === "PENDING" && "Chờ Owner"}
+                                            </strong>
                                         </td>
                                         <td className={cx("cancel")}>
-                                            <button >Từ Chối</button>
+                                            {bill.status === "WAIT_ADMIN" && (
+                                                <button onClick={() => handleOpenOTPInput(bill._id, "CANCEL")}>Từ Chối</button>
+                                            )}
+                                            <strong>
+                                                {bill.status === "CANCELED" && "Đã Huỷ"}
+                                                {/* {bill.status === "COMPLETED" && "Đã Hoàn Thành"} */}
+                                                {/* {bill.status === "PENDING" && "Chờ Owner"} */}
+                                            </strong>
+
                                         </td>
                                     </tr>
                                 );

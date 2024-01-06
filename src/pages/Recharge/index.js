@@ -111,7 +111,6 @@ export default function Users() {
     setSelectedPaymentId("")
     setTypeForOTP("")
     setOTP2fa('')
-
   }
 
   const handleOpenOTPInput = (paymentId, type) => {
