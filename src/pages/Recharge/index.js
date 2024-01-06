@@ -161,16 +161,65 @@ export default function Users() {
         "twoFaCode": otp,
         "paymentId": selectedPaymentId,
       });
-      console.log("xử Lý Thêm api");
-      handleCancel()
+      axios
+        .put(`${beURL}/payment/action`,
+          {
+            "action": "ACCEPT",
+            "twoFaCode": otp,
+            "paymentId": selectedPaymentId,
+          }
+          , config)
+        .then((response) => {
+          const data = response.data;
+          console.log(data);
+          if (data.message === "SUCCESS") {
+            alert("Thành Công")
+            handleCancel()
+            setRefreshWITHDRAWList(!refreshWITHDRAWList)
+          } else if (data.message !== "SUCCESS") {
+            alert(data.message + ". Mã Lỗi: " + data.code)
+            handleCancel()
+            setRefreshWITHDRAWList(!refreshWITHDRAWList)
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.message === "Request failed with status code 401") {
+            alert("Hãy Kiểm Tra Lại Mã Xác Thực")
+          }
+        });
     } else if (type === "CANCELED") {
       console.log({
-        "action": "CANCEL WITHDRAW",
+        "action": "CANCEL",
         "twoFaCode": otp,
         "paymentId": selectedPaymentId,
       });
-      console.log("thêm api xử lý từ chối");
-      handleCancel()
+      axios
+        .put(`${beURL}/payment/action`,
+          {
+            "action": "CANCEL",
+            "twoFaCode": otp,
+            "paymentId": selectedPaymentId,
+          }
+          , config)
+        .then((response) => {
+          const data = response.data;
+          if (data.message === "SUCCESS") {
+            alert("Thành Công")
+            handleCancel()
+            setRefreshWITHDRAWList(!refreshWITHDRAWList)
+          } else if (data.message !== "SUCCESS") {
+            alert(data.message + ". Mã Lỗi: " + data.code)
+            handleCancel()
+            setRefreshWITHDRAWList(!refreshWITHDRAWList)
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.message === "Request failed with status code 401") {
+            alert("Hãy Kiểm Tra Lại Mã Xác Thực")
+          }
+        });
     }
 
 
