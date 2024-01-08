@@ -107,7 +107,6 @@ function AdminOwner() {
                     .put(`${beURL}/users/updateOwner/${selectedId}`, gmail, config)
                     .then((response) => {
                         const data = response.data;
-                        console.log(data);
                         setReloadList(!reloadList)
                     })
                     .catch((error) => {
@@ -120,7 +119,6 @@ function AdminOwner() {
         }
     }
 
-    console.log(gmail);
 
     const handleCancel = () => {
         setSelectedGroupName("")
@@ -212,8 +210,6 @@ function AdminOwner() {
                 console.log(error);
             });
     }
-
-    console.log(ownerList);
 
     return (
         <Fragment>

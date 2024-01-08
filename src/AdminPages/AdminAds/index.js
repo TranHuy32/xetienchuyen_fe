@@ -34,6 +34,8 @@ function AdminAds() {
             });
     }, [reloadList]);
 
+    console.log(adsList);
+
     const handleSetBanner = (isBanner, id) => {
         var newStatus = !isBanner
         axios
@@ -110,7 +112,8 @@ function AdminAds() {
                     .post(`${beURL}/ads/create`, formData, config)
                     .then((response) => {
                         const data = response.data;
-                        console.log(data);
+                        setReloadList(!reloadList)
+                        handleCancel()
                     })
                     .catch((error) => {
                         console.log(error);
@@ -131,8 +134,6 @@ function AdminAds() {
             image_ads: null,
         })
     }
-
-    console.log(state);
 
     return (
         <Fragment>
