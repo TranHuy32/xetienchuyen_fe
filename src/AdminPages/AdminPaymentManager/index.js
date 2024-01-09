@@ -61,7 +61,72 @@ function PaymentManager() {
     }
 
     const handleSubmit2FACode = (type) => {
-
+        const otp = OTP2fa;
+        if (type === "ACCEPT") {
+            console.log({
+                "action": "ACCEPT",
+                "twoFaCode": otp,
+                "paymentId": selectedPaymentId,
+            });
+            axios
+                .put(`${beURL}/payment/actionByAdmin`,
+                    {
+                        "action": "ACCEPT",
+                        "twoFaCode": otp,
+                        "paymentId": selectedPaymentId,
+                    }
+                    , config)
+                .then((response) => {
+                    const data = response.data;
+                    if (data.message === "SUCCESS") {
+                        alert("Thành Công")
+                        handleCancel()
+                        setRefreshWithDrawList(!refreshWithDrawList)
+                    } else if (data.message !== "SUCCESS") {
+                        alert(data.message + ". Mã Lỗi: " + data.code)
+                        handleCancel()
+                        setRefreshWithDrawList(!refreshWithDrawList)
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                    if (error.message === "Request failed with status code 401") {
+                        alert("Hãy Kiểm Tra Lại Mã Xác Thực")
+                    }
+                });
+        } else if (type === "CANCEL") {
+            console.log({
+                "action": "CANCEL",
+                "twoFaCode": otp,
+                "paymentId": selectedPaymentId,
+            });
+            axios
+                .put(`${beURL}/payment/actionByAdmin`,
+                    {
+                        "action": "CANCEL",
+                        "twoFaCode": otp,
+                        "paymentId": selectedPaymentId,
+                    }
+                    , config)
+                .then((response) => {
+                    const data = response.data;
+                    if (data.message === "SUCCESS") {
+                        alert("Thành Công")
+                        handleCancel()
+                        setRefreshWithDrawList(!refreshWithDrawList)
+                    } else if (data.message !== "SUCCESS") {
+                        alert(data.message + ". Mã Lỗi: " + data.code)
+                        handleCancel()
+                        setRefreshWithDrawList(!refreshWithDrawList)
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                    if (error.message === "Request failed with status code 401") {
+                        alert("Hãy Kiểm Tra Lại Mã Xác Thực")
+                    }
+                });
+        }
     }
 
     return (
@@ -120,7 +185,7 @@ function PaymentManager() {
                                         <td className={cx("memo")}>{bill.ND} </td>
                                         <td className={cx("done")}>
                                             {bill.status === "WAIT_ADMIN" && (
-                                                <button onClick={() => handleOpenOTPInput(bill._id, "COMPLETED")}>Hoàn Thành</button>
+                                                <button onClick={() => handleOpenOTPInput(bill._id, "ACCEPT")}>Hoàn Thành</button>
                                             )}
                                             <strong>
                                                 {/* {bill.status === "CANCELED" && "Đã Huỷ"} */}
