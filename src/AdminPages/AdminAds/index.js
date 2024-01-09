@@ -47,6 +47,8 @@ function AdminAds() {
             .then((response) => {
                 const data = response.data;
                 if (data.message === "SUCCESS") {
+                    
+                    alert("Thay Đổi Trạng Thái Banner Thành Công")
                     setReloadList(!reloadList)
                 }
 
@@ -67,6 +69,7 @@ function AdminAds() {
             .then((response) => {
                 const data = response.data;
                 if (data.message === "SUCCESS") {
+                    alert("Thay Đổi Trạng Thái Thành Công")
                     setReloadList(!reloadList)
                 }
 
