@@ -49,11 +49,13 @@ function UsersManual() {
         setWdToken(Token)
         setUserName(Name)
         //Thông báo thiếu thông tin
-        if (Token.length < 10 || Name.length < 10) {
-            // alert("Thông Tin Bị Thiếu! Hãy Mở Lại Trang Web Này Từ Ứng Dụng Của Bạn.")
-            return
-        }
+        // if (Token.length < 10 || Name.length < 10) {
+        //     // alert("Thông Tin Bị Thiếu! Hãy Mở Lại Trang Web Này Từ Ứng Dụng Của Bạn.")
+        //     return
+        // }
     }, []);
+
+    log
 
     const handleOpenManual = (id) => {
         if (showManual === id) {
