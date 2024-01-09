@@ -44,10 +44,14 @@ function UsersManual() {
 
         // Lấy giá trị của tham số userName
         const Name = url.searchParams.get('userName');
-
+        if (Token !== null) {
+            setWdToken(Token)
+        }
         // Sử dụng giá trị của các tham số tại đây
-        setWdToken(Token)
-        setUserName(Name)
+        if (Name !== null) {
+            setUserName(Name)
+        }
+
         //Thông báo thiếu thông tin
         // if (Token.length < 10 || Name.length < 10) {
         //     // alert("Thông Tin Bị Thiếu! Hãy Mở Lại Trang Web Này Từ Ứng Dụng Của Bạn.")
@@ -55,28 +59,27 @@ function UsersManual() {
         // }
     }, []);
 
-    
     const handleOpenManual = (id) => {
         if (showManual === id) {
             const activeElement = document.getElementById("active");
             if (activeElement) {
-                activeElement.scrollIntoView({ behavior: "smooth",  marginTop: 120 });
+                activeElement.scrollIntoView({ behavior: "smooth", marginTop: 120 });
             }
             return
         } else {
             setShowManual(id)
             const activeElement = document.getElementById("active");
             if (activeElement) {
-                activeElement.scrollIntoView({ behavior: "smooth",  marginTop: 120});
+                activeElement.scrollIntoView({ behavior: "smooth", marginTop: 120 });
             }
             return
         }
     }
 
     const handleCloseManual = (id) => {
-        if(showManual === id){
+        if (showManual === id) {
             setShowManual("")
-        }else{
+        } else {
             handleOpenManual(id)
         }
     }
@@ -85,9 +88,9 @@ function UsersManual() {
         <div className={cx("manualWrapper")}>
             <h1>Hướng Dẫn Sử Dụng</h1>
             <div
-            className={cx((
-                allowedToDisplay && 
-                (userName.length === 10 || userName === null) ) ? "" : "notAllowedToDisplay")}
+                className={cx((
+                    allowedToDisplay &&
+                    (userName === null || userName.length === 10)) ? "" : "notAllowedToDisplay")}
             >
                 <div className={cx("buttonContainer")}>
                     <button id="naptien" onClick={() => navigate(`/usermanual/naptien?userName=${userName}`)}>Nạp Tiền</button>
@@ -130,7 +133,7 @@ function UsersManual() {
                     <div className={cx("mTitle")} onClick={() => handleOpenManual("NUMBER2")}>
                         Hướng Dẫn Tạo Đơn Chở Khách
                         <img src={showManual === "NUMBER2" ? arrowDown : arrowLeft}
-                         onClick={() => handleCloseManual("NUMBER2")}
+                            onClick={() => handleCloseManual("NUMBER2")}
                         ></img>
                     </div>
                     {showManual === "NUMBER2" && (
