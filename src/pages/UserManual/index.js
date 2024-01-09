@@ -80,11 +80,15 @@ function UsersManual() {
         }
     }
 
+    console.log(userName.length === 10 || userName === null);
+
     return (
         <div className={cx("manualWrapper")}>
             <h1>Hướng Dẫn Sử Dụng</h1>
             <div
-            className={cx(allowedToDisplay ? "" : "notAllowedToDisplay")}
+            className={cx((
+                allowedToDisplay && 
+                (userName.length === 10 || userName === null) ) ? "" : "notAllowedToDisplay")}
             >
                 <div className={cx("buttonContainer")}>
                     <button id="naptien" onClick={() => navigate(`/usermanual/naptien?userName=${userName}`)}>Nạp Tiền</button>
