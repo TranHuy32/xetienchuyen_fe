@@ -84,7 +84,7 @@ function UsersManual() {
         <div className={cx("manualWrapper")}>
             <h1>Hướng Dẫn Sử Dụng</h1>
             <div
-            // className={cx(allowedToDisplay ? "" : "notAllowedToDisplay")}
+            className={cx(allowedToDisplay ? "" : "notAllowedToDisplay")}
             >
                 <div className={cx("buttonContainer")}>
                     <button id="naptien" onClick={() => navigate(`/usermanual/naptien?userName=${userName}`)}>Nạp Tiền</button>
