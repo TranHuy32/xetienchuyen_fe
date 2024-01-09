@@ -112,8 +112,14 @@ function AdminAds() {
                     .post(`${beURL}/ads/create`, formData, config)
                     .then((response) => {
                         const data = response.data;
-                        setReloadList(!reloadList)
-                        handleCancel()
+                        if(!!!data){
+                            alert("Tạo Quảng Cáo Thất Bại")
+                        }else if(!!data){
+                            alert("Tạo Quảng Cáo Thành Công")
+                            setReloadList(!reloadList)
+                            handleCancel()
+                        }
+                        
                     })
                     .catch((error) => {
                         console.log(error);
