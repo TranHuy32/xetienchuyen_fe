@@ -355,6 +355,7 @@ function AdminOwner() {
                     <thead>
                         <tr>
                             <th>Tên Owner</th>
+                            <th>Tên Group</th>
                             <th>Tên Đăng Nhập</th>
                             <th>Gmail</th>
                             <th>Xác Thực 2 Lớp(2FA)</th>
@@ -366,6 +367,7 @@ function AdminOwner() {
                         {ownerList.map((owner, index) => (
                             <tr key={index}>
                                 <td>{owner.name}</td>
+                                <td>{owner.groupName}</td>
                                 <td>{owner.userName}</td>
                                 <td>
                                     {owner.gmail === null && (
