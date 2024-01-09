@@ -1,0 +1,19 @@
+.awpWrapper{
+    padding: 16px 5%;
+    .switch-table-box{
+        display: flex;
+        div{
+            padding: 16px 32px;
+            border-radius: 16px;
+            border: 1px solid #FF6464;
+            margin-right: 16px;
+            cursor: pointer;
+        }
+        .active-list{
+            background-color: #FF6464;
+            color: #fff;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+    }
+}
