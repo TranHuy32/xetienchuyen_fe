@@ -55,8 +55,7 @@ function UsersManual() {
         // }
     }, []);
 
-    log
-
+    
     const handleOpenManual = (id) => {
         if (showManual === id) {
             const activeElement = document.getElementById("active");
