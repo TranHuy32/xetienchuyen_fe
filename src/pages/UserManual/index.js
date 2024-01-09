@@ -13,8 +13,8 @@ const beURL = process.env.REACT_APP_BE_URL;
 function UsersManual() {
     const navigate = useNavigate();
     const [allowedToDisplay, setAllowToDisplay] = useState(false)
-    const [wdToken, setWdToken] = useState(null)
-    const [userName, setUserName] = useState(null)
+    const [wdToken, setWdToken] = useState("")
+    const [userName, setUserName] = useState("")
     const [showManual, setShowManual] = useState("")
     useEffect(() => {
         axios
@@ -50,7 +50,7 @@ function UsersManual() {
         setUserName(Name)
         //Thông báo thiếu thông tin
         if (Token.length < 10 || Name.length < 10) {
-            alert("Thông Tin Bị Thiếu! Hãy Mở Lại Trang Web Này Từ Ứng Dụng Của Bạn.")
+            // alert("Thông Tin Bị Thiếu! Hãy Mở Lại Trang Web Này Từ Ứng Dụng Của Bạn.")
             return
         }
     }, []);
@@ -79,8 +79,6 @@ function UsersManual() {
             handleOpenManual(id)
         }
     }
-
-    console.log(userName.length === 10 || userName === null);
 
     return (
         <div className={cx("manualWrapper")}>
