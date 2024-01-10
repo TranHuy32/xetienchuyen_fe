@@ -1,19 +1,254 @@
-.awpWrapper{
-    padding: 16px 5%;
-    .switch-table-box{
+.awpWrapper {
+    .adminUserNameContainer {
+        background-color: #fff;
+        position: fixed;
+        top: 144px;
+        width: 400px;
+        left: calc(50% - 200px);
+        height: max-content;
+        top: calc(45% - 100px);
+        z-index: 20000;
+        border-radius: 8px;
         display: flex;
-        div{
+        flex-direction: column;
+        align-items: center;
+
+        .title {
+            font-size: 1.4rem;
+            padding: 24px 0;
+        }
+
+        .inputContainer {
+            display: flex;
+
+            input {
+                height: 32px;
+                padding: 8px;
+                text-align: center;
+                margin: 4px;
+                border-radius: 8px;
+                font-size: 1.4rem;
+                border: 1px solid #ddd;
+            }
+        }
+
+        button {
+            background-color: #ff6969;
+            color: #fff;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 16px;
+            margin: 16px 0;
+        }
+    }
+
+    .adminFAContainer {
+        background-color: #fff;
+        position: fixed;
+        top: 144px;
+        width: 400px;
+        left: calc(50% - 200px);
+        height: max-content;
+        top: calc(45% - 100px);
+        z-index: 20000;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .FATitle {
+            font-size: 1.4rem;
+            padding: 24px 0;
+        }
+
+        .inputContainer {
+            display: flex;
+
+            input {
+                width: 16px;
+                height: 32px;
+                padding: 8px;
+                text-align: center;
+                margin: 4px;
+                border-radius: 8px;
+                font-size: 1.4rem;
+                border: 1px solid #ddd;
+            }
+        }
+
+        button {
+            background-color: #ff6969;
+            color: #fff;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 16px;
+            margin: 24px 0;
+        }
+
+    }
+
+    .switch-table-box {
+        margin: 16px 5%;
+        display: flex;
+
+        div {
             padding: 16px 32px;
             border-radius: 16px;
             border: 1px solid #FF6464;
             margin-right: 16px;
             cursor: pointer;
         }
-        .active-list{
+
+        .active-list {
             background-color: #FF6464;
             color: #fff;
             transition: all 0.3s;
             font-weight: bold;
+        }
+    }
+
+    #awmWarningTable {
+        width: 90%;
+        margin: 32px auto;
+
+        thead {
+            background-color: #7da4e3;
+
+            tr {
+                th {
+                    padding: 16px 0;
+                }
+            }
+        }
+
+        tbody {
+            tr {
+
+                td {
+                    padding: 8px 16px;
+                    border-bottom: 1px dashed black;
+                }
+
+                .time,
+                .amount,
+                .done,
+                .cancel {
+                    text-align: center;
+                }
+
+                .userName,
+                .memo {
+                    min-width: calc(170px - 64px);
+                }
+
+                .value {
+                    text-align: center;
+                }
+
+                .renew {
+                    width: 150px;
+
+                    button {
+                        width: 100%;
+                        padding: 8px 16px;
+                        border: 1px solid #e23d4d;
+                        border-radius: 8px;
+                        background-color: #fff;
+
+                        &:hover {
+                            background-color: #e23d4d;
+                            color: #fff;
+                            font-weight: bold;
+                            transition: all 0.3s;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #awmWrongTable {
+        width: 90%;
+        margin: 32px auto;
+
+        thead {
+            background-color: #7da4e3;
+
+            tr {
+                th {
+                    padding: 16px 0;
+                }
+            }
+        }
+
+        tbody {
+            tr {
+
+                td {
+                    padding: 8px 16px;
+                    border-bottom: 1px dashed black;
+                }
+
+                .time,
+                .amount,
+                .done,
+                .cancel,
+                .bankType {
+                    text-align: center;
+                }
+
+                .userName,
+                .memo {
+                    min-width: calc(170px - 64px);
+                }
+
+                .value {
+                    text-align: center;
+                }
+
+                .renew {
+                    width: 150px;
+
+                    button {
+                        width: 100%;
+                        padding: 8px 16px;
+                        border: 1px solid #e23d4d;
+                        border-radius: 8px;
+                        background-color: #fff;
+
+                        &:hover {
+                            background-color: #e23d4d;
+                            color: #fff;
+                            font-weight: bold;
+                            transition: all 0.3s;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .apmPagination {
+        margin-top: 32px;
+        display: flex;
+        justify-content: center;
+        align-self: center;
+
+        >button {
+            margin: 0 3px;
+            padding: 5px 10px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
+            background-color: #fff;
+            border: 1px solid #e23d4d;
+            border-radius: 2px;
+
+        }
+
+        .active {
+            background-color: #e23d4d;
+            color: #fff;
         }
     }
 }
