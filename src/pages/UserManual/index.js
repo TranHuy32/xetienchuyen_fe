@@ -7,6 +7,13 @@ import axios from "axios";
 import arrowLeft from "~/assets/image/left-arrow.png";
 import arrowDown from "~/assets/image/arrow-down.png";
 
+// nhận chuyến
+import q1step1 from "~/assets/image_for_usermanual/accept_ride/step1.png"
+import q1step2 from "~/assets/image_for_usermanual/accept_ride/step2.png"
+import q1step3 from "~/assets/image_for_usermanual/accept_ride/step3.png"
+
+import q1step5 from "~/assets/image_for_usermanual/accept_ride/step5.png"
+
 const cx = classNames.bind(styles);
 const beURL = process.env.REACT_APP_BE_URL;
 
@@ -100,7 +107,7 @@ function UsersManual() {
             <div className={cx("userManualContainer")}>
                 <div className={cx("manualContainer")} id={showManual === "NUMBER1" ? "active" : ""}>
                     <div className={cx("mTitle")} onClick={() => handleOpenManual("NUMBER1")}>
-                        Hướng Dẫn Đổi Mật Khẩu
+                        Hướng Dẫn Nhận Chở Khách
                         <img src={showManual === "NUMBER1" ? arrowDown : arrowLeft}
                             onClick={() => handleCloseManual("NUMBER1")}
                         ></img>
@@ -108,21 +115,49 @@ function UsersManual() {
                     {showManual === "NUMBER1" && (
                         <div className={cx("mContent")}>
                             <div className={cx("stepBox")}>
-                                <div className={cx("stepText")}><strong>bước 1:</strong> Dưới đây là một số trang web phổ biến cung cấp hướng dẫn sử dụng phần mềm hoặc user manual với giao diện dành cho thiết bị di động:</div>
+                                <div className={cx("stepText")}>
+                                    <strong>bước 1: </strong>
+                                    Ở màn hình chính ta có thể thấy các chuyến xe đã được tạo, bạn có thể nhấn vào chuyến xe muốn nhận:
+                                </div>
                                 <div className={cx("stepImageBox")}>
-                                    <div className={cx("img")}></div>
+                                    {/* <div className={cx("img")}></div> */}
+                                    <img src={q1step1} alt="step1"></img>
                                 </div>
                             </div>
                             <div className={cx("stepBox")}>
-                                <div className={cx("stepText")}><strong>bước 2:</strong> làm abc xyz</div>
+                                <div className={cx("stepText")}><strong>bước 2: </strong>
+                                    Ấn vào nút "Nhận Chuyến":
+                                </div>
                                 <div className={cx("stepImageBox")}>
-                                    <div className={cx("img")}></div>
+                                    {/* <div className={cx("img")}></div> */}
+                                    <img src={q1step2} alt="step2"></img>
                                 </div>
                             </div>
                             <div className={cx("stepBox")}>
-                                <div className={cx("stepText")}><strong>bước 3:</strong> làm abc xyz</div>
+                                <div className={cx("stepText")}><strong>bước 3: </strong>
+                                    Khi nhận chuyến thành công sẽ có thông báo như sau:
+                                </div>
                                 <div className={cx("stepImageBox")}>
-                                    <div className={cx("img")}></div>
+                                    {/* <div className={cx("img")}></div> */}
+                                    <img src={q1step3} alt="step3"></img>
+                                </div>
+                            </div>
+                            <div className={cx("stepBox")}>
+                                <div className={cx("stepText")}><strong>bước 4: </strong>
+                                    Sau khi liên lạc với khách thành công, bạn có thể ấn nút "Xác Nhận" để chính thức nhận chuyến. Nếu không thể liên lạc với khách hàng, hãy ấn "Huỷ Chuyến":
+                                </div>
+                                <div className={cx("stepImageBox")}>
+                                    {/* <div className={cx("img")}></div> */}
+                                    {/* <img src={q1step4} alt="step4"></img> */}
+                                </div>
+                            </div>
+                            <div className={cx("stepBox")}>
+                                <div className={cx("stepText")}><strong>bước 5: </strong>
+                                    Sau khi đã hoàn thành chuyến đi, hãy ấn nút "Hoàn Thành":
+                                </div>
+                                <div className={cx("stepImageBox")}>
+                                    {/* <div className={cx("img")}></div> */}
+                                    <img src={q1step5} alt="step5"></img>
                                 </div>
                             </div>
                         </div>
