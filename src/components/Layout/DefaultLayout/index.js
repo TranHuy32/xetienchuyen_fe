@@ -21,24 +21,37 @@ function DefaultLayout({ children }) {
 
   //get payment list
   useEffect(() => {
-    axios
-      .get(`${beURL}/payment/allByOwner`, config)
-      // `${beURL}/payment/allByOwner?type=${typeOfList}page=${currentPage}&pageSize=${pageSize}`
-      .then((response) => {
-        const data = response.data
-        if (data.payments.length > 0) {
-          const pendingPayments = data.payments.filter(payment => payment.status === "PENDING");
-          if (pendingPayments.length !== 0) {
-            setTotalNotice(pendingPayments.length)
-          } else {
-            setTotalNotice(0)
+    const fetchData = () => {
+      axios
+        .get(`${beURL}/payment/allByOwner`, config)
+        .then((response) => {
+          const data = response.data;
+          if (data.payments.length > 0) {
+            const pendingPayments = data.payments.filter(payment => payment.status === "PENDING");
+            if (pendingPayments.length !== 0) {
+              setTotalNotice(pendingPayments.length);
+            } else {
+              setTotalNotice(0);
+            }
           }
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+
+    // Fetch data initially
+    fetchData();
+
+    // Set up an interval to fetch data every 15 seconds
+    const intervalId = setInterval(() => {
+      fetchData();
+    }, 15000);
+
+    // Clean up the interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
+
   const logout = () => {
     singOut();
     navigate("/");
