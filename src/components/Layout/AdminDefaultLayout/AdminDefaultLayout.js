@@ -27,25 +27,33 @@ function AdminDefaultLayout({ children }) {
 
   //get WithDraw List
   useEffect(() => {
-    //get list to display
-    axios
-      .get(`${beURL}/payment/allByAdmin?type=WITHDRAW`, config)
-      .then((response) => {
-        const data = response.data;
-        if (data.payments.length > 0) {
-          const pendingPayments = data.payments.filter(payment => payment.status === "PENDING");
-          if (pendingPayments.length !== 0) {
-            setTotalWithDraw(pendingPayments.length)
-          } else {
-            setTotalWithDraw(0)
+    const fetchData = () => {
+      axios
+        .get(`${beURL}/payment/allByAdmin?type=WITHDRAW`, config)
+        .then((response) => {
+          const data = response.data;
+          console.log(data.payments.length);
+          if (data.payments !== null) {
+            setTotalWithDraw(data.payments.length);
           }
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
 
+    // Fetch data initially
+    fetchData();
+
+    // Set up an interval to fetch data every 15 seconds
+    const intervalId = setInterval(() => {
+      fetchData();
+    }, 15000);
+
+    // Clean up the interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []);
+  
   //get deposit status is ON/OFF
   useEffect(() => {
     axios
@@ -131,7 +139,7 @@ function AdminDefaultLayout({ children }) {
                 navigate("/adminlogin/adminpaymentmanager");
               }}
             >
-              Yêu Cầu Rút Tiền 
+              Yêu Cầu Rút Tiền
               {totalWithDraw !== 0 && (
                 <div id="totalWithDraw">{totalWithDraw < 99 ? totalWithDraw : "99+"}</div>
               )}
