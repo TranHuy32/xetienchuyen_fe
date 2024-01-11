@@ -13,26 +13,24 @@ function AdminLogin() {
   const navigate = useNavigate();
   const signIn = useSignIn();
   const [firstOTP, setFirstOTP] = useState('')
-  const [otp, setOtp] = useState('')
+  const [otpAdmin, setOtpAdmin] = useState('')
   const [qrGenerated, setQrGenerated] = useState(false)
+  const [qrSrc, setQrSrc] = useState("")
   const [showAdd2faPopup, setShowAdd2faPopup] = useState(false)
-  const [form2FAData, setForm2FAData] = useState({
-    userName: "",
-    password: "",
-    otp: ""
-  });
+  const [showInputFaCode, setShowInputFaCode] = useState(false)
   const [formData, setFormData] = useState({
     userName: "",
     password: "",
+    twoFaCode: ""
   });
 
   //update OTP
   useEffect(() => {
-    setForm2FAData({
-      ...form2FAData,
-      otp: firstOTP,
+    setFormData({
+      ...formData,
+      twoFaCode: otpAdmin,
     })
-  }, [firstOTP]);
+  }, [otpAdmin]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,13 +65,61 @@ function AdminLogin() {
 
   const handleCancelShowPopup = () => {
     setShowAdd2faPopup(false)
+    setShowInputFaCode(false)
   }
 
   const handleShowAdd2faPopup = () => {
     setShowAdd2faPopup(true)
-
   }
 
+  const handleGetQR = () => {
+    axios
+      .get(`${beURL}/users-auth/2faForAdmin/qr`)
+      .then((response) => {
+        const data = response.data;
+        console.log(data);
+        setQrSrc(data)
+        setQrGenerated(true)
+      })
+      .catch((error) => {
+        console.log(error);
+        if (!!error?.response?.data?.message) {
+          if (error.response.data.message === "2FA was enabled") {
+            alert("Đã Bật Bảo Mật 2 Lớp")
+            return
+          }
+        }
+      });
+  }
+
+  const handleTurnOn2fa = () => {
+    axios
+      .post(`${beURL}/users-auth/2faForAdmin/turn-on`, {
+        "twoFaCode": firstOTP
+      })
+      .then((response) => {
+        const data = response?.data;
+        if (!!data && data === true) {
+          alert("Bật Bảo Mật 2 Lớp Thành Công")
+          setFirstOTP('')
+          setShowAdd2faPopup(false)
+          setQrSrc("")
+          setQrGenerated(false)
+        } else {
+          alert("Bật Bảo Mật 2 Lớp Thất Bại")
+        }
+      })
+      .catch((error) => {
+        console.log(error?.response?.data?.message);
+        if (!!error?.response?.data?.message) {
+          if (error.response.data.message === "Wrong authentication code") {
+            alert("Sai Mã Xác Thực")
+            return
+          }
+        }
+      });
+  }
+  console.log(formData);
   return (
     <div className={cx("lgWrapper")}>
       {showAdd2faPopup && (
@@ -82,8 +128,16 @@ function AdminLogin() {
           <div className={cx("add2faContainer")}>
             <div className={cx("title")}>Cài Đặt Bảo Mật 2 Lớp</div>
             <div className={cx("content")}>
-              <div className={cx("leftContainer")}>
-                <div className={cx("inputLoginName")}>
+              <div className={cx("topContainer")}>
+                {/* <div className={cx("rightTitle")}>2FA QR CODE</div> */}
+                {/* <div id="img">ảnh QR</div> */}
+                {qrGenerated && (
+                  <img src={qrSrc} alt="qr-code"></img>
+                )}
+
+              </div>
+              <div className={cx("bottomContainer")}>
+                {/* <div className={cx("inputLoginName")}>
                   <label for="2faName">Tên Đăng Nhập:</label>
                   <input
                     id="2faName"
@@ -108,12 +162,12 @@ function AdminLogin() {
                       })
                     }
                   ></input>
-                </div>
+                </div> */}
                 {!qrGenerated && (
-                  <button onClick={() => setQrGenerated(true)}>Tạo QR Code</button>
+                  <button onClick={() => handleGetQR()}>Tạo QR Code</button>
                 )}
                 {qrGenerated && (
-                  <div className={cx("otpInputContainer")}> 
+                  <div className={cx("otpInputContainer")}>
                     <div>Nhập Mã Otp:</div>
                     <OtpInput
                       value={firstOTP}
@@ -122,33 +176,16 @@ function AdminLogin() {
                       renderSeparator={<span> </span>}
                       renderInput={(props) => <input {...props} />}
                     />
-                    <button onClick={() => setQrGenerated(false)}>Gửi Mã Xác Nhận</button>
+                    <button onClick={() => handleTurnOn2fa()}>Gửi Mã Xác Nhận</button>
                   </div>
                 )}
 
               </div>
-              <div className={cx("rightContainer")}>
-                {/* <div className={cx("rightTitle")}>2FA QR CODE</div> */}
-                <div id="img">ảnh QR</div>
-              </div>
+
             </div>
 
           </div>
-          {/* <div className={cx("FAContainer")}>
-              <div className={cx("FATitle")}>Nhập Mã Xác Thực 2FA: </div>
-              <div className={cx("inputContainer")}>
-                <OtpInput
-                  value={otp}
-                  onChange={setOtp}
-                  numInputs={6}
-                  renderSeparator={<span> </span>}
-                  renderInput={(props) => <input {...props} />}
-                />
-              </div>
-              <button type="submit" value={"Log in"}>
-                Xác Nhận
-              </button>
-            </div> */}
+
         </Fragment>
       )}
       <div className={cx("lgBody")}>
@@ -189,11 +226,34 @@ function AdminLogin() {
               </div>
               <p id="admin2FATextLine">Chưa Có Mã Xác Thực 2FA?
                 <strong onClick={() => handleShowAdd2faPopup()}>Kích Hoạt Ngay</strong></p>
-              <div className={cx("adminlgLoginButtonBox")}>
-                <button type="submit" value={"Log in"}
+              <div className={cx("lgLoginButtonBox")}>
+                {/* <button type="submit" value={"Log in"}
                 >
                   Đăng Nhập
-                </button>
+                </button> */}
+                <p id="adminLoginButton" onClick={() => setShowInputFaCode(true)}>
+                  Đăng Nhập
+                </p>
+                {showInputFaCode && (
+                  <Fragment>
+                    <div className={cx("overlay")} onClick={() => handleCancelShowPopup()}></div>
+                    <div className={cx("FAContainer")}>
+                      <div className={cx("FATitle")}>Nhập Mã Xác Thực 2FA: </div>
+                      <div className={cx("inputContainer")}>
+                        <OtpInput
+                          value={otpAdmin}
+                          onChange={setOtpAdmin}
+                          numInputs={6}
+                          renderSeparator={<span> </span>}
+                          renderInput={(props) => <input {...props} />}
+                        />
+                      </div>
+                      <button type="submit" value={"Log in"}>
+                        Xác Nhận
+                      </button>
+                    </div>
+                  </Fragment>
+                )}
               </div>
             </form>
           </div>
