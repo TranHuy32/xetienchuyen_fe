@@ -167,7 +167,7 @@ function PaymentManager() {
                                 <th>Ngân Hàng</th>
                                 <th>Số Tài Khoản</th>
                                 <th>Số Tiền</th>
-                                <th>Nội Dung CK</th>
+                                <th>Tên Chủ Tài Khoản</th>
                                 <th>Chấp Nhận</th>
                                 <th>Huỷ Đơn</th>
                             </tr>

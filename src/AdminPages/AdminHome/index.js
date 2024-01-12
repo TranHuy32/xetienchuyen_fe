@@ -207,7 +207,7 @@ function AdminHome() {
                     <thead>
                         <tr>
                             <th>Tên Group</th>
-                            <th>tên owner</th>
+                            {/* <th>tên owner</th> */}
                             {/* <th>Chưa Biết</th> */}
                             <th>App Phí</th>
                         </tr>
@@ -235,9 +235,9 @@ function AdminHome() {
                                         </Fragment>
                                     )}
                                 </td>
-                                <td>decoy </td>
                                 {/* <td>decoy </td> */}
-                                <td>{group.appFee}</td>
+                                {/* <td>decoy </td> */}
+                                <td>{group.appFee}%</td>
                             </tr>
                         ))}
                     </tbody>

@@ -276,8 +276,8 @@ function Adminwarningpayment() {
                         <thead>
                             <tr>
                                 <th>Thời Gian</th>
-                                <th>Ngân Hàng</th>
-                                <th>Số Tài Khoản</th>
+                                {/* <th>Ngân Hàng</th>
+                                <th>Số Tài Khoản</th> */}
                                 <th>Số Tiền</th>
                                 <th>Nội Dung CK</th>
                                 <th>Số Dư</th>
@@ -298,8 +298,8 @@ function Adminwarningpayment() {
                                 return (
                                     <tr key={index}>
                                         <td className={cx("time")}>{formattedTime}</td>
-                                        <td className={cx("bankName")}>{bill.bankName}</td>
-                                        <td className={cx("bankAccount")}>{bill.bankAccountNumber}</td>
+                                        {/* <td className={cx("bankName")}>{bill.bankName}</td>
+                                        <td className={cx("bankAccount")}>{bill.bankAccountNumber}</td> */}
                                         <td className={cx("amount")}>
                                             <strong>{bill.depositIsAdd ? "" : "-"}  {bill.amount}</strong> k
                                         </td>
