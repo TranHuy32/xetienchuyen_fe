@@ -153,7 +153,7 @@ function PaymentManager() {
             )}
             {(typeOfList === "WITHDRAW" && WithDrawList.length === 0) && (
                 <div id="emptyAdminWithDrawList">
-                    <h3>Không Có Yêu Cầu Rút Tiền</h3>
+                    <h2>Không Có Yêu Cầu Rút Tiền</h2>
                 </div>
 
             )}
