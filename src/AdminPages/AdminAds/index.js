@@ -26,15 +26,16 @@ function AdminAds() {
         axios
             .get(`${beURL}/ads/allAdsesByAdmin`, config)
             .then((response) => {
-                const data = response.data;
-                setAdsList(data)
+                const data = response?.data;
+                if (!!data) {
+                    setAdsList(data)
+                }
+
             })
             .catch((error) => {
                 console.log(error);
             });
     }, [reloadList]);
-
-    console.log(adsList);
 
     const handleSetBanner = (isBanner, id) => {
         var newStatus = !isBanner
@@ -45,9 +46,8 @@ function AdminAds() {
                 }
                 , config)
             .then((response) => {
-                const data = response.data;
-                if (data.message === "SUCCESS") {
-                    
+                const data = response?.data;
+                if (!!data && data.message === "SUCCESS") {
                     alert("Thay Đổi Trạng Thái Banner Thành Công")
                     setReloadList(!reloadList)
                 }
@@ -67,8 +67,8 @@ function AdminAds() {
                 }
                 , config)
             .then((response) => {
-                const data = response.data;
-                if (data.message === "SUCCESS") {
+                const data = response?.data;
+                if (!!data && data.message === "SUCCESS") {
                     alert("Thay Đổi Trạng Thái Thành Công")
                     setReloadList(!reloadList)
                 }
@@ -115,14 +115,14 @@ function AdminAds() {
                     .post(`${beURL}/ads/create`, formData, config)
                     .then((response) => {
                         const data = response.data;
-                        if(!!!data){
+                        if (!!!data) {
                             alert("Tạo Quảng Cáo Thất Bại")
-                        }else if(!!data){
+                        } else if (!!data) {
                             alert("Tạo Quảng Cáo Thành Công")
                             setReloadList(!reloadList)
                             handleCancel()
                         }
-                        
+
                     })
                     .catch((error) => {
                         console.log(error);

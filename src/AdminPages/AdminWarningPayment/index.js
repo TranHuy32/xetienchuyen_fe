@@ -43,9 +43,11 @@ function Adminwarningpayment() {
         axios
             .get(`${beURL}/payment/allByAdmin?type=WARNING&page=${currentWarningPage}&pageSize=${pageSizeWarning}`, config)
             .then((response) => {
-                const data = response.data;
-                setWarningList(data.payments)
-                setTotalWarningPages(Math.ceil(data.totalCount / pageSizeWarning))
+                const data = response?.data;
+                if (!!data) {
+                    setWarningList(data.payments)
+                    setTotalWarningPages(Math.ceil(data.totalCount / pageSizeWarning))
+                }
             })
             .catch((error) => {
                 console.log(error);
@@ -58,10 +60,12 @@ function Adminwarningpayment() {
         axios
             .get(`${beURL}/payment/allByAdmin?type=WRONG_DEPOSIT_INFO&page=${currentWrongPage}&pageSize=${pageSizeWrong}`, config)
             .then((response) => {
-                const data = response.data;
-                console.log(data);
-                setWrongList(data.payments)
-                setTotalWrongPages(Math.ceil(data.totalCount / pageSizeWrong))
+                const data = response?.data;
+                if (!!data) {
+                    setWrongList(data.payments)
+                    setTotalWrongPages(Math.ceil(data.totalCount / pageSizeWrong))
+                }
+
             })
             .catch((error) => {
                 console.log(error);
@@ -90,10 +94,6 @@ function Adminwarningpayment() {
 
     const handleSubmit2FACode = () => {
         const otp = OTP2fa;
-        console.log({
-            "userName": newName,
-            "twoFaCode": otp
-        });
         axios
             .put(`${beURL}/payment/update/${selectedPaymentId}`,
                 {
@@ -102,12 +102,12 @@ function Adminwarningpayment() {
                 }
                 , config)
             .then((response) => {
-                const data = response.data;
-                if (data.message === "SUCCESS") {
+                const data = response?.data;
+                if (!!data && data.message === "SUCCESS") {
                     alert("Thành Công")
                     handleCancel()
                     setRefreshWarningList(!refreshWarningList)
-                } else if (data.message !== "SUCCESS") {
+                } else if (!!data && data.message !== "SUCCESS") {
                     alert(data.message + ". Mã Lỗi: " + data.code)
                     handleCancel()
                     setRefreshWarningList(!refreshWarningList)

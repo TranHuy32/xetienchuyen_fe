@@ -33,8 +33,10 @@ function AdminHome() {
         axios
             .get(`${beURL}/group/all`, config)
             .then((response) => {
-                const data = response.data;
-                setGroupList(data);
+                const data = response?.data;
+                if (!!data) {
+                    setGroupList(data);
+                }
             })
             .catch((error) => {
                 console.log(error);
@@ -48,8 +50,8 @@ function AdminHome() {
                     formGroupData
                     , config)
                 .then((response) => {
-                    const data = response.data;
-                    if (data === "Group Existed!") {
+                    const data = response?.data;
+                    if (!!data && data === "Group Existed!") {
                         alert("Group Này Đã Tồn Tại")
                     } else {
                         alert("Tạo Group Thành Công")
@@ -69,22 +71,6 @@ function AdminHome() {
     }
 
     const handleChangeName = (groupId) => {
-        // console.log(groupId);
-        // if (changeNameValue.length > 0) {
-        //     axios
-        //         .put(`${beURL}/group/update/${groupId}`,
-        //             formChangeNameData
-        //             , config)
-        //         .then((response) => {
-        //             const data = response.data;
-        //             console.log(data);
-        //         })
-        //         .catch((error) => {
-        //             console.log(error);
-        //         });
-        // }else{
-        //     console.log("chua nhap ten");
-        // }
         setChangeNameState("")
         handleClearChangeName()
         setReloadList(!reloadList)
@@ -122,7 +108,7 @@ function AdminHome() {
 
     const handleSelectGroupToSetAppFee = (option) => {
         setSelectedGroupToSetAppFee(option);
-        if(option.appFee !== 0){
+        if (option.appFee !== 0) {
             alert(`Group ${option.name} Đã Có AppFee Là ${option.appFee}. Tiếp Tục Sẽ Làm Thay Đổi AppFee Hiện Tại.`)
         }
     };
@@ -136,7 +122,7 @@ function AdminHome() {
         if (selectedGroupToSetAppFee === "") {
             alert("Chọn Group Để Cài Đặt AppFee.")
             return
-        } 
+        }
         else if (selectedGroupToSetAppFee.appFee === newAppFee) {
             alert(`Hãy Nhập Giá Trị AppFee Mới!`)
             return
@@ -147,7 +133,7 @@ function AdminHome() {
                 , config)
             .then((response) => {
                 const data = response.data;
-                if(data.appFee){
+                if (data.appFee) {
                     alert("Cài Đặt AppFee Mới Thành Công.")
                     handleCancel()
                     setReloadList(!reloadList)

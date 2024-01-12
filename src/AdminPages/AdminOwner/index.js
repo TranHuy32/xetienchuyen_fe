@@ -49,8 +49,10 @@ function AdminOwner() {
         axios
             .get(`${beURL}/group/all`, config)
             .then((response) => {
-                const data = response.data;
-                setGroupList(data);
+                const data = response?.data;
+                if (!!data) {
+                    setGroupList(data);
+                }
             })
             .catch((error) => {
                 console.log(error);
@@ -62,9 +64,11 @@ function AdminOwner() {
         axios
             .get(`${beURL}/users/allOwners?page=${currentPage}&pageSize=${pageSize}`, config)
             .then((response) => {
-                const data = response.data;
-                setOwnerList(data.users);
-                setTotalPages(Math.ceil(data.totalCount / pageSize));
+                const data = response?.data;
+                if (!data) {
+                    setOwnerList(data.users);
+                    setTotalPages(Math.ceil(data.totalCount / pageSize));
+                }
             })
             .catch((error) => {
                 console.log(error);
@@ -83,11 +87,11 @@ function AdminOwner() {
         axios
             .post(`${beURL}/users-auth/registerOwner`, formData, config)
             .then((response) => {
-                const data = response.data;
-                if (data === "UserName Existed!") {
-                    alert(data)
+                const data = response?.data;
+                if (!!data && data === "UserName Existed!") {
+                    alert("Tên Người Dùng Đã Tồn Tại")
                 }
-                if (data.active === true) {
+                if (!!data && data.active === true) {
                     alert("Thành Công ")
                     handleCancel()
                 }
@@ -106,8 +110,10 @@ function AdminOwner() {
                 axios
                     .put(`${beURL}/users/updateOwner/${selectedId}`, gmail, config)
                     .then((response) => {
-                        const data = response.data;
-                        setReloadList(!reloadList)
+                        const data = response?.data;
+                        if (!!data) {
+                            setReloadList(!reloadList)
+                        }
                     })
                     .catch((error) => {
                         console.log(error);
@@ -167,8 +173,10 @@ function AdminOwner() {
         axios
             .get(`${beURL}/users-auth/2fa/qr/${id}`, config)
             .then((response) => {
-                const data = response.data;
-                setQrURL(data)
+                const data = response?.data;
+                if (!!data) {
+                    setQrURL(data)
+                }
             })
             .catch((error) => {
                 console.log(error);
@@ -197,11 +205,11 @@ function AdminOwner() {
         axios
             .post(`${beURL}/users-auth/2fa/turn-on`, formTurnOn2Fa, config)
             .then((response) => {
-                const data = response.data;
-                console.log(data);
-                if (data) {
+                const data = response?.data;
+                if (!!data) {
                     setReloadList(!reloadList)
                     handleCancel()
+                    alert("Thành Công")
                 } else {
                     alert("Thất Bại")
                 }

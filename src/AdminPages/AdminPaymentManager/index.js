@@ -34,9 +34,11 @@ function PaymentManager() {
         axios
             .get(`${beURL}/payment/allByAdmin?type=WITHDRAW&page=${currentWithDrawPage}&pageSize=${pageSizeWithDraw}`, config)
             .then((response) => {
-                const data = response.data;
-                setWithDrawList(data.payments)
-                setTotalWithDrawPages(Math.ceil(data.totalCount / pageSizeWithDraw))
+                const data = response?.data;
+                if (!!data) {
+                    setWithDrawList(data.payments)
+                    setTotalWithDrawPages(Math.ceil(data.totalCount / pageSizeWithDraw))
+                }
             })
             .catch((error) => {
                 console.log(error);
@@ -77,12 +79,12 @@ function PaymentManager() {
                     }
                     , config)
                 .then((response) => {
-                    const data = response.data;
-                    if (data.message === "SUCCESS") {
+                    const data = response?.data;
+                    if (!!data && data.message === "SUCCESS") {
                         alert("Thành Công")
                         handleCancel()
                         setRefreshWithDrawList(!refreshWithDrawList)
-                    } else if (data.message !== "SUCCESS") {
+                    } else if (!!data && data.message !== "SUCCESS") {
                         alert(data.message + ". Mã Lỗi: " + data.code)
                         handleCancel()
                         setRefreshWithDrawList(!refreshWithDrawList)
@@ -109,12 +111,12 @@ function PaymentManager() {
                     }
                     , config)
                 .then((response) => {
-                    const data = response.data;
-                    if (data.message === "SUCCESS") {
+                    const data = response?.data;
+                    if (!!data && data.message === "SUCCESS") {
                         alert("Thành Công")
                         handleCancel()
                         setRefreshWithDrawList(!refreshWithDrawList)
-                    } else if (data.message !== "SUCCESS") {
+                    } else if (!!data && data.message !== "SUCCESS") {
                         alert(data.message + ". Mã Lỗi: " + data.code)
                         handleCancel()
                         setRefreshWithDrawList(!refreshWithDrawList)
