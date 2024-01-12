@@ -120,7 +120,6 @@ function Adminwarningpayment() {
                 }
             });
     }
-
     return (
         <div className={cx("awpWrapper")}>
             {showInputNewUserName && (
@@ -163,7 +162,10 @@ function Adminwarningpayment() {
                 <div className={cx(typeOfList === "WARNING" ? "active-list" : "")} onClick={() => setTypeOfList("WARNING")}>Warning</div>
                 <div className={cx(typeOfList === "WRONG_DEPOSIT_INFO" ? "active-list" : "")} onClick={() => setTypeOfList("WRONG_DEPOSIT_INFO")}>Wrong-Deposit-Info</div>
             </div>
-            {typeOfList === "WARNING" && (
+            {(typeOfList === "WARNING" && warningList.length === 0) && (
+                <h3 id="emptyAdminList">Không Có Yêu Cầu</h3>
+            )}
+            {(typeOfList === "WARNING" && warningList.length !== 0) && (
                 <Fragment>
                     <table id="awmWarningTable">
                         <thead>
@@ -179,7 +181,6 @@ function Adminwarningpayment() {
                         </thead>
 
                         <tbody>
-
                             {warningList.map((bill, index) => {
                                 const dateString = bill.createdAt;
 
@@ -265,6 +266,9 @@ function Adminwarningpayment() {
                         </div>
                     )}
                 </Fragment>
+            )}
+            {(typeOfList === "WRONG_DEPOSIT_INFO" && wrongList.length === 0) && (
+                <h3 id="emptyAdminList">Không Có Yêu Cầu</h3>
             )}
             {typeOfList === "WRONG_DEPOSIT_INFO" && (
                 <Fragment>
