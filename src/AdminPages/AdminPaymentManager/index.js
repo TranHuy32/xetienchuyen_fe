@@ -151,7 +151,13 @@ function PaymentManager() {
                     </div>
                 </Fragment>
             )}
-            {typeOfList === "WITHDRAW" && (
+            {(typeOfList === "WITHDRAW" && WithDrawList.length === 0) && (
+                <div id="emptyAdminWithDrawList">
+                    <h3>Không Có Yêu Cầu Rút Tiền</h3>
+                </div>
+
+            )}
+            {(typeOfList === "WITHDRAW" && WithDrawList.length !== 0) && (
                 <Fragment>
                     <table id="apmWithDrawTable">
                         <thead>
