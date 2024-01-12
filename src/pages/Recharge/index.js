@@ -38,8 +38,10 @@ export default function Users() {
       .get(`${beURL}/payment/allByOwner?type=DEPOSIT&page=${currentPage}&pageSize=${pageSize}`, config)
       .then((response) => {
         const data = response.data;
-        setPaymentList(data.payments);
-        setTotalPages(Math.ceil(data.totalCount / pageSize))
+        if (!!data) {
+          setPaymentList(data.payments);
+          setTotalPages(Math.ceil(data.totalCount / pageSize))
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -49,7 +51,7 @@ export default function Users() {
       .get(`${beURL}/payment/allByOwner?type=DEPOSIT`, config)
       .then((response) => {
         const data = response.data
-        if (data.payments.length > 0) {
+        if (!!data && data.payments.length > 0) {
           const pendingPayments = data.payments.filter(payment => payment.status === "PENDING");
           if (pendingPayments.length !== 0) {
             setDepositNotice(pendingPayments.length)
@@ -71,8 +73,10 @@ export default function Users() {
       // `${beURL}/payment/allByOwner?type=${typeOfList}page=${currentPage}&pageSize=${pageSize}`
       .then((response) => {
         const data = response.data;
-        setPaymentWITHDRAWList(data.payments);
-        setTotalWITHDRAWPages(Math.ceil(data.totalCount / pageSize))
+        if (!!data) {
+          setPaymentWITHDRAWList(data.payments);
+          setTotalWITHDRAWPages(Math.ceil(data.totalCount / pageSize))
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -84,7 +88,7 @@ export default function Users() {
       // `${beURL}/payment/allByOwner?type=${typeOfList}page=${currentPage}&pageSize=${pageSize}`
       .then((response) => {
         const data = response.data
-        if (data.payments.length > 0) {
+        if (!!data && data.payments.length > 0) {
           const pendingPayments = data.payments.filter(payment => payment.status === "PENDING");
           if (pendingPayments.length !== 0) {
             setWithDrawNotice(pendingPayments.length)
@@ -138,11 +142,11 @@ export default function Users() {
           , config)
         .then((response) => {
           const data = response.data;
-          if (data.message === "SUCCESS") {
+          if (!!data && data.message === "SUCCESS") {
             alert("Thành Công")
             handleCancel()
             setRefreshList(!refreshList)
-          } else if (data.message !== "SUCCESS") {
+          } else if (!!data && data.message !== "SUCCESS") {
             alert(data.message + ". Mã Lỗi: " + data.code)
             handleCancel()
             setRefreshList(!refreshList)
@@ -170,12 +174,11 @@ export default function Users() {
           , config)
         .then((response) => {
           const data = response.data;
-          console.log(data);
-          if (data.message === "SUCCESS") {
+          if (!!data && data.message === "SUCCESS") {
             alert("Thành Công")
             handleCancel()
             setRefreshWITHDRAWList(!refreshWITHDRAWList)
-          } else if (data.message !== "SUCCESS") {
+          } else if (!!data && data.message !== "SUCCESS") {
             alert(data.message + ". Mã Lỗi: " + data.code)
             handleCancel()
             setRefreshWITHDRAWList(!refreshWITHDRAWList)
@@ -203,11 +206,11 @@ export default function Users() {
           , config)
         .then((response) => {
           const data = response.data;
-          if (data.message === "SUCCESS") {
+          if (!!data && data.message === "SUCCESS") {
             alert("Thành Công")
             handleCancel()
             setRefreshWITHDRAWList(!refreshWITHDRAWList)
-          } else if (data.message !== "SUCCESS") {
+          } else if (!!data && data.message !== "SUCCESS") {
             alert(data.message + ". Mã Lỗi: " + data.code)
             handleCancel()
             setRefreshWITHDRAWList(!refreshWITHDRAWList)

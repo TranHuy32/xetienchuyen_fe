@@ -30,7 +30,9 @@ export default function Users() {
       .get(`${beURL}/group/detail/${group_id}`, config)
       .then((response) => {
         const data = response.data;
-        setGroup(data);
+        if (!!data) {
+          setGroup(data);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -42,8 +44,10 @@ export default function Users() {
       )
       .then((response) => {
         const data = response.data;
-        setUsers(data.users);
-        setTotalPages(Math.ceil(data.totalCount / pageSize));
+        if (!!data) {
+          setUsers(data.users);
+          setTotalPages(Math.ceil(data.totalCount / pageSize));
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -71,8 +75,10 @@ export default function Users() {
       )
       .then((response) => {
         const data = response.data;
-        setUsers(data.users);
-        setTotalPages(Math.ceil(data.totalCount / pageSize));
+        if(!!data){
+          setUsers(data.users);
+          setTotalPages(Math.ceil(data.totalCount / pageSize));
+        }
       })
       .catch((error) => {
         console.log(error);

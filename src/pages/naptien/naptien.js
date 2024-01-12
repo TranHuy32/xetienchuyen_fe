@@ -61,7 +61,7 @@ function NapTien() {
         // setWdToken(Token)
         setParamId(Name)
         // console.log(Token.length);
-        console.log(Name.length);
+
         //Thông báo thiếu thông tin
         if (Name.length < 10) {
             alert("Thông Tin Bị Thiếu! Hãy Mở Lại Trang Web Này Từ Ứng Dụng Của Bạn.")
@@ -75,7 +75,7 @@ function NapTien() {
             .get(`${beURL}/users/depositStatus`)
             .then((response) => {
                 const data = response.data;
-                if (data.success === 1) {
+                if (!!data && data.success === 1) {
                     setAllowToDisplay(data.data.depositStatus)
                 } else {
                     setAllowToDisplay(false)
@@ -149,7 +149,7 @@ function NapTien() {
     // const changeUserNameHandler = (e) => {
     //     setUserName(e.target.value)
     // };
-    
+
     const changeAmountHandler = (e) => {
         let inputValue = e.target.value;
 
@@ -403,9 +403,9 @@ function NapTien() {
                             </div>
                         )}
 
-                        <button className={cx((paramId && trackValidAmount)? "ready" : "",(showAnotherOption && qrGenerated)? "readyToGenNewQR" : "")} onClick={handleSubbmit}>
-                            {!qrGenerated && "Tạo Mã QR"} 
-                            {(qrGenerated && !showAnotherOption) && "Tạo Mã QR Thành Công!"} 
+                        <button className={cx((paramId && trackValidAmount) ? "ready" : "", (showAnotherOption && qrGenerated) ? "readyToGenNewQR" : "")} onClick={handleSubbmit}>
+                            {!qrGenerated && "Tạo Mã QR"}
+                            {(qrGenerated && !showAnotherOption) && "Tạo Mã QR Thành Công!"}
                             {(showAnotherOption && qrGenerated) && "Tạo Mã QR Mới"}
                         </button>
                     </div>

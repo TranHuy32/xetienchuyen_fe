@@ -35,9 +35,10 @@ export default function CreateUser() {
     axios
       .post(`${beURL}/users-auth/register`, state, config)
       .then((response) => {
-        if (response.data === "UserName Existed!") {
+        const data = response?.data
+        if (!!data && data === "UserName Existed!") {
           alert("Tên đăng nhập đã tồn tại");
-        } else if (response.data === "Group Not Existed") {
+        } else if (!!data && data  === "Group Not Existed") {
           alert("Nhóm không tồn tại");
         } else {
           alert("Tạo thành công");

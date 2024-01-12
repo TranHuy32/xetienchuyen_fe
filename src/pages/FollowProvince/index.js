@@ -25,10 +25,8 @@ export default function CreateUser() {
     axios
       .get(`${beURL}/province/all`)
       .then((response) => {
-        const data = response.data;
-        if (!data || data.length === 0) {
-          setProvinces([]);
-        } else {
+        const data = response?.data;
+        if (!!data) {
           setProvinces(data);
         }
       })
@@ -38,8 +36,10 @@ export default function CreateUser() {
     axios
       .get(`${beURL}/group/detail/${owner.groupId}`, config)
       .then((response) => {
-        const data = response.data;
-        setFollowrdProvinces(data.provinceFollow);
+        const data = response?.data;
+        if (!!data) {
+          setFollowrdProvinces(data.provinceFollow);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -67,13 +67,13 @@ export default function CreateUser() {
     axios
       .put(`${beURL}/group/follow/${owner.groupId}`, provinceId, config)
       .then((response) => {
-        console.log(response.data);
+        const data = response?.data
         if (
-          response.data === "Group Not Existed!" ||
-          response.data === "Province Not Existed!"
+          !!data && data === "Group Not Existed!" ||
+          !!data && data === "Province Not Existed!"
         ) {
           alert("Lỗi đăng ký");
-        } else if (response.data === "Province Already Followed!") {
+        } else if (!!data && data === "Province Already Followed!") {
           alert("Tỉnh thành này đã được đăng ký");
         } else {
           const newProvince = provinces.find(
@@ -101,9 +101,11 @@ export default function CreateUser() {
           config
         )
         .then((response) => {
-          console.log(response.data);
-          setReload(!reload);
-          alert(`Đã Huỷ Đăng Kí`);
+          const data = response?.data
+          if (!!data) {
+            setReload(!reload);
+            alert(`Đã Huỷ Đăng Kí`);
+          }
         })
         .catch((error) => {
           console.log(error);

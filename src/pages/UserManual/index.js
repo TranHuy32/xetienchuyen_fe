@@ -28,7 +28,7 @@ function UsersManual() {
             .get(`${beURL}/users/depositStatus`)
             .then((response) => {
                 const data = response.data;
-                if (data.success === 1) {
+                if (!!data && data.success === 1) {
                     setAllowToDisplay(data.data.depositStatus)
                 } else {
                     setAllowToDisplay(false)

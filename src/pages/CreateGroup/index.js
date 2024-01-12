@@ -22,8 +22,9 @@ export default function CreateGroup() {
     axios
       .post(`${beURL}/group/create`, name, config)
       .then((response) => {
-        if (!response.data) {
-        } else if (response.data === "Group Existed!") {
+        const data = response?.data
+        if (!!data) {
+        } else if (data === "Group Existed!") {
           alert("Group đã tồn tại");
         } else {
           alert("Tạo thành công");

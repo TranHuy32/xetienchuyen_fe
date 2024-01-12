@@ -31,7 +31,7 @@ function RutTien() {
             .get(`${beURL}/users/depositStatus`)
             .then((response) => {
                 const data = response.data;
-                if (data.success === 1) {
+                if (!!data && data.success === 1) {
                     setAllowToDisplay(data.data.depositStatus)
                 } else {
                     setAllowToDisplay(false)
@@ -105,52 +105,50 @@ function RutTien() {
             })
             .then((response) => {
                 const data = response.data
-                console.log(data);
-                if (data.code === 101) {
-                    setShowAlert(true)
-                    setAlertMsg(
-                        `Không Tìm Thây Tài Khoản ${userName}. Vui Lòng Tắt Và Mở Lại Trình Duyệt Trong Ứng Dụng Của Bạn.`
-                    )
-                    return
-                } else if (data.code === 109) {
-                    setShowAlert(true)
-                    setAlertMsg(
-                        `Thiếu Thông Tin Cần Thiết. Vui Lòng Tắt Và Mở Lại Trình Duyệt Trong Ứng Dụng Của Bạn.`
-                    )
-                    return
-                } else if (data.code === 110) {
-                    setShowAlert(true)
-                    setAlertMsg(
-                        `Mã Bảo Mật Sai. Vui Lòng Tắt Và Mở Lại Trình Duyệt Trong Ứng Dụng Của Bạn.`
-                    )
-                    return
-                } else if (data.code === 111) {
-                    setShowAlert(true)
-                    setAlertMsg(
-                        `Tài Khoản Hiện Tại Không Đủ Tiền. Vui Lòng Kiểm Tra Lại.`
-                    )
-                    return
-                } else if (response.data.success === 1) {
-                    setShowAlert(true)
-                    setAlertMsg(
-                        `Đã Gửi Yêu Cầu Thành Công. Xin Chờ Hệ Thống Xử Lý.`
-                    );
-                    // handleClearInfo()
-                    return
-                } else {
-                    setShowAlert(true)
-                    setAlertMsg("Yêu Cầu Rút Tiền Thất Bại.")
-                    return
+                if (!!data) {
+                    if (data.code === 101) {
+                        setShowAlert(true)
+                        setAlertMsg(
+                            `Không Tìm Thây Tài Khoản ${userName}. Vui Lòng Tắt Và Mở Lại Trình Duyệt Trong Ứng Dụng Của Bạn.`
+                        )
+                        return
+                    } else if (data.code === 109) {
+                        setShowAlert(true)
+                        setAlertMsg(
+                            `Thiếu Thông Tin Cần Thiết. Vui Lòng Tắt Và Mở Lại Trình Duyệt Trong Ứng Dụng Của Bạn.`
+                        )
+                        return
+                    } else if (data.code === 110) {
+                        setShowAlert(true)
+                        setAlertMsg(
+                            `Mã Bảo Mật Sai. Vui Lòng Tắt Và Mở Lại Trình Duyệt Trong Ứng Dụng Của Bạn.`
+                        )
+                        return
+                    } else if (data.code === 111) {
+                        setShowAlert(true)
+                        setAlertMsg(
+                            `Tài Khoản Hiện Tại Không Đủ Tiền. Vui Lòng Kiểm Tra Lại.`
+                        )
+                        return
+                    } else if (response.data.success === 1) {
+                        setShowAlert(true)
+                        setAlertMsg(
+                            `Đã Gửi Yêu Cầu Thành Công. Xin Chờ Hệ Thống Xử Lý.`
+                        );
+                        // handleClearInfo()
+                        return
+                    } else {
+                        setShowAlert(true)
+                        setAlertMsg("Yêu Cầu Rút Tiền Thất Bại.")
+                        return
+                    }
                 }
+
             })
             .catch((error) => {
                 console.log(error);
             });
     }
-
-    // const handleClearInfo = () => {
-
-    // }
 
     const handleCancelOverlay = () => {
         setShowConfirmInfo(false)

@@ -65,13 +65,15 @@ export default function DetailUser() {
     axios
       .get(`${beURL}/users/detailByOwner/${user_id}`, config)
       .then((response) => {
-        const data = response.data;
-        setUser(data);
-        setCarPicture(data.car_images)
-        if (data.active) {
-          setAccountStatus("Đã Kích Hoạt")
-        } else {
-          setAccountStatus("Chưa Kích Hoạt")
+        const data = response?.data;
+        if (!!data) {
+          setUser(data);
+          setCarPicture(data.car_images)
+          if (data.active) {
+            setAccountStatus("Đã Kích Hoạt")
+          } else {
+            setAccountStatus("Chưa Kích Hoạt")
+          }
         }
       })
       .catch((error) => {
@@ -86,13 +88,14 @@ export default function DetailUser() {
       axios
         .get(
           `${beURL}/ride/historyReceivedByOwner/${user_id}?page=${currentRidesPage}&pageSize=${pageSize}&date=${formattedDate}`,
-          // `${beURL}/ride/historyReceivedByOwner/${user_id}?page=${currentRidesPage}&pageSize=${pageSize}`,
           config
         )
         .then((response) => {
-          const data = response.data;
-          setRides(data.rides);
-          setTotalRidesPages(Math.ceil(data.totalCount / pageSize));
+          const data = response?.data;
+          if (!!data) {
+            setRides(data.rides);
+            setTotalRidesPages(Math.ceil(data.totalCount / pageSize));
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -102,13 +105,14 @@ export default function DetailUser() {
       axios
         .get(
           `${beURL}/ride/historyReceivedByOwner/${user_id}?page=${currentRidesPage}&pageSize=${pageSize}&date=${newDate}`,
-          // `${beURL}/ride/historyReceivedByOwner/${user_id}?page=${currentRidesPage}&pageSize=${pageSize}`,
           config
         )
         .then((response) => {
-          const data = response.data;
-          setRides(data.rides);
-          setTotalRidesPages(Math.ceil(data.totalCount / pageSize));
+          const data = response?.data;
+          if (!!data) {
+            setRides(data.rides);
+            setTotalRidesPages(Math.ceil(data.totalCount / pageSize));
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -126,9 +130,11 @@ export default function DetailUser() {
           config
         )
         .then((response) => {
-          const data = response.data;
-          setCreatedList(data.rides);
-          setTotalCreatedPages(Math.ceil(data.totalCount / pageSize));
+          const data = response?.data;
+          if (!!data) {
+            setCreatedList(data.rides);
+            setTotalCreatedPages(Math.ceil(data.totalCount / pageSize));
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -141,9 +147,11 @@ export default function DetailUser() {
           config
         )
         .then((response) => {
-          const data = response.data;
-          setCreatedList(data.rides);
-          setTotalCreatedPages(Math.ceil(data.totalCount / pageSize));
+          const data = response?.data;
+          if (!!data) {
+            setCreatedList(data.rides);
+            setTotalCreatedPages(Math.ceil(data.totalCount / pageSize));
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -173,9 +181,11 @@ export default function DetailUser() {
           config
         )
         .then((response) => {
-          const data = response.data;
-          setDetailRide(data)
-          setShowDetail(true)
+          const data = response?.data;
+          if (!!data) {
+            setDetailRide(data)
+            setShowDetail(true)
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -189,10 +199,11 @@ export default function DetailUser() {
           config
         )
         .then((response) => {
-          const data = response.data;
-          setDetailParcel(data)
-          setShowDetail(true)
-          console.log(data);
+          const data = response?.data;
+          if (!!data) {
+            setDetailParcel(data)
+            setShowDetail(true)
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -206,9 +217,11 @@ export default function DetailUser() {
           config
         )
         .then((response) => {
-          const data = response.data;
-          setDetailRide(data)
-          setShowCreatedDetail(true)
+          const data = response?.data;
+          if (!!data) {
+            setDetailRide(data)
+            setShowCreatedDetail(true)
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -222,10 +235,11 @@ export default function DetailUser() {
           config
         )
         .then((response) => {
-          const data = response.data;
-          setDetailParcel(data)
-          setShowCreatedDetail(true)
-          console.log(data);
+          const data = response?.data;
+          if (!!data) {
+            setDetailParcel(data)
+            setShowCreatedDetail(true)
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -289,9 +303,9 @@ export default function DetailUser() {
         config
       )
       .then((response) => {
-        const data = response.data;
+        const data = response?.data;
         setReload(!reload);
-        if (data) {
+        if (!!data) {
           setAccountStatus("Đã Kích Hoạt")
         } else {
           setAccountStatus("Chưa Kích Hoạt")
@@ -305,17 +319,11 @@ export default function DetailUser() {
   const handleSubmitFixInfo = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    // formData.append("car_images", state.car_images);
     formData.append("licensePlate", state.licensePlate);
     formData.append("carType", state.carType);
     for (let i = 0; i < state.car_images.length; i++) {
       formData.append('car_images', state.car_images[i]);
     }
-    // const formDataObj = {};
-    // formData.forEach((value, key) => {
-    //   formDataObj[key] = value;
-    // });
-
     axios
       .put(
         `${beURL}/users/update/${user_id}`,
@@ -323,15 +331,16 @@ export default function DetailUser() {
         config
       )
       .then((response) => {
-        console.log(response);
-        setState({
-          car_images: [],
-          licensePlate: "",
-          carType: "",
-        })
-        setReload(!reload)
-        alert("Thành Công")
-        handleCancel()
+        if (!!response) {
+          setState({
+            car_images: [],
+            licensePlate: "",
+            carType: "",
+          })
+          setReload(!reload)
+          alert("Thành Công")
+          handleCancel()
+        }
       })
       .catch((error) => {
         console.log(error);

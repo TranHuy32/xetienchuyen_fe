@@ -22,9 +22,7 @@ export default function Home() {
       .get(`${beURL}/group/all`, config)
       .then((response) => {
         const data = response.data;
-        if (!data || data.length === 0) {
-          setGroups([]);
-        } else {
+        if (!!data) {
           setGroups(data);
         }
       })

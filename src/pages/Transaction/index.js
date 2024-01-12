@@ -27,7 +27,9 @@ export default function Transaction() {
       .get(`${beURL}/group/detail/${group_id}`, config)
       .then((response) => {
         const data = response.data;
-        setGroup(data);
+        if(!!data){
+          setGroup(data);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -39,9 +41,7 @@ export default function Transaction() {
       )
       .then((response) => {
         const data = response.data;
-        if (!data || data.length === 0) {
-          setTransactions([]);
-        } else {
+        if (!!data) {
           setTransactions(data.transactions);
           setTotalPages(Math.ceil(data.totalCount / pageSize));
         }
