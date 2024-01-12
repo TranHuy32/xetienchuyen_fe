@@ -65,7 +65,7 @@ function AdminOwner() {
             .get(`${beURL}/users/allOwners?page=${currentPage}&pageSize=${pageSize}`, config)
             .then((response) => {
                 const data = response?.data;
-                if (!data) {
+                if (!!data) {
                     setOwnerList(data.users);
                     setTotalPages(Math.ceil(data.totalCount / pageSize));
                 }
